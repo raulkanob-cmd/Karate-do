@@ -1,8 +1,8 @@
 // ==========================================================================
 // Karate-Do Registration Form Script
 // Multi-step wizard (4 pasos), validación accesible (aria-invalid / role="alert"),
-// barra de progreso, confeti de celebración, resumen + envío por WhatsApp,
-// theme toggle y gestión de foco del modal (patrón de diálogo ARIA).
+// barra de progreso, kanji de celebración saliendo del modal, resumen + envío
+// por WhatsApp, theme toggle (icono en el header) y foco del modal (diálogo ARIA).
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,6 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Número del dojo para el envío por WhatsApp
     const WHATSAPP_NUMBER = '5214776737908'; // +52 1 477 673 7908
 
+    // Todo alumno se da de alta desde cero (sin grado previo): cinta blanca
+    const DEFAULT_RANK = 'Principiante (Cinta Blanca) — alumno nuevo';
+
     let currentStep = 1;
     let maxStepReached = 1;
 
@@ -47,25 +50,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================================================
-    // Light Switch (Switch de Foco) & Dark Mode Toggle Logic
+    // Modo día / noche: único icono en el header
     // ==========================================================================
-    const lightSwitchBtn = document.getElementById('lightSwitchBtn');
-    const bulbContainer = document.getElementById('bulbContainer');
-    const switchStatusText = document.getElementById('switchStatusText');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
 
     function setTheme(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
 
-        if (lightSwitchBtn) {
-            lightSwitchBtn.classList.toggle('is-on', isDark);
-            lightSwitchBtn.setAttribute('aria-checked', String(isDark));
+        if (themeToggle) {
+            themeToggle.classList.toggle('is-on', isDark);
+            themeToggle.setAttribute('aria-pressed', String(isDark));
+            themeToggle.setAttribute('aria-label', isDark
+                ? 'Modo oscuro activado. Cambiar a modo claro (sol)'
+                : 'Modo claro activado. Cambiar a modo oscuro (luna)');
         }
-        if (bulbContainer) {
-            bulbContainer.classList.toggle('is-on', isDark);
-            bulbContainer.setAttribute('aria-pressed', String(isDark));
-        }
-        if (switchStatusText) {
-            switchStatusText.textContent = isDark ? 'LUZ ON (NOCHE)' : 'LUZ OFF (DÍA)';
+        if (themeIcon) {
+            themeIcon.className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
         }
         localStorage.setItem('karate_theme', isDark ? 'dark' : 'light');
     }
@@ -80,14 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setTheme(prefersDark);
     }
 
-    if (lightSwitchBtn) {
-        lightSwitchBtn.addEventListener('click', () => {
-            setTheme(!document.body.classList.contains('dark-mode'));
-        });
-    }
-
-    if (bulbContainer) {
-        bulbContainer.addEventListener('click', () => {
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
             setTheme(!document.body.classList.contains('dark-mode'));
         });
     }
@@ -276,8 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
         { id: 'modality', step: 3, check: () =>
             document.querySelectorAll('input[name="sportsModality"]:checked').length > 0 ? null : '' },
-        { id: 'rankLevel', step: 3, check: () =>
-            document.getElementById('rankLevel').value ? null : '' },
         { id: 'schedulePreference', step: 3, check: () =>
             document.getElementById('schedulePreference').value ? null : '' },
         { id: 'previousSportsRadio', step: 4, check: () =>
@@ -372,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentStep > 1) showStep(currentStep - 1);
     });
 
-    // Clic en los puntos de la barra de progreso (header)
+    // Clic en los puntos de la barra de progreso
     document.getElementById('progressSteps').addEventListener('click', (e) => {
         const btn = e.target.closest('.progress-step');
         if (!btn || btn.disabled) return;
@@ -438,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
             phone: document.getElementById('phone').value.trim(),
             email: document.getElementById('email').value.trim(),
             modalities,
-            rank: document.getElementById('rankLevel').value,
+            rank: DEFAULT_RANK,
             schedule: document.getElementById('schedulePreference').value,
             prevSports: prevSportsText,
             medical: document.getElementById('medicalConditions').value.trim() || 'Sin observaciones médicas'
@@ -524,16 +517,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // 7. Confeti de celebración (canvas propio, respeta movimiento reducido)
+    // 7. Caracteres japoneses (kanji/kana) que salen de la ventana modal
+    //    al pulsar "Enviar" (canvas propio, respeta movimiento reducido)
     // ==========================================================================
-    function fireConfetti(originEl) {
+    const KANJI_CHARS = [
+        '空', '手', '道', '気', '礼', '義', '忍', '心', '力', '体',
+        '学', '勝', '仁', '勇', '正', '剣', '闘', '星', '和', '敬',
+        '誠', '黒', '帯', '初', '一', '龍', '虎', '禅', '武', '始'
+    ];
+
+    function fireKanjiBurst(originEl) {
         if (prefersReducedMotion) return;
 
-        const existing = document.querySelector('.confetti-canvas');
+        const existing = document.querySelector('.fx-canvas');
         if (existing) existing.remove();
 
         const canvas = document.createElement('canvas');
-        canvas.className = 'confetti-canvas';
+        canvas.className = 'fx-canvas';
         canvas.setAttribute('aria-hidden', 'true');
         document.body.appendChild(canvas);
 
@@ -547,36 +547,35 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.height = h * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        // Origen: el botón que se pulsó (o el centro-inferior de la pantalla)
+        // Origen: parte superior de la ventana modal (los kanji salen de ella)
         let ox = w / 2;
-        let oy = h * 0.7;
+        let oy = h * 0.4;
         if (originEl && typeof originEl.getBoundingClientRect === 'function') {
             const r = originEl.getBoundingClientRect();
-            if (r.width) { ox = r.left + r.width / 2; oy = r.top + r.height / 2; }
+            if (r.width) { ox = r.left + r.width / 2; oy = r.top + 10; }
         }
 
-        const colors = ['#E63027', '#FFD700', '#10B981', '#1259C3', '#FFFFFF', '#F59E0B', '#FF6666'];
+        const colors = ['#E63027', '#FFD700', '#10B981', '#FFFFFF', '#FF6666', '#F59E0B'];
         const particles = [];
-        const COUNT = 150;
+        const COUNT = 55;
 
         for (let i = 0; i < COUNT; i++) {
-            const angle = (-Math.PI / 2) + (Math.random() - 0.5) * Math.PI * 1.2;
-            const speed = 6 + Math.random() * 11;
+            const angle = (-Math.PI / 2) + (Math.random() - 0.5) * Math.PI * 1.3;
+            const speed = 7 + Math.random() * 12;
             particles.push({
-                x: ox + (Math.random() - 0.5) * 50,
-                y: oy,
+                char: KANJI_CHARS[Math.floor(Math.random() * KANJI_CHARS.length)],
+                x: ox + (Math.random() - 0.5) * 140,
+                y: oy + (Math.random() - 0.5) * 24,
                 vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed - 3,
-                w: 6 + Math.random() * 7,
-                h: 4 + Math.random() * 5,
-                rot: Math.random() * Math.PI * 2,
-                vr: (Math.random() - 0.5) * 0.3,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                circle: Math.random() < 0.25
+                vy: Math.sin(angle) * speed - 4,
+                size: 18 + Math.random() * 28,
+                rot: (Math.random() - 0.5) * 0.9,
+                vr: (Math.random() - 0.5) * 0.12,
+                color: colors[Math.floor(Math.random() * colors.length)]
             });
         }
 
-        const DURATION = 3200;
+        const DURATION = 3600;
         const start = performance.now();
         let rafId = 0;
 
@@ -586,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.clearRect(0, 0, w, h);
 
             particles.forEach(p => {
-                p.vy += 0.28;
+                p.vy += 0.3;   // gravedad suave
                 p.vx *= 0.99;
                 p.vy *= 0.99;
                 p.x += p.vx;
@@ -597,14 +596,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.globalAlpha = alpha;
                 ctx.translate(p.x, p.y);
                 ctx.rotate(p.rot);
+                ctx.font = `800 ${p.size}px 'Syne', 'Plus Jakarta Sans', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
                 ctx.fillStyle = p.color;
-                if (p.circle) {
-                    ctx.beginPath();
-                    ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
-                    ctx.fill();
-                } else {
-                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-                }
+                ctx.fillText(p.char, 0, 0);
                 ctx.restore();
             });
 
@@ -641,10 +637,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modalSummaryContent.innerHTML = buildSummaryHtml(data);
         btnSendWhatsapp.href = buildWhatsappUrl(data);
 
-        // 🎉 Confeti al presionar "Enviar"
-        fireConfetti(btnSubmit);
-
+        // 🔤 Kanji japoneses saliendo de la ventana modal al pulsar "Enviar"
         openModal();
+        fireKanjiBurst(modalCard);
     });
 
     // Enlace de WhatsApp del modal (se actualiza al enviar; por si se pulsa sin href)

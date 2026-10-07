@@ -23,7 +23,7 @@
     <!-- Skip Link: navegación por teclado (WCAG 2.4.1) -->
     <a class="skip-link" href="#registro">Saltar al formulario de inscripción</a>
 
-    <!-- Header / Top Bar + Barra de progreso (siempre visible) -->
+    <!-- Header / Top Bar (ya no es sticky) -->
     <header class="top-header">
         <div class="header-content">
             <div class="logo-area">
@@ -35,48 +35,17 @@
                     <span class="school-subtitle">ESCUELA SPORT & DOJO</span>
                 </div>
             </div>
-            <div class="header-badge">
-                <i class="fa-solid fa-trophy" aria-hidden="true"></i>
-                <span>Escuela Deportiva Oficial</span>
+            <div class="header-actions">
+                <div class="header-badge">
+                    <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+                    <span>Escuela Deportiva Oficial</span>
+                </div>
+                <!-- Modo día / noche como único icono -->
+                <button type="button" id="themeToggle" class="theme-toggle-btn" aria-pressed="false" aria-label="Cambiar a modo oscuro (luna)">
+                    <i class="fa-solid fa-sun" id="themeIcon" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
-
-        <!-- Progress Stepper: visible en todo momento (header sticky) -->
-        <nav class="header-progress" aria-label="Progreso del formulario de inscripción">
-            <div class="progress-track" aria-hidden="true">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <ol class="progress-steps" id="progressSteps">
-                <li>
-                    <button type="button" class="progress-step is-current" data-goto="1" aria-current="step">
-                        <span class="step-dot" aria-hidden="true">1</span>
-                        <span class="step-name" aria-hidden="true">Datos personales</span>
-                        <span class="sr-only">Paso 1: Datos personales</span>
-                    </button>
-                </li>
-                <li>
-                    <button type="button" class="progress-step" data-goto="2" disabled>
-                        <span class="step-dot" aria-hidden="true">2</span>
-                        <span class="step-name" aria-hidden="true">Contacto</span>
-                        <span class="sr-only">Paso 2: Contacto y tutor</span>
-                    </button>
-                </li>
-                <li>
-                    <button type="button" class="progress-step" data-goto="3" disabled>
-                        <span class="step-dot" aria-hidden="true">3</span>
-                        <span class="step-name" aria-hidden="true">Modalidad</span>
-                        <span class="sr-only">Paso 3: Modalidad y nivel</span>
-                    </button>
-                </li>
-                <li>
-                    <button type="button" class="progress-step" data-goto="4" disabled>
-                        <span class="step-dot" aria-hidden="true">4</span>
-                        <span class="step-name" aria-hidden="true">Historial</span>
-                        <span class="sr-only">Paso 4: Historial y envío</span>
-                    </button>
-                </li>
-            </ol>
-        </nav>
     </header>
 
     <!-- Main Container -->
@@ -87,27 +56,6 @@
             <div class="hero-image-wrapper">
                 <img src="assets/images/hero_karate.jpg" alt="Entrenamiento de Karate-Do en Dojo" class="hero-img">
                 <div class="hero-overlay">
-                    
-                    <!-- Light Switch Fixture (Switch de Foco - Modo Oscuro) -->
-                    <div class="hero-switch-fixture" id="heroSwitchFixture">
-                        <button type="button" class="lightbulb-glow-container" id="bulbContainer" aria-label="Alternar entre modo oscuro y modo claro">
-                            <i class="fa-solid fa-lightbulb bulb-icon" id="bulbIcon" aria-hidden="true"></i>
-                            <span class="bulb-rays" aria-hidden="true"></span>
-                        </button>
-                        
-                        <div class="switch-plate">
-                            <span class="switch-title" aria-hidden="true">MODO OSCURO</span>
-                            <button type="button" id="lightSwitchBtn" class="lamp-switch-button" role="switch" aria-checked="false" aria-label="Activar o desactivar modo oscuro">
-                                <span class="switch-housing">
-                                    <span class="switch-lever">
-                                        <span class="lever-dot"></span>
-                                    </span>
-                                </span>
-                            </button>
-                            <span class="switch-status-text" id="switchStatusText" aria-hidden="true">LUZ OFF</span>
-                        </div>
-                    </div>
-
                     <div class="hero-text-content">
                         <div class="hero-tag">EDICIÓN 2026 / INSCRIPCIONES</div>
                         <h1 class="hero-title">FÓRMATE EN KARATE DO LOMA DORADA</h1>
@@ -119,6 +67,44 @@
 
         <!-- Form Wrapper: 70% width on Desktop -->
         <section class="form-wrapper" id="registro" tabindex="-1">
+
+            <!-- Progress Stepper: sobre el contenedor del formulario (sticky mientras se recorre) -->
+            <nav class="form-progress" aria-label="Progreso del formulario de inscripción">
+                <div class="progress-track" aria-hidden="true">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <ol class="progress-steps" id="progressSteps">
+                    <li>
+                        <button type="button" class="progress-step is-current" data-goto="1" aria-current="step">
+                            <span class="step-dot" aria-hidden="true">1</span>
+                            <span class="step-name" aria-hidden="true">Datos personales</span>
+                            <span class="sr-only">Paso 1: Datos personales</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="progress-step" data-goto="2" disabled>
+                            <span class="step-dot" aria-hidden="true">2</span>
+                            <span class="step-name" aria-hidden="true">Contacto</span>
+                            <span class="sr-only">Paso 2: Contacto y tutor</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="progress-step" data-goto="3" disabled>
+                            <span class="step-dot" aria-hidden="true">3</span>
+                            <span class="step-name" aria-hidden="true">Modalidad</span>
+                            <span class="sr-only">Paso 3: Modalidad y horario</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="progress-step" data-goto="4" disabled>
+                            <span class="step-dot" aria-hidden="true">4</span>
+                            <span class="step-name" aria-hidden="true">Historial</span>
+                            <span class="sr-only">Paso 4: Historial y envío</span>
+                        </button>
+                    </li>
+                </ol>
+            </nav>
+
             <div class="form-header-box">
                 <h2 id="formTitle"><i class="fa-solid fa-id-card" aria-hidden="true"></i> Formulario de Inscripción Escolar</h2>
                 <p>Completa los <strong>4 pasos</strong> para dar de alta tu ficha de alumno en <strong>Karate Do Loma Dorada</strong>.</p>
@@ -220,10 +206,10 @@
                 </fieldset>
 
 
-                <!-- PASO 3: MODALIDAD DEPORTIVA Y NIVEL -->
-                <fieldset class="form-section form-step highlight-section" data-step="3" data-title="Modalidad y Nivel" tabindex="-1" hidden>
-                    <legend><span class="section-num">3</span> Modalidad Deportiva de Karate y Nivel</legend>
-                    <p class="section-desc">Selecciona la modalidad deportiva en la que deseas entrenar en Karate Do Loma Dorada y tu nivel actual.</p>
+                <!-- PASO 3: MODALIDAD DEPORTIVA Y HORARIO -->
+                <fieldset class="form-section form-step highlight-section" data-step="3" data-title="Modalidad y Horario" tabindex="-1" hidden>
+                    <legend><span class="section-num">3</span> Modalidad Deportiva de Karate y Horario</legend>
+                    <p class="section-desc">Selecciona la modalidad deportiva en la que deseas entrenar en Karate Do Loma Dorada y tu horario preferido. <strong>Sin experiencia previa: todos los alumnos comienzan desde cero.</strong></p>
 
                     <!-- Modalidades Deportivas -->
                     <div class="form-group">
@@ -289,24 +275,8 @@
                     </div>
 
                     <div class="grid-2 marginTop-15">
-                        <!-- Nivel / Cinta Actual -->
-                        <div class="form-group">
-                            <label for="rankLevel">
-                                <i class="fa-solid fa-layer-group" aria-hidden="true"></i> Nivel / Grado de Cinta Actual <span class="required" aria-hidden="true">*</span>
-                            </label>
-                            <select id="rankLevel" name="rankLevel" required aria-describedby="rankLevelError">
-                                <option value="" disabled selected>Selecciona tu grado actual...</option>
-                                <option value="Principiante (Cinta Blanca)">Principiante (Cinta Blanca - Sin experiencia)</option>
-                                <option value="Kyu Inicial (Cinta Amarilla / Naranja)">Kyu Inicial (Amarilla - Naranja)</option>
-                                <option value="Kyu Intermedio (Cinta Verde / Azul)">Kyu Intermedio (Verde - Azul)</option>
-                                <option value="Kyu Avanzado (Cinta Café)">Kyu Avanzado (Cinta Café)</option>
-                                <option value="Dan (Cinta Negra)">Dan (Cinta Negra)</option>
-                            </select>
-                            <span class="error-msg" id="rankLevelError">Selecciona tu nivel o cinta actual.</span>
-                        </div>
-
                         <!-- Turno u Horario Deseado -->
-                        <div class="form-group">
+                        <div class="form-group span-2">
                             <label for="schedulePreference">
                                 <i class="fa-solid fa-clock" aria-hidden="true"></i> Horario Preferido <span class="required" aria-hidden="true">*</span>
                             </label>
@@ -434,21 +404,31 @@
                 <p class="footer-desc">¿Tienes dudas sobre las clases o inscripciones en Karate Do Loma Dorada? Escríbenos directamente:</p>
 
                 <div class="social-buttons-group">
-                    <!-- Botón WhatsApp -->
-                    <a href="https://wa.me/5214776737908?text=Hola,%20quisiera%20más%20información%20sobre%20las%20inscripciones%20en%20Karate%20Do%20Loma%20Dorada" target="_blank" rel="noopener noreferrer" class="social-btn whatsapp-btn" id="btnWhatsapp" aria-label="WhatsApp 477 673 7908 (se abre en una pestaña nueva)">
-                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp <span class="social-btn-number">477 673 7908</span>
+                    <!-- Botón WhatsApp (solo icono) -->
+                    <a href="https://wa.me/5214776737908?text=Hola,%20quisiera%20más%20información%20sobre%20las%20inscripciones%20en%20Karate%20Do%20Loma%20Dorada" target="_blank" rel="noopener noreferrer" class="social-btn whatsapp-btn" id="btnWhatsapp" aria-label="WhatsApp al 477 673 7908 (se abre en una pestaña nueva)">
+                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                     </a>
 
-                    <!-- Botón Facebook -->
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-btn facebook-btn" id="btnFacebook" aria-label="Facebook (se abre en una pestaña nueva)">
-                        <i class="fa-brands fa-facebook-f" aria-hidden="true"></i> Facebook
+                    <!-- Botón Facebook (solo icono) -->
+                    <a href="https://www.facebook.com/profile.php?id=61581570449597" target="_blank" rel="noopener noreferrer" class="social-btn facebook-btn" id="btnFacebook" aria-label="Facebook de Karate Do Loma Dorada (se abre en una pestaña nueva)">
+                        <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
                     </a>
 
-                    <!-- Botón Correo -->
-                    <a href="mailto:contacto@karatedolomadorada.com?subject=Consulta%20Inscripción%20Karate%20Do%20Loma%20Dorada" class="social-btn email-btn" id="btnEmail">
-                        <i class="fa-solid fa-envelope" aria-hidden="true"></i> Correo Electrónico
+                    <!-- Botón Correo (solo icono) -->
+                    <a href="mailto:contacto@karatedolomadorada.com?subject=Consulta%20Inscripción%20Karate%20Do%20Loma%20Dorada" class="social-btn email-btn" id="btnEmail" aria-label="Enviar correo electrónico al dojo">
+                        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
                     </a>
                 </div>
+            </div>
+
+            <div class="footer-map">
+                <h4><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Ubicación</h4>
+                <div class="map-frame">
+                    <iframe src="https://maps.google.com/maps?q=21.1355411,-101.7727977&amp;z=16&amp;output=embed" title="Mapa de ubicación: Centro GTO CONTIGO Sí, Loma Dorada" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                </div>
+                <p class="map-note">
+                    <a href="https://maps.app.goo.gl/w9wsZBPoF5JBn1ok6" target="_blank" rel="noopener noreferrer">Abrir en Google Maps <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                </p>
             </div>
         </div>
         <div class="footer-bottom">

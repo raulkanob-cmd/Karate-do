@@ -1,7 +1,7 @@
 /* ==========================================================================
    Karate-Do School Registration Form - Stylesheet
    Design Aesthetic: Neo-Minimalism Editorial / Soft Brutalism
-   Features: Light Switch Toggle (Modo Oscuro/Claro), High Contrast Editorial Typography
+   Features: Modo Oscuro/Claro (icono en header), High Contrast Editorial Typography
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -175,12 +175,15 @@ body [tabindex]:focus-visible {
     outline-offset: 3px;
 }
 
-/* Evita que el header sticky tape los campos al hacer scroll a un error.
-   El header ahora incluye la barra de progreso (~165px de alto en escritorio). */
+/* Evita que la barra de progreso sticky (dentro del contenedor del formulario)
+   tape los campos al hacer scroll a un error. */
 .form-group,
-.form-section,
+.form-section {
+    scroll-margin-top: 110px;
+}
+
 .form-wrapper {
-    scroll-margin-top: 175px;
+    scroll-margin-top: 20px;
 }
 
 /* Respeta la preferencia de movimiento reducido del usuario (WCAG 2.3.3) */
@@ -223,18 +226,27 @@ body.modal-open {
    1c. Multi-step Form: Progress Stepper & Step Navigation
    -------------------------------------------------------------------------- */
 
-/* --- Barra de progreso dentro del header sticky (visible siempre) --- */
-.header-progress {
-    position: relative;
-    max-width: 1240px;
-    margin: 16px auto 2px;
+/* --- Barra de progreso sobre el contenedor del formulario (sticky: siempre visible) --- */
+.form-progress {
+    --prog-pad: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    /* Full-bleed: ocupa todo el ancho del contenedor (padding: 50px 55px) */
+    margin: -50px -55px 26px;
+    padding: 14px var(--prog-pad) 12px;
+    background: var(--color-card-bg);
+    border-bottom: 2px solid var(--color-border-subtle);
+    border-radius: calc(var(--radius-lg) - 2px) calc(var(--radius-lg) - 2px) 0 0;
+    transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
 .progress-track {
     position: absolute;
-    top: 15px;
-    left: 12.5%;
-    right: 12.5%;
+    top: 29px;
+    /* Se calcó con el centro de los puntos (12.5% del ol + el padding del nav) */
+    left: calc(12.5% + var(--prog-pad) * 0.75);
+    right: calc(12.5% + var(--prog-pad) * 0.75);
     height: 4px;
     background: var(--color-border-subtle);
     border-radius: var(--radius-pill);
@@ -430,13 +442,8 @@ body .form-step:focus-visible {
     box-shadow: none;
 }
 
-.social-btn-number {
-    font-size: 0.85em;
-    letter-spacing: 0.02em;
-}
-
-/* --- Confeti (canvas generado por JS) --- */
-.confetti-canvas {
+/* --- Kanji de celebración (canvas generado por JS) --- */
+.fx-canvas {
     position: fixed;
     inset: 0;
     width: 100%;
@@ -446,15 +453,12 @@ body .form-step:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
-   2. Header Bar
+   2. Header Bar (estático, ya no queda fijo al hacer scroll)
    -------------------------------------------------------------------------- */
 .top-header {
     background: var(--color-card-bg);
     border-bottom: 2px solid var(--color-border);
     padding: 16px 5%;
-    position: sticky;
-    top: 0;
-    z-index: 100;
     transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
@@ -464,6 +468,45 @@ body .form-step:focus-visible {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Modo día / noche: único icono en el header */
+.theme-toggle-btn {
+    width: 46px;
+    height: 46px;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-section-bg);
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    color: var(--color-ink);
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-brutal-sm);
+    transition: var(--transition-fast);
+}
+
+.theme-toggle-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-brutal);
+}
+
+.theme-toggle-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+.theme-toggle-btn.is-on {
+    background: var(--color-accent-deep);
+    color: var(--color-white);
 }
 
 .logo-area {
@@ -572,149 +615,10 @@ body .form-step:focus-visible {
     background: linear-gradient(180deg, rgba(13, 14, 17, 0.4) 0%, rgba(13, 14, 17, 0.94) 100%);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* Sin el interruptor, el texto se queda abajo como antes */
+    justify-content: flex-end;
     padding: 30px 40px;
     color: #FFFFFF;
-}
-
-/* Light Switch Fixture in Hero (Switch de Foco) */
-.hero-switch-fixture {
-    align-self: flex-end;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: #16181F;
-    border: 2px solid #FFFFFF;
-    padding: 10px 18px;
-    border-radius: var(--radius-md);
-    box-shadow: 4px 4px 0px #000000;
-    backdrop-filter: blur(8px);
-    z-index: 10;
-    user-select: none;
-    transition: transform var(--transition-fast);
-}
-
-.hero-switch-fixture:hover {
-    transform: translateY(-2px);
-}
-
-/* Light Bulb Icon & Glow Animation (botón real: operable con teclado) */
-.lightbulb-glow-container {
-    position: relative;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    appearance: none;
-    border-radius: 50%;
-    background: #252834;
-    border: 2px solid #3E4456;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all var(--transition-normal);
-}
-
-.lightbulb-glow-container:focus-visible {
-    outline: 3px solid #FFD700;
-    outline-offset: 3px;
-}
-
-.bulb-icon {
-    font-size: 1.5rem;
-    color: #6B7280;
-    transition: all var(--transition-normal);
-}
-
-.lightbulb-glow-container.is-on {
-    background: #FFF9E6;
-    border-color: #FFD700;
-    box-shadow: 0 0 15px #FFD700, 0 0 30px rgba(255, 215, 0, 0.6);
-}
-
-.lightbulb-glow-container.is-on .bulb-icon {
-    color: #D97706;
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 8px #FFD700);
-}
-
-/* Physical Switch Toggle Button */
-.switch-plate {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-}
-
-.switch-title {
-    font-family: var(--font-heading);
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    color: #9CA3AF;
-    text-transform: uppercase;
-}
-
-.lamp-switch-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
-
-.lamp-switch-button:focus-visible {
-    outline: 3px solid #FFD700;
-    outline-offset: 4px;
-    border-radius: var(--radius-sm);
-}
-
-.switch-housing {
-    display: block;
-    width: 54px;
-    height: 28px;
-    background: #2D3241;
-    border: 2px solid #FFFFFF;
-    border-radius: 50px;
-    position: relative;
-    transition: background-color var(--transition-normal);
-}
-
-.lamp-switch-button.is-on .switch-housing {
-    background: var(--color-accent);
-}
-
-.switch-lever {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 20px;
-    height: 20px;
-    background: #FFFFFF;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform var(--transition-normal);
-}
-
-.lever-dot {
-    width: 6px;
-    height: 6px;
-    background: #111317;
-    border-radius: 50%;
-}
-
-.lamp-switch-button.is-on .switch-lever {
-    transform: translateX(26px);
-}
-
-.switch-status-text {
-    font-family: var(--font-heading);
-    font-size: 0.7rem;
-    font-weight: 800;
-    color: #FFD700;
-    letter-spacing: 0.05em;
 }
 
 /* Hero Text Content */
@@ -1342,7 +1246,7 @@ textarea::placeholder {
     max-width: 1100px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1.3fr;
+    grid-template-columns: 1fr 1fr 1.1fr;
     gap: 45px;
     padding-bottom: 35px;
     border-bottom: 2px solid var(--color-border-subtle);
@@ -1392,7 +1296,8 @@ textarea::placeholder {
     max-width: 400px;
 }
 
-.footer-contact h4 {
+.footer-contact h4,
+.footer-map h4 {
     color: var(--color-ink);
     font-size: 1.35rem;
     font-weight: 800;
@@ -1402,7 +1307,8 @@ textarea::placeholder {
     gap: 10px;
 }
 
-.footer-contact h4 i {
+.footer-contact h4 i,
+.footer-map h4 i {
     color: var(--color-accent);
 }
 
@@ -1418,16 +1324,17 @@ textarea::placeholder {
     gap: 16px;
 }
 
+/* Solo icono: el texto visible se quitó (el nombre va en aria-label) */
 .social-btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 24px;
-    border-radius: var(--radius-pill);
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border-radius: 50%;
     border: 2px solid var(--color-border);
-    font-family: var(--font-heading);
-    font-size: 0.98rem;
-    font-weight: 800;
+    font-size: 1.35rem;
     text-decoration: none;
     color: var(--color-white);
     transition: var(--transition-fast);
@@ -1466,6 +1373,51 @@ textarea::placeholder {
     box-shadow: var(--shadow-brutal);
 }
 
+/* Mapa de Google Maps en el footer */
+.footer-map .map-frame {
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-section-bg);
+    box-shadow: var(--shadow-brutal-sm);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.footer-map .map-frame:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-brutal);
+}
+
+.footer-map .map-frame iframe {
+    display: block;
+    width: 100%;
+    height: 250px;
+    border: 0;
+}
+
+/* En modo oscuro se invierte el mapa para que no deslumbrre */
+body.dark-mode .footer-map .map-frame iframe {
+    filter: invert(0.92) hue-rotate(180deg);
+}
+
+.footer-map .map-note {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.footer-map .map-note a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-accent-text);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.footer-map .map-note a:hover {
+    text-decoration: underline;
+}
+
 .footer-bottom {
     text-align: center;
     padding-top: 25px;
@@ -1481,6 +1433,12 @@ textarea::placeholder {
     .form-wrapper {
         width: 86%;
         padding: 40px 35px;
+    }
+
+    /* Barra de progreso a sangre completa sobre el contenedor */
+    .form-progress {
+        margin: -40px -35px 24px;
+        --prog-pad: 16px;
     }
 
     .hero-title {
@@ -1543,9 +1501,9 @@ textarea::placeholder {
         padding: 24px 20px;
     }
 
-    .hero-switch-fixture {
-        align-self: flex-start;
-        margin-bottom: 20px;
+    .form-progress {
+        margin: -30px -20px 22px;
+        --prog-pad: 14px;
     }
 
     .hero-title {
@@ -1565,13 +1523,13 @@ textarea::placeholder {
         gap: 30px;
     }
 
+    /* Los botones de contacto son solo iconos: se mantienen en fila */
     .social-buttons-group {
-        flex-direction: column;
+        justify-content: flex-start;
     }
 
-    .social-btn {
-        width: 100%;
-        justify-content: center;
+    .footer-map .map-frame iframe {
+        height: 230px;
     }
 }
 
@@ -1604,12 +1562,16 @@ textarea::placeholder {
         padding: 20px 16px;
     }
 
-    .hero-switch-fixture {
-        max-width: 100%;
-        flex-wrap: wrap;
-        padding: 8px 12px;
-        gap: 10px;
-        margin-bottom: 16px;
+    .form-progress {
+        margin: -26px -16px 18px;
+        --prog-pad: 12px;
+        padding-top: 12px;
+        padding-bottom: 10px;
+    }
+
+    /* Con el padding superior en 12px el centro de los puntos baja a 29px */
+    .progress-track {
+        top: 27px;
     }
 
     .hero-title {
@@ -1799,15 +1761,6 @@ textarea::placeholder {
         font-size: 0.85rem;
     }
 
-    .hero-switch-fixture {
-        padding: 8px 10px;
-        gap: 8px;
-    }
-
-    .switch-title {
-        font-size: 0.6rem;
-    }
-
     .form-header-box h2 {
         font-size: 1.2rem;
     }
@@ -1827,7 +1780,9 @@ textarea::placeholder {
     }
 
     .social-btn {
-        padding: 14px 18px;
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
     }
 
     /* Los nombres de los pasos ocultan espacio: quedan solo los números */
@@ -1835,14 +1790,14 @@ textarea::placeholder {
         display: none;
     }
 
-    .header-progress {
-        margin-top: 12px;
+    .form-progress {
+        margin: -22px -12px 16px;
+        --prog-pad: 8px;
     }
 
     .form-group,
-    .form-section,
-    .form-wrapper {
-        scroll-margin-top: 145px;
+    .form-section {
+        scroll-margin-top: 90px;
     }
 
     .btn-step {

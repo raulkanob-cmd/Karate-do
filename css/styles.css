@@ -19,13 +19,17 @@
     --color-accent: #E63027;
     --color-accent-hover: #C52219;
     --color-accent-light: #FFF0EF;
+    /* Rojo seguro para TEXTO y para fondos con texto blanco (contraste AA >= 4.5:1) */
+    --color-accent-text: #C52219;
+    --color-accent-deep: #C52219;
+    --color-accent-deep-hover: #9E1B13;
     
     --color-card-bg: #FFFFFF;
     --color-section-bg: #EFECE6;
     --color-input-bg: #FBFBFA;
     
     --color-white: #FFFFFF;
-    --color-error: #E63027;
+    --color-error: #C52219;
     --color-success: #10B981;
     
     --font-heading: 'Syne', 'Plus Jakarta Sans', sans-serif;
@@ -58,10 +62,18 @@ body.dark-mode {
     --color-accent: #FF4D4D;
     --color-accent-hover: #FF6666;
     --color-accent-light: rgba(255, 77, 77, 0.15);
+    /* Texto rojo sobre fondos oscuros (>= 4.5:1) */
+    --color-accent-text: #FF6666;
+    /* Fondos rojos con texto blanco: se mantiene el rojo profundo (>= 4.5:1) */
+    --color-accent-deep: #C52219;
+    --color-accent-deep-hover: #9E1B13;
     
     --color-card-bg: #16181F;
     --color-section-bg: #1D202A;
     --color-input-bg: #11131A;
+    
+    /* El error en oscuro estaba heredando el rojo del tema claro (3.7:1 -> falla AA) */
+    --color-error: #FF6666;
     
     --shadow-brutal: 4px 4px 0px #000000;
     --shadow-brutal-hover: 6px 6px 0px #000000;
@@ -91,6 +103,346 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--color-ink);
     line-height: 1.2;
     letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   1b. Accessibility Helpers (WCAG 2.1 AA)
+   -------------------------------------------------------------------------- */
+
+/* El atributo hidden debe ganar a los display definidos por el autor */
+[hidden] {
+    display: none !important;
+}
+
+/* Texto exclusivo para lectores de pantalla */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Skip Link: visible solo al recibir foco por teclado */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 9999;
+    background: var(--color-accent-deep);
+    color: var(--color-white);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 14px 22px;
+    border: 2px solid var(--color-border);
+    border-radius: 0 0 var(--radius-sm) 0;
+    box-shadow: var(--shadow-brutal-sm);
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+/* Indicador de foco visible para todos los controles interactivos (WCAG 2.4.7).
+   Se antepone a `outline: none` de los inputs con un prefijo `body` (mayor especificidad). */
+body a:focus-visible,
+body button:focus-visible,
+body input:focus-visible,
+body select:focus-visible,
+body textarea:focus-visible,
+body [tabindex]:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+/* El contenedor del modal recibe foco programático: no necesita anillo */
+.modal-card:focus {
+    outline: none;
+}
+
+/* Tarjetas y fichas seleccionables: el input está oculto, el anillo va en la tarjeta */
+.radio-tile:has(input:focus-visible),
+.modality-card:has(input:focus-visible),
+.radio-inline:has(input:focus-visible),
+.custom-checkbox:has(input:focus-visible) {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+/* Evita que el header sticky tape los campos al hacer scroll a un error.
+   El header ahora incluye la barra de progreso (~165px de alto en escritorio). */
+.form-group,
+.form-section,
+.form-wrapper {
+    scroll-margin-top: 175px;
+}
+
+/* Respeta la preferencia de movimiento reducido del usuario (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Bloqueo de scroll mientras el modal está abierto */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Resumen de errores anunciado con role="alert" (oculto si está vacío) */
+.form-alert:empty {
+    display: none;
+}
+
+.form-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--color-accent-light);
+    border: 2px solid var(--color-error);
+    border-radius: var(--radius-sm);
+    color: var(--color-error);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.5;
+    padding: 14px 16px;
+    margin-bottom: 30px;
+}
+
+/* --------------------------------------------------------------------------
+   1c. Multi-step Form: Progress Stepper & Step Navigation
+   -------------------------------------------------------------------------- */
+
+/* --- Barra de progreso dentro del header sticky (visible siempre) --- */
+.header-progress {
+    position: relative;
+    max-width: 1240px;
+    margin: 16px auto 2px;
+}
+
+.progress-track {
+    position: absolute;
+    top: 15px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 4px;
+    background: var(--color-border-subtle);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--color-accent-deep);
+    border-radius: var(--radius-pill);
+    transition: width var(--transition-normal);
+}
+
+.progress-steps {
+    list-style: none;
+    display: flex;
+    position: relative;
+    z-index: 1;
+}
+
+.progress-steps li {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.progress-step {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 0 4px 4px;
+    font-family: var(--font-body);
+    color: var(--color-ink-muted);
+    transition: var(--transition-fast);
+}
+
+.progress-step:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.progress-step:not(:disabled):hover .step-name {
+    color: var(--color-ink);
+}
+
+.step-dot {
+    width: 34px;
+    height: 34px;
+    flex: none;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--color-ink);
+    box-shadow: var(--shadow-brutal-sm);
+    transition: var(--transition-normal);
+}
+
+.progress-step.is-done .step-dot,
+.progress-step.is-current .step-dot {
+    background: var(--color-accent-deep);
+    color: var(--color-white);
+}
+
+.progress-step.is-current .step-dot {
+    box-shadow: var(--shadow-brutal-sm), 0 0 0 4px var(--color-accent-light);
+}
+
+.step-name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+    transition: color var(--transition-fast);
+}
+
+.progress-step.is-current .step-name {
+    color: var(--color-ink);
+}
+
+/* --- Visibilidad de los pasos --- */
+.form-step[hidden] {
+    display: none;
+}
+
+/* El foco programático solo sirve para anunciar el paso (sin anillo visual) */
+.form-step:focus,
+body .form-step:focus-visible {
+    outline: none;
+}
+
+/* --- Navegación entre pasos --- */
+.step-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 34px;
+    padding-top: 26px;
+    border-top: 2px solid var(--color-border-subtle);
+}
+
+.btn-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 14px 30px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    box-shadow: var(--shadow-brutal-sm);
+    transition: var(--transition-fast);
+}
+
+.btn-step:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-brutal);
+}
+
+.btn-step:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+.btn-step-primary {
+    background: var(--color-accent-deep);
+    color: var(--color-white);
+}
+
+.btn-step-primary:hover {
+    background: var(--color-accent-deep-hover);
+}
+
+.btn-step-secondary {
+    background: var(--color-surface);
+    color: var(--color-ink);
+}
+
+.step-counter {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--color-ink-muted);
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* --- Botón de envío por WhatsApp (dentro del modal) --- */
+.btn-whatsapp-send {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: #25D366;
+    color: #000000;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 800;
+    padding: 15px 30px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-brutal-sm);
+    transition: var(--transition-fast);
+}
+
+.btn-whatsapp-send:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-brutal);
+}
+
+.btn-whatsapp-send:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+.social-btn-number {
+    font-size: 0.85em;
+    letter-spacing: 0.02em;
+}
+
+/* --- Confeti (canvas generado por JS) --- */
+.confetti-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3000;
 }
 
 /* --------------------------------------------------------------------------
@@ -151,7 +503,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.15em;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     text-transform: uppercase;
 }
 
@@ -246,11 +598,13 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(-2px);
 }
 
-/* Light Bulb Icon & Glow Animation */
+/* Light Bulb Icon & Glow Animation (botón real: operable con teclado) */
 .lightbulb-glow-container {
     position: relative;
     width: 44px;
     height: 44px;
+    padding: 0;
+    appearance: none;
     border-radius: 50%;
     background: #252834;
     border: 2px solid #3E4456;
@@ -259,6 +613,11 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
     cursor: pointer;
     transition: all var(--transition-normal);
+}
+
+.lightbulb-glow-container:focus-visible {
+    outline: 3px solid #FFD700;
+    outline-offset: 3px;
 }
 
 .bulb-icon {
@@ -301,7 +660,12 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
     cursor: pointer;
     padding: 0;
-    outline: none;
+}
+
+.lamp-switch-button:focus-visible {
+    outline: 3px solid #FFD700;
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
 }
 
 .switch-housing {
@@ -360,7 +724,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-tag {
     display: inline-block;
-    background: var(--color-accent);
+    background: var(--color-accent-deep);
     color: var(--color-white);
     font-family: var(--font-heading);
     font-size: 0.75rem;
@@ -420,6 +784,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
@@ -455,7 +820,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-num {
-    background: var(--color-accent);
+    background: var(--color-accent-deep);
     color: var(--color-white);
     width: 34px;
     height: 34px;
@@ -519,7 +884,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .required {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     font-weight: 800;
 }
 
@@ -556,7 +921,7 @@ input::placeholder,
 textarea::placeholder {
     color: var(--color-ink-muted);
     font-weight: 400;
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
 .help-text {
@@ -615,6 +980,7 @@ textarea::placeholder {
 }
 
 .tile-icon {
+    display: block;
     font-size: 1.5rem;
     color: var(--color-ink-muted);
     margin-bottom: 6px;
@@ -622,6 +988,7 @@ textarea::placeholder {
 }
 
 .tile-label {
+    display: block;
     font-weight: 700;
     font-size: 0.9rem;
     color: var(--color-ink);
@@ -683,7 +1050,7 @@ textarea::placeholder {
 /* Modality Cards Grid */
 .modality-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
     gap: 18px;
     margin-top: 10px;
 }
@@ -729,13 +1096,16 @@ textarea::placeholder {
     transition: var(--transition-fast);
 }
 
-.modality-card h4 {
+.modality-title {
+    display: block;
+    font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 800;
     color: var(--color-ink);
 }
 
-.modality-card p {
+.modality-desc {
+    display: block;
     font-size: 0.86rem;
     color: var(--color-ink-muted);
     line-height: 1.4;
@@ -804,7 +1174,7 @@ textarea::placeholder {
 }
 
 .btn-submit {
-    background: var(--color-accent);
+    background: var(--color-accent-deep);
     color: var(--color-white);
     font-family: var(--font-heading);
     font-size: 1.2rem;
@@ -823,7 +1193,7 @@ textarea::placeholder {
 }
 
 .btn-submit:hover {
-    background: var(--color-accent-hover);
+    background: var(--color-accent-deep-hover);
     transform: translate(-2px, -2px);
     box-shadow: var(--shadow-brutal-hover);
 }
@@ -846,12 +1216,15 @@ textarea::placeholder {
     justify-content: center;
     z-index: 1000;
     opacity: 0;
+    /* visibility evita que el modal oculto siga siendo enfocable/legible por lectores de pantalla */
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .modal-backdrop.active {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
 
@@ -926,6 +1299,10 @@ textarea::placeholder {
 }
 
 .modal-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
     text-align: center;
 }
 
@@ -1068,7 +1445,8 @@ textarea::placeholder {
 }
 
 .facebook-btn {
-    background-color: #1877F2;
+    /* Azul más profundo: el original (#1877F2) daba 3.95:1 con texto blanco (falla AA) */
+    background-color: #1259C3;
     color: #FFFFFF;
 }
 
@@ -1078,11 +1456,12 @@ textarea::placeholder {
 }
 
 .email-btn {
-    background-color: var(--color-accent);
+    background-color: var(--color-accent-deep);
     color: #FFFFFF;
 }
 
 .email-btn:hover {
+    background-color: var(--color-accent-deep-hover);
     transform: translate(-2px, -2px);
     box-shadow: var(--shadow-brutal);
 }
@@ -1114,6 +1493,37 @@ textarea::placeholder {
         width: 94%;
         padding: 30px 20px;
         margin-top: -20px;
+    }
+
+    /* iOS hace zoom automático si los inputs pesan menos de 16px */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="tel"],
+    input[type="email"],
+    select,
+    textarea {
+        font-size: 1rem;
+    }
+
+    .highlight-section {
+        padding: 22px 18px;
+    }
+
+    .form-header-box h2 {
+        font-size: 1.6rem;
+    }
+
+    .form-section legend {
+        font-size: 1.2rem;
+    }
+
+    .modal-card {
+        padding: 30px 22px;
+    }
+
+    .step-name {
+        font-size: 0.66rem;
     }
     
     .grid-2 {
@@ -1162,5 +1572,281 @@ textarea::placeholder {
     .social-btn {
         width: 100%;
         justify-content: center;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   10b. Small Phones (<= 576px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 576px) {
+    .form-wrapper {
+        width: calc(100% - 24px);
+        min-width: 0;
+        padding: 26px 16px;
+        margin-top: -16px;
+        box-shadow: var(--shadow-brutal);
+    }
+
+    /* El badge desbordaba junto al logo en pantallas angostas */
+    .header-badge {
+        display: none;
+    }
+
+    .school-title {
+        font-size: 1.05rem;
+    }
+
+    .hero-section {
+        padding: 16px 12px 0 12px;
+    }
+
+    .hero-overlay {
+        padding: 20px 16px;
+    }
+
+    .hero-switch-fixture {
+        max-width: 100%;
+        flex-wrap: wrap;
+        padding: 8px 12px;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .hero-title {
+        font-size: 1.35rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .form-header-box {
+        padding-bottom: 20px;
+        margin-bottom: 28px;
+    }
+
+    .form-header-box h2 {
+        font-size: 1.35rem;
+        gap: 8px;
+    }
+
+    .form-header-box p {
+        font-size: 0.92rem;
+    }
+
+    .form-section {
+        margin-bottom: 32px;
+    }
+
+    .form-section legend {
+        font-size: 1.1rem;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .section-num {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+
+    .highlight-section {
+        padding: 20px 14px;
+    }
+
+    .grid-2 {
+        gap: 18px;
+    }
+
+    .modality-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    /* Los dos options en fila se desbordaban en 320px */
+    .radio-inline-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .radio-inline {
+        width: 100%;
+    }
+
+    .btn-submit {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 16px 18px;
+        font-size: 1.2rem;
+    }
+
+    .form-actions {
+        margin-top: 30px;
+    }
+
+    .modal-card {
+        width: 94%;
+        padding: 26px 18px;
+    }
+
+    .modal-icon {
+        font-size: 2.6rem;
+    }
+
+    .modal-header h3 {
+        font-size: 1.35rem;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    /* El resumen se comprimía en una sola columna ilegible */
+    .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .summary-val {
+        text-align: left;
+        word-break: break-word;
+    }
+
+    .btn-close-modal {
+        width: 100%;
+        padding: 14px 20px;
+    }
+
+    .footer-brand h3 {
+        font-size: 1.3rem;
+    }
+
+    /* Navegación de pasos en pantallas angostas */
+    .step-nav {
+        gap: 12px;
+        margin-top: 26px;
+        padding-top: 20px;
+    }
+
+    .step-counter {
+        order: -1;
+        width: 100%;
+        font-size: 0.88rem;
+    }
+
+    .btn-step {
+        flex: 1;
+        padding: 14px 16px;
+        font-size: 0.95rem;
+    }
+
+    .step-nav .btn-submit {
+        flex-basis: 100%;
+    }
+
+    .step-name {
+        font-size: 0.6rem;
+    }
+
+    .progress-step {
+        padding: 0 2px 4px;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   10c. Extra Small / Muy angosto (<= 400px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 400px) {
+    .form-wrapper {
+        width: calc(100% - 16px);
+        padding: 22px 12px;
+    }
+
+    .top-header {
+        padding: 12px 4%;
+    }
+
+    .logo-icon-box {
+        width: 38px;
+        height: 38px;
+        font-size: 1.2rem;
+    }
+
+    .school-title {
+        font-size: 0.95rem;
+    }
+
+    .school-subtitle {
+        font-size: 0.65rem;
+    }
+
+    .hero-image-wrapper {
+        min-height: 400px;
+        box-shadow: var(--shadow-brutal);
+    }
+
+    .hero-overlay {
+        padding: 16px 14px;
+    }
+
+    .hero-title {
+        font-size: 1.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .hero-switch-fixture {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .switch-title {
+        font-size: 0.6rem;
+    }
+
+    .form-header-box h2 {
+        font-size: 1.2rem;
+    }
+
+    .highlight-section {
+        padding: 18px 12px;
+    }
+
+    .btn-submit {
+        font-size: 1.05rem;
+        letter-spacing: 0.02em;
+        padding: 16px 14px;
+    }
+
+    .modality-card {
+        padding: 16px;
+    }
+
+    .social-btn {
+        padding: 14px 18px;
+    }
+
+    /* Los nombres de los pasos ocultan espacio: quedan solo los números */
+    .step-name {
+        display: none;
+    }
+
+    .header-progress {
+        margin-top: 12px;
+    }
+
+    .form-group,
+    .form-section,
+    .form-wrapper {
+        scroll-margin-top: 145px;
+    }
+
+    .btn-step {
+        font-size: 0.9rem;
+        gap: 8px;
     }
 }

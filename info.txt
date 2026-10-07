@@ -1,0 +1,24 @@
+Estilo
+
+colores
+fondo: #F4F8FB
+textos y contenedore: #1B3B6F
+acentos: #FF3B30
+
+tipografia: 
+fuente de titulos: Fredoka
+fuente de textos: Quicksand
+
+dinamica de la paguina:
+imagenes: habra solo una imagen de hero en la parte de arriva  de manera orizontal.
+objetivo del formulario: para isncrivirse a clase sde karate-deporte
+los campos del formularios son los basicos que usa un formulario de una escuela ordenalos segun las estrructuras de escuelas.
+formularios avarcara el 70% de la paguina.
+ejemplo de imputs que busco:
+formularios de tipo: imput normal, imput de radio: hombre o mujer imput de: calendario, imput de text tarea para descrivir unda condicion medica, imput de onsion para señalar si has hecho otro deporte antes, input de numero para indecar tu edad, input de nombre, telefono, padre o tutor 
+boton de inscrivirse.
+al final el fouler sera un apartado de contacto:
+boton de whaps
+boton de facebook
+boton de correo
+

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción Escuela Karate Do Loma Dorada | Karate Deportivo</title>
+    <meta name="description" content="Formulario oficial de inscripción para la Escuela Karate Do Loma Dorada. Completa tus datos y selecciona tu modalidad deportiva.">
+    
+    <!-- Google Fonts: Syne & Plus Jakarta Sans for Neo-minimalism Editorial aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome icons for clean social/contact UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Header / Top Bar -->
+    <header class="top-header">
+        <div class="header-content">
+            <div class="logo-area">
+                <div class="logo-icon-box">
+                    <i class="fa-solid fa-hand-fist logo-icon"></i>
+                </div>
+                <div class="logo-text-group">
+                    <span class="school-title">KARATE DO LOMA DORADA</span>
+                    <span class="school-subtitle">ESCUELA SPORT & DOJO</span>
+                </div>
+            </div>
+            <div class="header-badge">
+                <i class="fa-solid fa-trophy"></i>
+                <span>Escuela Deportiva Oficial</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="page-container">
+        
+        <!-- Hero Section: Widescreen Banner with Light Switch -->
+        <section class="hero-section">
+            <div class="hero-image-wrapper">
+                <img src="assets/images/hero_karate.jpg" alt="Entrenamiento de Karate-Do en Dojo" class="hero-img">
+                <div class="hero-overlay">
+                    
+                    <!-- Light Switch Fixture (Switch de Foco - Modo Oscuro) -->
+                    <div class="hero-switch-fixture" id="heroSwitchFixture">
+                        <div class="lightbulb-glow-container" id="bulbContainer" title="Haz clic para alternar Modo Oscuro / Claro">
+                            <i class="fa-solid fa-lightbulb bulb-icon" id="bulbIcon"></i>
+                            <div class="bulb-rays"></div>
+                        </div>
+                        
+                        <div class="switch-plate">
+                            <span class="switch-title">MODO OSCURO</span>
+                            <button type="button" id="lightSwitchBtn" class="lamp-switch-button" role="switch" aria-checked="false" aria-label="Activar o desactivar modo oscuro">
+                                <span class="switch-housing">
+                                    <span class="switch-lever">
+                                        <span class="lever-dot"></span>
+                                    </span>
+                                </span>
+                            </button>
+                            <span class="switch-status-text" id="switchStatusText">LUZ OFF</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-text-content">
+                        <div class="hero-tag">EDICIÓN 2026 / INSCRIPCIONES</div>
+                        <h1 class="hero-title">FÓRMATE EN KARATE DO LOMA DORADA</h1>
+                        <p class="hero-subtitle">Desarrolla disciplina, fuerza mental, concentración y espíritu deportivo. ¡Inscríbete hoy mismo!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Wrapper: 70% width on Desktop -->
+        <section class="form-wrapper">
+            <div class="form-header-box">
+                <h2><i class="fa-solid fa-id-card"></i> Formulario de Inscripción Escolar</h2>
+                <p>Bienvenido a <strong>Karate Do Loma Dorada</strong>. Por favor completa la información requerida para dar de alta tu ficha de alumno.</p>
+            </div>
+
+            <form id="karateRegistrationForm" class="karate-form" novalidate>
+
+                <!-- SECCIÓN 1: DATOS PERSONALES DEL ALUMNO -->
+                <fieldset class="form-section">
+                    <legend><span class="section-num">1</span> Datos Personales del Alumno</legend>
+                    
+                    <div class="grid-2">
+                        <!-- Nombre Completo -->
+                        <div class="form-group span-2">
+                            <label for="fullName">
+                                <i class="fa-solid fa-user"></i> Nombre Completo del Alumno <span class="required">*</span>
+                            </label>
+                            <input type="text" id="fullName" name="fullName" placeholder="Ej. Carlos Eduardo Ramírez Pérez" required>
+                            <span class="error-msg" id="fullNameError">Por favor ingresa el nombre completo.</span>
+                        </div>
+
+                        <!-- Edad -->
+                        <div class="form-group">
+                            <label for="age">
+                                <i class="fa-solid fa-hashtag"></i> Edad (Años) <span class="required">*</span>
+                            </label>
+                            <input type="number" id="age" name="age" min="4" max="99" placeholder="Ej. 12" required>
+                            <span class="error-msg" id="ageError">Ingresa una edad válida (4 - 99 años).</span>
+                        </div>
+
+                        <!-- Fecha de Nacimiento -->
+                        <div class="form-group">
+                            <label for="birthDate">
+                                <i class="fa-solid fa-calendar-days"></i> Fecha de Nacimiento <span class="required">*</span>
+                            </label>
+                            <input type="date" id="birthDate" name="birthDate" required>
+                            <span class="error-msg" id="birthDateError">Selecciona la fecha de nacimiento.</span>
+                        </div>
+
+                        <!-- Género (Radio Inputs) -->
+                        <div class="form-group span-2">
+                            <label><i class="fa-solid fa-venus-mars"></i> Género <span class="required">*</span></label>
+                            <div class="radio-tile-group">
+                                <label class="radio-tile">
+                                    <input type="radio" name="gender" value="Hombre" required>
+                                    <div class="tile-icon"><i class="fa-solid fa-mars"></i></div>
+                                    <div class="tile-label">Hombre</div>
+                                </label>
+                                <label class="radio-tile">
+                                    <input type="radio" name="gender" value="Mujer">
+                                    <div class="tile-icon"><i class="fa-solid fa-venus"></i></div>
+                                    <div class="tile-label">Mujer</div>
+                                </label>
+                                <label class="radio-tile">
+                                    <input type="radio" name="gender" value="Otro">
+                                    <div class="tile-icon"><i class="fa-solid fa-genderless"></i></div>
+                                    <div class="tile-label">Otro / Prefiero no decir</div>
+                                </label>
+                            </div>
+                            <span class="error-msg" id="genderError">Selecciona una opción de género.</span>
+                        </div>
+                    </div>
+                </fieldset>
+
+
+                <!-- SECCIÓN 2: DATOS DE CONTACTO Y TUTOR -->
+                <fieldset class="form-section">
+                    <legend><span class="section-num">2</span> Datos de Contacto y Padre / Tutor</legend>
+                    
+                    <div class="grid-2">
+                        <!-- Padre o Tutor -->
+                        <div class="form-group span-2">
+                            <label for="tutorName">
+                                <i class="fa-solid fa-user-shield"></i> Nombre del Padre, Madre o Tutor Legal <span id="tutorReqBadge" class="required">*</span>
+                            </label>
+                            <input type="text" id="tutorName" name="tutorName" placeholder="Obligatorio si el alumno es menor de edad" required>
+                            <small class="help-text">Requerido para menores de 18 años o como contacto de emergencia.</small>
+                            <span class="error-msg" id="tutorNameError">Por favor ingresa el nombre del padre o tutor.</span>
+                        </div>
+
+                        <!-- Teléfono de contacto -->
+                        <div class="form-group">
+                            <label for="phone">
+                                <i class="fa-solid fa-phone"></i> Teléfono de Contacto / WhatsApp <span class="required">*</span>
+                            </label>
+                            <input type="tel" id="phone" name="phone" placeholder="Ej. 477 123 4567" required>
+                            <span class="error-msg" id="phoneError">Ingresa un número telefónico válido.</span>
+                        </div>
+
+                        <!-- Correo Electrónico -->
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fa-solid fa-envelope"></i> Correo Electrónico <span class="required">*</span>
+                            </label>
+                            <input type="email" id="email" name="email" placeholder="alumno@ejemplo.com" required>
+                            <span class="error-msg" id="emailError">Ingresa un correo electrónico válido.</span>
+                        </div>
+                    </div>
+                </fieldset>
+
+
+                <!-- SECCIÓN 3: MODALIDAD DEPORTIVA Y NIVEL -->
+                <fieldset class="form-section highlight-section">
+                    <legend><span class="section-num">3</span> Modalidad Deportiva de Karate y Nivel</legend>
+                    <p class="section-desc">Selecciona la modalidad deportiva en la que deseas entrenar en Karate Do Loma Dorada y tu nivel actual.</p>
+
+                    <!-- Modalidades Deportivas -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-medal"></i> Modalidad Deportiva Principal <span class="required">*</span></label>
+                        <div class="modality-cards-grid">
+                            
+                            <label class="modality-card">
+                                <input type="checkbox" name="sportsModality" value="Kata (Formas Tradicionales)">
+                                <div class="modality-content">
+                                    <div class="modality-badge"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                                    <h4>Kata</h4>
+                                    <p>Formas y secuencias técnicas de combate imaginario.</p>
+                                </div>
+                            </label>
+
+                            <label class="modality-card">
+                                <input type="checkbox" name="sportsModality" value="Kumite (Combate Deportivo)">
+                                <div class="modality-content">
+                                    <div class="modality-badge"><i class="fa-solid fa-hand-fist"></i></div>
+                                    <h4>Kumite</h4>
+                                    <p>Combate deportivo de contacto controlado con protecciones.</p>
+                                </div>
+                            </label>
+
+                            <label class="modality-card">
+                                <input type="checkbox" name="sportsModality" value="Kobudo (Manejo de Armas Tradicionales)">
+                                <div class="modality-content">
+                                    <div class="modality-badge"><i class="fa-solid fa-shield-halved"></i></div>
+                                    <h4>Kobudo</h4>
+                                    <p>Manejo de armas tradicionales de Okinawa (Bo, Sai, Nunchaku).</p>
+                                </div>
+                            </label>
+
+                            <label class="modality-card">
+                                <input type="checkbox" name="sportsModality" value="Karate Infantil / Psicomotriz">
+                                <div class="modality-content">
+                                    <div class="modality-badge"><i class="fa-solid fa-child"></i></div>
+                                    <h4>Karate Infantil</h4>
+                                    <p>Desarrollo psicomotriz, disciplina y juegos formativos (4 a 11 años).</p>
+                                </div>
+                            </label>
+
+                            <label class="modality-card">
+                                <input type="checkbox" name="sportsModality" value="Equipo de Alto Rendimiento">
+                                <div class="modality-content">
+                                    <div class="modality-badge"><i class="fa-solid fa-trophy"></i></div>
+                                    <h4>Alto Rendimiento</h4>
+                                    <p>Entrenamiento especializado para torneos y competencias oficiales.</p>
+                                </div>
+                            </label>
+
+                            <label class="modality-card">
+                                <input type="checkbox" name="sportsModality" value="Karate Recreativo y Defensa Personal">
+                                <div class="modality-content">
+                                    <div class="modality-badge"><i class="fa-solid fa-heart-pulse"></i></div>
+                                    <h4>Recreativo y Defensa</h4>
+                                    <p>Acondicionamiento físico, salud integral y autoprotección.</p>
+                                </div>
+                            </label>
+
+                        </div>
+                        <span class="error-msg" id="modalityError">Selecciona al menos una modalidad deportiva.</span>
+                    </div>
+
+                    <div class="grid-2 marginTop-15">
+                        <!-- Nivel / Cinta Actual -->
+                        <div class="form-group">
+                            <label for="rankLevel">
+                                <i class="fa-solid fa-layer-group"></i> Nivel / Grado de Cinta Actual <span class="required">*</span>
+                            </label>
+                            <select id="rankLevel" name="rankLevel" required>
+                                <option value="" disabled selected>Selecciona tu grado actual...</option>
+                                <option value="Principiante (Cinta Blanca)">Principiante (Cinta Blanca - Sin experiencia)</option>
+                                <option value="Kyu Inicial (Cinta Amarilla / Naranja)">Kyu Inicial (Amarilla - Naranja)</option>
+                                <option value="Kyu Intermedio (Cinta Verde / Azul)">Kyu Intermedio (Verde - Azul)</option>
+                                <option value="Kyu Avanzado (Cinta Café)">Kyu Avanzado (Cinta Café)</option>
+                                <option value="Dan (Cinta Negra)">Dan (Cinta Negra)</option>
+                            </select>
+                            <span class="error-msg" id="rankLevelError">Selecciona tu nivel o cinta actual.</span>
+                        </div>
+
+                        <!-- Turno u Horario Deseado -->
+                        <div class="form-group">
+                            <label for="schedulePreference">
+                                <i class="fa-solid fa-clock"></i> Horario Preferido <span class="required">*</span>
+                            </label>
+                            <select id="schedulePreference" name="schedulePreference" required>
+                                <option value="" disabled selected>Selecciona un horario...</option>
+                                <option value="Matutino (8:00 AM - 10:00 AM)">Matutino (8:00 AM - 10:00 AM)</option>
+                                <option value="Vespertino Infantil (4:00 PM - 5:30 PM)">Vespertino Infantil (4:00 PM - 5:30 PM)</option>
+                                <option value="Vespertino Juvenil/Adultos (6:00 PM - 7:30 PM)">Vespertino Juvenil/Adultos (6:00 PM - 7:30 PM)</option>
+                                <option value="Nocturno Alto Rendimiento (7:30 PM - 9:00 PM)">Nocturno Alto Rendimiento (7:30 PM - 9:00 PM)</option>
+                                <option value="Sabatino Intensivo (9:00 AM - 1:00 PM)">Sabatino Intensivo (9:00 AM - 1:00 PM)</option>
+                            </select>
+                            <span class="error-msg" id="scheduleError">Selecciona un horario preferido.</span>
+                        </div>
+                    </div>
+                </fieldset>
+
+
+                <!-- SECCIÓN 4: HISTORIAL DEPORTIVO Y CONDICIÓN MÉDICA -->
+                <fieldset class="form-section">
+                    <legend><span class="section-num">4</span> Historial Deportivo y Salud</legend>
+
+                    <!-- Deporte anterior (Input de Opción / Radio) -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-person-running"></i> ¿Has practicado algún otro deporte o arte marcial anteriormente? <span class="required">*</span></label>
+                        <div class="radio-inline-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="previousSportsRadio" value="Sí" id="prevSportYes" required>
+                                <span><i class="fa-solid fa-circle-check"></i> Sí, he practicado</span>
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="previousSportsRadio" value="No" id="prevSportNo">
+                                <span><i class="fa-solid fa-circle-xmark"></i> No, es mi primera disciplina</span>
+                            </label>
+                        </div>
+                        <span class="error-msg" id="previousSportsRadioError">Selecciona si has practicado deportes anteriormente.</span>
+                    </div>
+
+                    <!-- Detalle de deporte anterior (Opcional o dinámico) -->
+                    <div class="form-group hidden-field" id="prevSportsDetailsGroup">
+                        <label for="previousSportsDetails">
+                            <i class="fa-solid fa-notes-medical"></i> Especifica los deportes o artes marciales previas y tiempo de práctica:
+                        </label>
+                        <input type="text" id="previousSportsDetails" name="previousSportsDetails" placeholder="Ej. Judo 2 años, Taekwondo 1 año, Natación...">
+                    </div>
+
+                    <!-- Condición Médica (Textarea Input) -->
+                    <div class="form-group">
+                        <label for="medicalConditions">
+                            <i class="fa-solid fa-notes-medical"></i> Condición Médica, Alergias u Observaciones de Salud:
+                        </label>
+                        <textarea id="medicalConditions" name="medicalConditions" rows="4" placeholder="Describe si el alumno tiene alguna condición médica, lesión previa, alergia o si requiere atención especial durante el entrenamiento..."></textarea>
+                        <small class="help-text">Escribe "Ninguna" en caso de no presentar afecciones.</small>
+                    </div>
+
+                    <!-- Aceptación de reglamento -->
+                    <div class="form-group checkbox-consent">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="termsConsent" name="termsConsent" required>
+                            <span class="checkmark"></span>
+                            <span class="consent-text">Acepto los reglamentos de Karate Do Loma Dorada, comprometiéndome a respetar los valores de disciplina, honor y cortesía del Karate-Do. <span class="required">*</span></span>
+                        </label>
+                        <span class="error-msg" id="termsConsentError">Debes aceptar los reglamentos del dojo para continuar.</span>
+                    </div>
+                </fieldset>
+
+
+                <!-- BOTÓN DE INSCRIPCIÓN -->
+                <div class="form-actions">
+                    <button type="submit" id="btnSubmit" class="btn-submit">
+                        <i class="fa-solid fa-paper-plane"></i> ENVIAR INSCRIPCIÓN A LOMA DORADA
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Modal de Confirmación de Inscripción -->
+    <div class="modal-backdrop" id="successModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <h3>¡Inscripción Recibida con Éxito!</h3>
+                <p>Bienvenido(a) a Karate Do Loma Dorada</p>
+            </div>
+            <div class="modal-body" id="modalSummaryContent">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-close-modal" id="btnCloseModal">
+                    <i class="fa-solid fa-check"></i> Entendido y Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer: Apartado de Contacto (WhatsApp, Facebook, Correo) -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo-box">
+                    <img src="assets/images/guanajuato-logo-B4O0jJCF.svg" alt="Logo Guanajuato" class="footer-logo-img">
+                </div>
+                <h3>KARATE DO LOMA DORADA</h3>
+                <p>Formación integral deportiva, disciplina y valores para niños, jóvenes y adultos en Guanajuato.</p>
+            </div>
+
+            <div class="footer-contact">
+                <h4><i class="fa-solid fa-address-book"></i> Contáctanos</h4>
+                <p class="footer-desc">¿Tienes dudas sobre las clases o inscripciones en Karate Do Loma Dorada? Escríbenos directamente:</p>
+
+                <div class="social-buttons-group">
+                    <!-- Botón WhatsApp -->
+                    <a href="https://wa.me/5214771234567?text=Hola,%20quisiera%20más%20información%20sobre%20las%20inscripciones%20en%20Karate%20Do%20Loma%20Dorada" target="_blank" rel="noopener noreferrer" class="social-btn whatsapp-btn" id="btnWhatsapp">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+
+                    <!-- Botón Facebook -->
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-btn facebook-btn" id="btnFacebook">
+                        <i class="fa-brands fa-facebook-f"></i> Facebook
+                    </a>
+
+                    <!-- Botón Correo -->
+                    <a href="mailto:contacto@karatedolomadorada.com?subject=Consulta%20Inscripción%20Karate%20Do%20Loma%20Dorada" class="social-btn email-btn" id="btnEmail">
+                        <i class="fa-solid fa-envelope"></i> Correo Electrónico
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Escuela Karate Do Loma Dorada. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script src="js/app.js"></script>
+</body>
+</html>
+

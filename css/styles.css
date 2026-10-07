@@ -596,6 +596,11 @@ body .form-step:focus-visible {
     box-shadow: var(--shadow-brutal-lg);
 }
 
+/* [PERFORMANCE] <picture> no genera caja: el <img> sigue midiendo 100% del contenedor */
+picture {
+    display: contents;
+}
+
 .hero-img {
     width: 100%;
     height: 100%;

@@ -1,0 +1,33 @@
+# ============================================================
+# [GITIGNORE] Archivos que Git NO debe subir a GitHub
+# ============================================================
+
+# Dependencias de Node.js (pruebas con jsdom)
+node_modules/
+
+# Archivos de registro / errores
+*.log
+npm-debug.log*
+
+# Sistema (.DS_Store de macOS, Thumbs.db de Windows)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python (usado solo para generar/optimizar imágenes)
+__pycache__/
+*.pyc
+.venv/
+
+# Entornos y secretos
+.env
+.env.*
+
+# Salidas temporales de generación de imágenes
+*.tmp

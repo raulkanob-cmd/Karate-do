@@ -1,0 +1,11 @@
+# ============================================================
+# [ROBOTS] Archivo para rastreadores (Google, Bing, etc.)
+# Ubicación: https://raulkanob-cmd.github.io/Karate-do/robots.txt
+# ============================================================
+
+# Se permite todo el rastreo del sitio
+User-agent: *
+Allow: /
+
+# El sitemap oficial del sitio
+Sitemap: https://raulkanob-cmd.github.io/Karate-do/sitemap.xml

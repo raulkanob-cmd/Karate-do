@@ -1,12 +1,47 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
+
+    <!-- ════════════════════════ [SEO] Metas básicas ════════════════════════
+         Si cambias el nombre del repositorio en GitHub, actualiza también
+         canonical, [OG], [SCHEMA], robots.txt, sitemap.xml y llms.txt. -->
     <title>Inscripción Escuela Karate Do Loma Dorada | Karate Deportivo</title>
-    <meta name="description" content="Formulario oficial de inscripción para la Escuela Karate Do Loma Dorada. Completa tus datos y selecciona tu modalidad deportiva.">
-    
+    <meta name="description" content="Inscríbete en la Escuela Karate Do Loma Dorada, Guanajuato. Formulario en 4 pasos: datos, contacto, modalidad (Kata, Kumite, Kobudo) y horario.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="author" content="Escuela Karate Do Loma Dorada">
+    <meta name="theme-color" content="#E63027" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0D0E11" media="(prefers-color-scheme: dark)">
+    <link rel="canonical" href="https://raulkanob-cmd.github.io/Karate-do/">
+
+    <!-- ════════════════════════ [OG] Open Graph + Twitter Card (WhatsApp / Facebook / X) ════════════════════════ -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:site_name" content="Karate Do Loma Dorada">
+    <meta property="og:title" content="Inscripción | Karate Do Loma Dorada — Escuela de Karate-Do en Guanajuato">
+    <meta property="og:description" content="Formulario oficial de inscripción en 4 pasos. Modalidades Kata, Kumite, Kobudo e infantil. Envío directo por WhatsApp al dojo.">
+    <meta property="og:url" content="https://raulkanob-cmd.github.io/Karate-do/">
+    <meta property="og:image" content="https://raulkanob-cmd.github.io/Karate-do/assets/images/og-cover.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Dojo de karate-do con alumnos en postura — Karate Do Loma Dorada">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Inscripción | Karate Do Loma Dorada">
+    <meta name="twitter:description" content="Formulario oficial de inscripción en 4 pasos. Kata, Kumite, Kobudo e infantil.">
+    <meta name="twitter:image" content="https://raulkanob-cmd.github.io/Karate-do/assets/images/og-cover.png">
+    <meta name="twitter:image:alt" content="Dojo de karate-do con alumnos en postura — Karate Do Loma Dorada">
+
+    <!-- ════════════════════════ [FAVICON] + [PWA] manifest ════════════════════════ -->
+    <link rel="icon" href="favicon.ico" sizes="48x48">
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="assets/images/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="assets/images/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" sizes="180x180">
+    <link rel="manifest" href="manifest.webmanifest">
+
     <!-- Google Fonts: Syne & Plus Jakarta Sans for Neo-minimalism Editorial aesthetic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,8 +50,56 @@
     <!-- FontAwesome icons for clean social/contact UI -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Stylesheet -->
+    <!-- [CSS] Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- ════════════════════════ [SCHEMA] Datos estructurados Schema.org (JSON-LD) ════════════════════════ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SportsActivityLocation",
+                "@id": "https://raulkanob-cmd.github.io/Karate-do/#escuela",
+                "name": "Escuela Karate Do Loma Dorada",
+                "alternateName": "Karate Do Loma Dorada",
+                "description": "Escuela de karate-do en Loma Dorada, León, Guanajuato. Clases de karate-deporte para niños, jóvenes y adultos: Kata, Kumite, Kobudo, karate infantil y alto rendimiento.",
+                "url": "https://raulkanob-cmd.github.io/Karate-do/",
+                "image": "https://raulkanob-cmd.github.io/Karate-do/assets/images/og-cover.png",
+                "telephone": "+524776737908",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Colonia Loma Dorada",
+                    "addressLocality": "León",
+                    "addressRegion": "Guanajuato",
+                    "addressCountry": "MX"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 21.1355411,
+                    "longitude": -101.7727977
+                },
+                "areaServed": {
+                    "@type": "City",
+                    "name": "León"
+                },
+                "sameAs": [
+                    "https://www.facebook.com/profile.php?id=61581570449597"
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://raulkanob-cmd.github.io/Karate-do/#sitio",
+                "url": "https://raulkanob-cmd.github.io/Karate-do/",
+                "name": "Karate Do Loma Dorada",
+                "inLanguage": "es-MX",
+                "publisher": {
+                    "@id": "https://raulkanob-cmd.github.io/Karate-do/#escuela"
+                }
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
 
@@ -54,7 +137,11 @@
         <!-- Hero Section: Widescreen Banner with Light Switch -->
         <section class="hero-section">
             <div class="hero-image-wrapper">
-                <img src="assets/images/hero_karate.jpg" alt="Entrenamiento de Karate-Do en Dojo" class="hero-img">
+                <!-- [PERFORMANCE] Formato WebP con respaldo JPEG + dimensiones fijas (sin CLS) -->
+                <picture>
+                    <source srcset="assets/images/hero_karate.webp" type="image/webp">
+                    <img src="assets/images/hero_karate.jpg" alt="Entrenamiento de Karate-Do en Dojo" class="hero-img" width="1376" height="768" decoding="async" fetchpriority="high">
+                </picture>
                 <div class="hero-overlay">
                     <div class="hero-text-content">
                         <div class="hero-tag">EDICIÓN 2026 / INSCRIPCIONES</div>

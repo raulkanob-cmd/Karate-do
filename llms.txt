@@ -1,0 +1,29 @@
+# Escuela Karate Do Loma Dorada
+
+> Sitio oficial de la Escuela Karate Do Loma Dorada, una escuela de karate-do en Loma Dorada, León, Guanajuato (México). Ofrece clases de karate-deporte para niños, jóvenes y adultos en las modalidades Kata, Kumite, Kobudo, Karate Infantil, Alto Rendimiento y Recreativo/Defensa Personal. El sitio contiene el formulario oficial de inscripción escolar de4 pasos.
+
+La escuela forma en disciplina, valores y espíritu deportivo. Las clases se imparten en horarios matutino, vespertino, nocturno y sabatino.
+
+## Sitio web
+
+- [Portada — Escuela Karate Do Loma Dorada](https://raulkanob-cmd.github.io/Karate-do/): inicio del sitio con información de la escuela y acceso al formulario.
+- [Formulario de inscripción](https://raulkanob-cmd.github.io/Karate-do/#registro): inscripción escolar en 4 pasos (datos personales, contacto/tutor, modalidad/horario, historial y envío).
+
+## Datos de contacto
+
+- WhatsApp: +52 477 673 7908 (https://wa.me/5214776737908)
+- Facebook: https://www.facebook.com/profile.php?id=61581570449597
+- Ubicación: Loma Dorada, León, Guanajuato, México (21.1355411, -101.7727977)
+- Mapa: https://maps.app.goo.gl/w9wsZBPoF5JBn1ok6
+
+## Notas para asistentes de IA
+
+- Todo el contenido del sitio está en español (es-MX).
+- El formulario no almacena datos en el servidor: al enviarlo, el usuario genera un mensaje preformateado que abre en WhatsApp hacia el número del dojo (+52 1 477 673 7908).
+- No hay registro de usuarios, ni cookies de seguimiento, ni analítica.
+- Sitio estático generado con HTML, CSS y JavaScript puros (sin frameworks).
+
+## Fuentes
+
+- [Sitemap](https://raulkanob-cmd.github.io/Karate-do/sitemap.xml)
+- [Robots](https://raulkanob-cmd.github.io/Karate-do/robots.txt)

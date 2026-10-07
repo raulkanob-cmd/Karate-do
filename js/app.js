@@ -2,7 +2,8 @@
 // Karate-Do Registration Form Script
 // Multi-step wizard (4 pasos), validación accesible (aria-invalid / role="alert"),
 // barra de progreso, kanji de celebración saliendo del modal, resumen + envío
-// por WhatsApp, theme toggle (icono en el header) y foco del modal (diálogo ARIA).
+// por WhatsApp, theme toggle (icono en el header), foco del modal (diálogo ARIA)
+// y regreso al hero cuando el usuario vuelve de la app de WhatsApp.
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevSportsDetailsInput = document.getElementById('previousSportsDetails');
     const successModal = document.getElementById('successModal');
     const modalCard = successModal.querySelector('.modal-card');
-    const btnCloseModal = document.getElementById('btnCloseModal');
     const modalSummaryContent = document.getElementById('modalSummaryContent');
     const formAlert = document.getElementById('formAlert');
     const btnSendWhatsapp = document.getElementById('btnSendWhatsapp');
@@ -664,7 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalCard.focus();
     }
 
-    function closeModal() {
+    function closeModal({ toHero = false } = {}) {
         successModal.classList.remove('active');
         document.body.classList.remove('modal-open');
 
@@ -677,13 +677,17 @@ document.addEventListener('DOMContentLoaded', () => {
         maxStepReached = 1;
         showStep(1, false);
 
-        // Devuelve el foco al inicio del formulario y lleva la vista ahí
         const formSection = document.getElementById('registro');
         formSection.focus({ preventScroll: true });
-        formSection.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
-    }
 
-    btnCloseModal.addEventListener('click', closeModal);
+        if (toHero) {
+            // Al volver de WhatsApp: la página muestra el hero (desde el inicio)
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        } else {
+            // Cierre normal: lleva la vista al inicio del formulario
+            formSection.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
+        }
+    }
 
     successModal.addEventListener('click', (e) => {
         if (e.target === successModal) closeModal();
@@ -717,6 +721,50 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // ==========================================================================
+    // 10. Vuelta desde WhatsApp: al regresar de la app, la página muestra el hero
+    //     (solo si el usuario salió desde un botón de WhatsApp)
+    // ==========================================================================
+    let salioHaciaWhatsapp = false;
+
+    document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+        link.addEventListener('click', () => { salioHaciaWhatsapp = true; });
+    });
+
+    function alVolverDeAppExterna() {
+        if (!salioHaciaWhatsapp) return;
+        salioHaciaWhatsapp = false;
+
+        if (successModal.classList.contains('active')) {
+            closeModal({ toHero: true }); // limpia, vuelve al paso 1 y sube al hero
+        } else {
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+    }
+
+    // El navegador vuelve a mostrar la pestaña (app de WhatsApp en segundo plano)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') alVolverDeAppExterna();
+    });
+
+    // Restauración desde caché de sesión (bfcache) en móviles
+    window.addEventListener('pageshow', alVolverDeAppExterna);
+
+    // ==========================================================================
+    // 11. Icono de referencia de modalidades: glosario en palabras simples
+    //     (para quienes no conocen las artes marciales)
+    // ==========================================================================
+    const modalityHelpBtn = document.getElementById('modalityHelpBtn');
+    const modalityHelpPanel = document.getElementById('modalityHelpPanel');
+
+    if (modalityHelpBtn && modalityHelpPanel) {
+        modalityHelpBtn.addEventListener('click', () => {
+            const abierto = modalityHelpBtn.getAttribute('aria-expanded') === 'true';
+            modalityHelpBtn.setAttribute('aria-expanded', String(!abierto));
+            modalityHelpPanel.hidden = abierto;
+        });
+    }
 
     // ==========================================================================
     // Helper functions

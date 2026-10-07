@@ -78,13 +78,35 @@ function runAll() {
   check('Pasos futuros deshabilitados', $$('.progress-step').filter(b => b.disabled).length === 3);
   check('Contador de paso presente y anunciado', el('stepCounter').getAttribute('aria-live') === 'polite' && /Paso 1 de 4/.test(el('stepCounter').textContent));
   check('Navegación: Anterior oculto, Siguiente visible, Enviar oculto', el('btnPrevStep').hidden && !el('btnNextStep').hidden && el('btnSubmit').hidden);
+  check('Botón de envío con solo la palabra "Inscribirme"', el('btnSubmit').textContent.trim() === 'Inscribirme', el('btnSubmit').textContent.trim());
+  check('Horario con solo2 opciones (principiantes y avanzado)', Array.from(el('schedulePreference').options).filter(o => o.value).length === 2);
 
   // ================= Accesibilidad (se mantiene) =================
   check('Skip link presente', !!$('a.skip-link[href="#registro"]'));
   check('Modal con role=dialog + aria-modal', $('.modal-card').getAttribute('role') === 'dialog' && $('.modal-card').getAttribute('aria-modal') === 'true');
+  check('Botón blanco del modal (Entendido y Aceptar) eliminado', !el('btnCloseModal') && !document.querySelector('.btn-close-modal'));
+  check('Botón restante del modal dice solo "Terminar y enviar"', el('btnSendWhatsapp').textContent.trim() === 'Terminar y enviar', el('btnSendWhatsapp').textContent.trim());
   check('Form alert con role=alert', el('formAlert').getAttribute('role') === 'alert');
   check('aria-describedby de errores', el('fullName').getAttribute('aria-describedby') === 'fullNameError' && el('schedulePreference').getAttribute('aria-describedby') === 'scheduleError');
   check('Iconos decorativos ocultos', $$('i').every(i => i.getAttribute('aria-hidden') === 'true'));
+
+  // ===== Iconos SVG (skill svg-icon-generator) + referencia de modalidades =====
+  const spriteIds = ['ico-kata', 'ico-kumite', 'ico-kobudo', 'ico-infantil', 'ico-rendimiento', 'ico-defensa', 'ico-help'];
+  check('Sprites SVG: 6 iconos de modalidad + icono de referencia', spriteIds.every(id => !!document.getElementById(id)));
+  check('Badges de modalidad con iconos SVG propios (sin Font Awesome)',
+    $$('.modality-badge').length === 6 && $$('.modality-badge svg').length === 6 && $$('.modality-badge i').length === 0);
+  check('Iconos SVG decorativos ocultos (aria-hidden)', $$('.modality-badge svg, .modality-help svg').every(s => s.getAttribute('aria-hidden') === 'true'));
+  check('Icono de referencia accesible (aria-controls + aria-expanded)',
+    !!el('modalityHelpBtn') && el('modalityHelpBtn').getAttribute('aria-controls') === 'modalityHelpPanel' && el('modalityHelpBtn').getAttribute('aria-expanded') === 'false');
+  check('Panel de referencia oculto al cargar', el('modalityHelpPanel').hidden === true);
+  click(el('modalityHelpBtn'));
+  check('Tocar el icono abre la referencia', el('modalityHelpPanel').hidden === false && el('modalityHelpBtn').getAttribute('aria-expanded') === 'true');
+  const ayudaTxt = el('modalityHelpPanel').textContent;
+  check('Referencia traduce los términos en palabras simples',
+    /coreograf/.test(ayudaTxt) && /combate/.test(ayudaTxt) && /armas de madera/.test(ayudaTxt) && /competir/.test(ayudaTxt));
+  check('Referencia usa los mismos iconos que las tarjetas', spriteIds.slice(0, 6).every(id => !!el('modalityHelpPanel').querySelector(`use[href="#${id}"]`)));
+  click(el('modalityHelpBtn'));
+  check('Segundo toque cierra la referencia', el('modalityHelpPanel').hidden === true && el('modalityHelpBtn').getAttribute('aria-expanded') === 'false');
 
   // ================= Nuevos requisitos de UI =================
   check('Interruptor del hero eliminado', !el('lightSwitchBtn') && !el('bulbContainer') && !$('.hero-switch-fixture'));
@@ -138,7 +160,7 @@ function runAll() {
   check('Next bloqueado en paso 3 vacío', !steps[2].hidden && el('modalityError').closest('.form-group').classList.contains('has-error'));
 
   Array.from(document.querySelectorAll('input[name="sportsModality"]'))[0].click();
-  setVal('schedulePreference', 'Matutino (8:00 AM - 10:00 AM)');
+  setVal('schedulePreference', '2:00 PM a 3:00 PM — Principiantes (niños de 6 a 11 años)');
   click(el('btnNextStep'));
   check('Avanza al paso 4', !steps[3].hidden && steps[2].hidden);
   check('Progreso completo (100%)', parseFloat(el('progressFill').style.width) === 100, el('progressFill').style.width);
@@ -175,7 +197,7 @@ function runAll() {
   check('Mensaje con encabezado preformateado', /NUEVA INSCRIPCIÓN — KARATE DO LOMA DORADA/.test(waText));
   check('Mensaje incluye alumno', /Alumno:\* Carlos Eduardo Ramírez Pérez \(10 años\)/.test(waText));
   check('Mensaje incluye teléfono', /Teléfono:\* 477 673 7908/.test(waText));
-  check('Mensaje incluye modalidad, nivel asumido y horario', /Modalidades:\* Kata/.test(waText) && /Nivel \/ Cinta:\* Principiante \(Cinta Blanca\) — alumno nuevo/.test(waText) && /Horario:\* Matutino/.test(waText));
+  check('Mensaje incluye modalidad, nivel asumido y horario', /Modalidades:\* Kata/.test(waText) && /Nivel \/ Cinta:\* Principiante \(Cinta Blanca\) — alumno nuevo/.test(waText) && /Horario:\* 2:00 PM a 3:00 PM — Principiantes \(niños de 6 a 11 años\)/.test(waText));
   check('Mensaje incluye tutor, correo y salud', /Tutor \/ Contacto:\* María Pérez/.test(waText) && /alumno@ejemplo.com/.test(waText) && /Sin observaciones médicas/.test(waText));
   check('Resumen del modal muestra los datos', /Carlos Eduardo Ram/.test(el('modalSummaryContent').textContent));
   check('Resumen escapado (XSS)', !el('modalSummaryContent').innerHTML.includes('<script'));
@@ -201,6 +223,40 @@ function runAll() {
   check('aria-label del tema actualizado', /Modo oscuro activado/.test(el('themeToggle').getAttribute('aria-label')));
   click(el('themeToggle'));
   check('Segundo clic vuelve al modo claro', !document.body.classList.contains('dark-mode') && /fa-sun/.test(el('themeIcon').className));
+
+  // ============ Vuelta desde WhatsApp: la página muestra el hero ============
+  // Reenviar el formulario para reabrir el modal
+  setVal('fullName', 'Carlos Eduardo Ramírez Pérez');
+  setVal('age', '10');
+  setVal('birthDate', birth10y());
+  Array.from(document.querySelectorAll('input[name="gender"]'))[0].click();
+  click(el('btnNextStep'));
+  setVal('phone', '477 673 7908');
+  setVal('email', 'alumno@ejemplo.com');
+  el('tutorName').value = 'María Pérez';
+  pressKey(el('email'), 'Enter');
+  Array.from(document.querySelectorAll('input[name="sportsModality"]'))[0].click();
+  setVal('schedulePreference', '2:00 PM a 3:00 PM — Principiantes (niños de 6 a 11 años)');
+  click(el('btnNextStep'));
+  Array.from(document.querySelectorAll('input[name="previousSportsRadio"]'))[1].click();
+  el('termsConsent').click();
+  submit();
+  check('Modal reabierto para probar la vuelta desde WhatsApp', modal.classList.contains('active'));
+
+  // Sin haber salido hacia WhatsApp, volver a la pestaña NO debe cerrar el modal
+  document.dispatchEvent(new window.Event('visibilitychange'));
+  check('visibilitychange sin salir a WhatsApp no cierra el modal', modal.classList.contains('active'));
+
+  // El usuario pulsa "Terminar y enviar" (se cancela la navegación real en jsdom)
+  el('btnSendWhatsapp').addEventListener('click', (e) => e.preventDefault(), { once: true });
+  el('btnSendWhatsapp').click();
+  document.dispatchEvent(new window.Event('visibilitychange'));
+  check('Al volver de WhatsApp: modal cerrado y wizard reiniciado (se ve el hero)',
+    !modal.classList.contains('active') &&
+    !steps[0].hidden && steps[1].hidden && steps[2].hidden && steps[3].hidden &&
+    el('btnSubmit').hidden && !el('btnNextStep').hidden &&
+    parseFloat(el('progressFill').style.width) === 0);
+  check('Foco devuelto al formulario (sin robar la vista del hero)', document.activeElement === el('registro'));
 
   // La animación dura ~3.6s: comprobamos que se limpia y que no hubo errores JS
   setTimeout(() => {

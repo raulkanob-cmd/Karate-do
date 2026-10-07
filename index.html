@@ -103,6 +103,83 @@
 </head>
 <body>
 
+    <!-- ======================================================================
+         [SVG-ICON] Sprites de iconos SVG (skill: svg-icon-generator)
+         Buenas prácticas: rejilla 24×24, trazo con currentColor (se adapta al
+         tema), extremos redondeados, una sola fuente por icono y reutilización
+         con elementos "use". Los iconos son decorativos (aria-hidden): el
+         texto de cada tarjeta ya explica la modalidad.
+         ====================================================================== -->
+    <svg class="svg-sprite" aria-hidden="true" focusable="false" style="display:none">
+        <!-- Kata: figura en postura con puñetazo (formas) -->
+        <symbol id="ico-kata" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10.6" cy="4.7" r="2.1" />
+                <path d="M10.6 6.9v5.6" />
+                <path d="M8.3 12.5h4.6" />
+                <path d="M10.8 8.5h5" />
+                <circle cx="17.3" cy="8.5" r="1.5" />
+                <path d="M10.6 9.6 8 11.7" />
+                <path d="M10.6 12.6 6.7 19.5" />
+                <path d="M10.6 12.6l4.7 6.9" />
+            </g>
+        </symbol>
+        <!-- Kumite: dos puños en choque (combate) -->
+        <symbol id="ico-kumite" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3.2 10.4a2.3 2.3 0 0 1 2.3-2.3h3a2.3 2.3 0 0 1 2.3 2.3v3.2a2.3 2.3 0 0 1-2.3 2.3h-3a2.3 2.3 0 0 1-2.3-2.3z" />
+                <path d="M6.4 8.6v2.4M8.6 8.6v2.4" />
+                <path d="M20.8 10.4a2.3 2.3 0 0 0-2.3-2.3h-3a2.3 2.3 0 0 0-2.3 2.3v3.2a2.3 2.3 0 0 0 2.3 2.3h3a2.3 2.3 0 0 0 2.3-2.3z" />
+                <path d="M17.6 8.6v2.4M15.4 8.6v2.4" />
+                <path d="M12 9.6 10.9 7.7M12 9.6l1.1-1.9M12 14.4l-1.1 1.9M12 14.4l1.1 1.9" />
+            </g>
+        </symbol>
+        <!-- Kobudo: bastón (bo) con dos agarres (armas tradicionales) -->
+        <symbol id="ico-kobudo" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4.5 19.5 19.5 4.5" />
+                <rect x="7.3" y="13.3" width="3.4" height="3.4" rx="1.2" />
+                <rect x="13.3" y="7.3" width="3.4" height="3.4" rx="1.2" />
+            </g>
+        </symbol>
+        <!-- Karate Infantil: niño con los brazos en alto (proporciones de niño) -->
+        <symbol id="ico-infantil" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="5" r="2.6" />
+                <path d="M12 7.6v4.4" />
+                <path d="M11.2 8.6 8.9 5.9" />
+                <path d="M12.8 8.6l2.3-2.7" />
+                <path d="M9.9 12h4.2" />
+                <path d="M12 12l-1.8 6.4" />
+                <path d="M12 12l1.8 6.4" />
+            </g>
+        </symbol>
+        <!-- Alto Rendimiento: medalla con estrella (torneos) -->
+        <symbol id="ico-rendimiento" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8.4 3.2 11.3 9" />
+                <path d="M15.6 3.2 12.7 9" />
+                <circle cx="12" cy="14.5" r="5.1" />
+                <path fill="currentColor" stroke="none" d="M12 11.8l.74 1.69 1.83.18-1.38.44.4 2.57-1.59-.93L12 15.75l-1.59.93.4-2.57-1.38-.44 1.83-.18z" />
+            </g>
+        </symbol>
+        <!-- Recreativo y Defensa Personal: escudo con corazón (salud y autoprotección) -->
+        <symbol id="ico-defensa" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2.8l7 2.4v5.6c0 4.3-2.9 7.4-7 9.4-4.1-2-7-5.1-7-9.4V5.2z" />
+                <path d="M12 15c-2.4-1.7-3.8-3.1-3.8-4.9A2.3 2.3 0 0 1 12 8.7a2.3 2.3 0 0 1 3.8 1.4c0 1.8-1.4 3.2-3.8 4.9z" />
+            </g>
+        </symbol>
+        <!-- Icono de referencia: signo de información (glosario para principiantes) -->
+        <symbol id="ico-help" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11.2v5.2" />
+                <circle cx="12" cy="7.9" r="1" fill="currentColor" stroke="none" />
+            </g>
+        </symbol>
+    </svg>
+
     <!-- Skip Link: navegación por teclado (WCAG 2.4.1) -->
     <a class="skip-link" href="#registro">Saltar al formulario de inscripción</a>
 
@@ -301,12 +378,54 @@
                     <!-- Modalidades Deportivas -->
                     <div class="form-group">
                         <label id="modalityLabel"><i class="fa-solid fa-medal" aria-hidden="true"></i> Modalidad Deportiva Principal <span class="required" aria-hidden="true">*</span></label>
+
+                        <!-- [SVG-ICON] Icono de referencia: traduce los términos de las
+                             artes marciales para quienes no practican ningún deporte marcial -->
+                        <div class="modality-help">
+                            <button type="button" class="modality-help-btn" id="modalityHelpBtn" aria-expanded="false" aria-controls="modalityHelpPanel">
+                                <svg class="modality-help-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-help"></use></svg>
+                                <span>¿No practicas artes marciales? Toca el ícono para ver qué significa cada una en palabras simples</span>
+                            </button>
+                            <div class="modality-help-panel" id="modalityHelpPanel" hidden>
+                                <p class="modality-help-title">
+                                    <svg class="modality-help-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-help"></use></svg>
+                                    Referencia rápida: ¿qué es cada modalidad?
+                                </p>
+                                <ul class="modality-help-list">
+                                    <li>
+                                        <svg class="modality-help-item-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-kata"></use></svg>
+                                        <span><strong>Kata:</strong> es como una coreografía de movimientos; se realiza sola, sin contrincante.</span>
+                                    </li>
+                                    <li>
+                                        <svg class="modality-help-item-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-kumite"></use></svg>
+                                        <span><strong>Kumite:</strong> es el "combate": pelea controlada contra un compañero, con protecciones.</span>
+                                    </li>
+                                    <li>
+                                        <svg class="modality-help-item-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-kobudo"></use></svg>
+                                        <span><strong>Kobudo:</strong> se practica con armas de madera tradicionales (bastón bo, sai, nunchaku).</span>
+                                    </li>
+                                    <li>
+                                        <svg class="modality-help-item-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-infantil"></use></svg>
+                                        <span><strong>Karate Infantil:</strong> para niños pequeños: juegos, coordinación y disciplina.</span>
+                                    </li>
+                                    <li>
+                                        <svg class="modality-help-item-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-rendimiento"></use></svg>
+                                        <span><strong>Alto Rendimiento:</strong> es el equipo para competir en torneos oficiales.</span>
+                                    </li>
+                                    <li>
+                                        <svg class="modality-help-item-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-defensa"></use></svg>
+                                        <span><strong>Recreativo y Defensa:</strong> por salud y para aprender a cuidarte; no se compite.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
                         <div class="modality-cards-grid" role="group" aria-labelledby="modalityLabel" aria-describedby="modalityError">
                             
                             <label class="modality-card">
                                 <input type="checkbox" name="sportsModality" value="Kata (Formas Tradicionales)" aria-describedby="modalityError">
                                 <span class="modality-content">
-                                    <span class="modality-badge"><i class="fa-solid fa-fire-flame-curved" aria-hidden="true"></i></span>
+                                    <span class="modality-badge"><svg class="modality-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-kata"></use></svg></span>
                                     <span class="modality-title">Kata</span>
                                     <span class="modality-desc">Formas y secuencias técnicas de combate imaginario.</span>
                                 </span>
@@ -315,7 +434,7 @@
                             <label class="modality-card">
                                 <input type="checkbox" name="sportsModality" value="Kumite (Combate Deportivo)" aria-describedby="modalityError">
                                 <span class="modality-content">
-                                    <span class="modality-badge"><i class="fa-solid fa-hand-fist" aria-hidden="true"></i></span>
+                                    <span class="modality-badge"><svg class="modality-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-kumite"></use></svg></span>
                                     <span class="modality-title">Kumite</span>
                                     <span class="modality-desc">Combate deportivo de contacto controlado con protecciones.</span>
                                 </span>
@@ -324,7 +443,7 @@
                             <label class="modality-card">
                                 <input type="checkbox" name="sportsModality" value="Kobudo (Manejo de Armas Tradicionales)" aria-describedby="modalityError">
                                 <span class="modality-content">
-                                    <span class="modality-badge"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
+                                    <span class="modality-badge"><svg class="modality-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-kobudo"></use></svg></span>
                                     <span class="modality-title">Kobudo</span>
                                     <span class="modality-desc">Manejo de armas tradicionales de Okinawa (Bo, Sai, Nunchaku).</span>
                                 </span>
@@ -333,7 +452,7 @@
                             <label class="modality-card">
                                 <input type="checkbox" name="sportsModality" value="Karate Infantil / Psicomotriz" aria-describedby="modalityError">
                                 <span class="modality-content">
-                                    <span class="modality-badge"><i class="fa-solid fa-child" aria-hidden="true"></i></span>
+                                    <span class="modality-badge"><svg class="modality-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-infantil"></use></svg></span>
                                     <span class="modality-title">Karate Infantil</span>
                                     <span class="modality-desc">Desarrollo psicomotriz, disciplina y juegos formativos (4 a 11 años).</span>
                                 </span>
@@ -342,7 +461,7 @@
                             <label class="modality-card">
                                 <input type="checkbox" name="sportsModality" value="Equipo de Alto Rendimiento" aria-describedby="modalityError">
                                 <span class="modality-content">
-                                    <span class="modality-badge"><i class="fa-solid fa-trophy" aria-hidden="true"></i></span>
+                                    <span class="modality-badge"><svg class="modality-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-rendimiento"></use></svg></span>
                                     <span class="modality-title">Alto Rendimiento</span>
                                     <span class="modality-desc">Entrenamiento especializado para torneos y competencias oficiales.</span>
                                 </span>
@@ -351,7 +470,7 @@
                             <label class="modality-card">
                                 <input type="checkbox" name="sportsModality" value="Karate Recreativo y Defensa Personal" aria-describedby="modalityError">
                                 <span class="modality-content">
-                                    <span class="modality-badge"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i></span>
+                                    <span class="modality-badge"><svg class="modality-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ico-defensa"></use></svg></span>
                                     <span class="modality-title">Recreativo y Defensa</span>
                                     <span class="modality-desc">Acondicionamiento físico, salud integral y autoprotección.</span>
                                 </span>
@@ -369,11 +488,9 @@
                             </label>
                             <select id="schedulePreference" name="schedulePreference" required aria-describedby="scheduleError">
                                 <option value="" disabled selected>Selecciona un horario...</option>
-                                <option value="Matutino (8:00 AM - 10:00 AM)">Matutino (8:00 AM - 10:00 AM)</option>
-                                <option value="Vespertino Infantil (4:00 PM - 5:30 PM)">Vespertino Infantil (4:00 PM - 5:30 PM)</option>
-                                <option value="Vespertino Juvenil/Adultos (6:00 PM - 7:30 PM)">Vespertino Juvenil/Adultos (6:00 PM - 7:30 PM)</option>
-                                <option value="Nocturno Alto Rendimiento (7:30 PM - 9:00 PM)">Nocturno Alto Rendimiento (7:30 PM - 9:00 PM)</option>
-                                <option value="Sabatino Intensivo (9:00 AM - 1:00 PM)">Sabatino Intensivo (9:00 AM - 1:00 PM)</option>
+                                <!-- Solo2 horarios: principiantes (6-11) y avanzado (12 en adelante) -->
+                                <option value="2:00 PM a 3:00 PM — Principiantes (niños de 6 a 11 años)">2:00 PM a 3:00 PM — Principiantes (niños de 6 a 11 años)</option>
+                                <option value="3:00 PM a 4:00 PM — Avanzado (niños de 12 años en adelante)">3:00 PM a 4:00 PM — Avanzado (niños de 12 años en adelante)</option>
                             </select>
                             <span class="error-msg" id="scheduleError">Selecciona un horario preferido.</span>
                         </div>
@@ -444,7 +561,7 @@
                     </button>
 
                     <button type="submit" id="btnSubmit" class="btn-submit" hidden>
-                        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> ENVIAR INSCRIPCIÓN A LOMA DORADA
+                        Inscribirme
                     </button>
                 </div>
 
@@ -465,12 +582,10 @@
                 <!-- Se llena dinámicamente con JavaScript -->
             </div>
             <div class="modal-footer">
-                <a href="#" id="btnSendWhatsapp" class="btn-whatsapp-send" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Enviar por WhatsApp al 477 673 7908
+                <!-- Botón único: termina el proceso y abre WhatsApp (el botón blanco se eliminó) -->
+                <a href="https://wa.me/5214776737908" id="btnSendWhatsapp" class="btn-whatsapp-send" target="_blank" rel="noopener noreferrer">
+                    Terminar y enviar
                 </a>
-                <button type="button" class="btn-close-modal" id="btnCloseModal">
-                    <i class="fa-solid fa-check" aria-hidden="true"></i> Entendido y Aceptar
-                </button>
             </div>
         </div>
     </div>

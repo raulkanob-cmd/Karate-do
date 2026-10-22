@@ -1,0 +1,2975 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mapa del Desarrollo Web · Presentación para Cliente</title>
+  
+  <!-- SEO & Social -->
+  <meta name="description" content="Presentación interactiva de alto impacto para cliente: Mapa del Desarrollo Web. Mockups animados 3D, estilo Glassmorphism y experiencia estilo PowerPoint.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Google Fonts: Tipografía moderna premium -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       VARIABLES Y TEMA GLASSMORPHISM DE ALTO IMPACTO
+       ========================================================================== */
+    :root {
+      --bg-dark: #080a0d;
+      --bg-card: rgba(18, 22, 28, 0.65);
+      --bg-card-hover: rgba(28, 34, 44, 0.82);
+      --bg-card-solid: #12161c;
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-border-bright: rgba(255, 255, 255, 0.25);
+      --glass-shine: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.02) 100%);
+      
+      /* Colores inspirados en las capturas del usuario */
+      --accent-lime: #8be034;
+      --accent-lime-bright: #a2f248;
+      --accent-lime-dark: #5ea31b;
+      --accent-lime-glow: rgba(139, 224, 52, 0.38);
+      --accent-lime-soft: rgba(139, 224, 52, 0.12);
+      
+      --accent-amber: #f59e0b;
+      --accent-amber-glow: rgba(245, 158, 11, 0.35);
+      --accent-cyan: #07cef5;
+      --accent-cyan-glow: rgba(7, 206, 245, 0.35);
+      
+      --text-main: #f3f6fa;
+      --text-muted: #9aa8b6;
+      --text-dim: #64748b;
+      
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+      
+      --topbar-height: 58px;
+      --bottombar-height: 64px;
+      --sidebar-width: 260px;
+      --notes-width: 340px;
+      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      user-select: none;
+    }
+
+    /* Fondo dinámico con orbes animados de glassmorphism */
+    .ambient-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, #0d1117 0%, #080a0d 100%);
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.42;
+      animation: orbFloat 22s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    .ambient-orb.orb-lime {
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, var(--accent-lime) 0%, transparent 70%);
+      top: -150px;
+      right: -100px;
+      animation-duration: 25s;
+    }
+
+    .ambient-orb.orb-amber {
+      width: 580px;
+      height: 580px;
+      background: radial-gradient(circle, var(--accent-amber) 0%, transparent 70%);
+      bottom: -150px;
+      left: -120px;
+      animation-duration: 28s;
+      animation-delay: -7s;
+    }
+
+    .ambient-orb.orb-cyan {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
+      top: 45%;
+      left: 35%;
+      opacity: 0.22;
+      animation-duration: 32s;
+      animation-delay: -14s;
+    }
+
+    .ambient-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.7;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.12); }
+      100% { transform: translate(-40px, 70px) scale(0.94); }
+    }
+
+    /* ==========================================================================
+       ESTRUCTURA PRINCIPAL DE LA APP DE PRESENTACIÓN
+       ========================================================================== */
+    .app-viewport {
+      position: relative;
+      z-index: 10;
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: var(--topbar-height) 1fr var(--bottombar-height);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    body.present-mode .app-viewport {
+      grid-template-rows: 0px 1fr 0px;
+    }
+
+    body.present-mode .topbar,
+    body.present-mode .bottombar,
+    body.present-mode .sidebar,
+    body.present-mode .notes-panel {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-100%);
+    }
+
+    body.present-mode .bottombar {
+      transform: translateY(100%);
+    }
+
+    /* Floating exit button in presentation mode */
+    .present-exit-btn {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 1000;
+      background: rgba(18, 22, 28, 0.75);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .present-exit-btn:hover {
+      background: var(--accent-lime);
+      color: #0b1a05;
+      border-color: var(--accent-lime);
+    }
+    body.present-mode .present-exit-btn {
+      display: inline-flex;
+    }
+
+    /* ==========================================================================
+       BARRA SUPERIOR (HEADER / POWERPOINT RIBBON MODERNO)
+       ========================================================================== */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background: rgba(12, 15, 20, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+      z-index: 50;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 12px 5px 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+    }
+
+    .brand-logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-lime), var(--accent-lime-dark));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 14px var(--accent-lime-glow);
+    }
+
+    .brand-logo-icon img {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: -0.2px;
+      color: #fff;
+    }
+
+    .brand-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      background: var(--accent-lime-soft);
+      border: 1px solid rgba(139, 224, 52, 0.3);
+      border-radius: 4px;
+      color: var(--accent-lime);
+    }
+
+    .topbar-center {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 4px 6px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .mode-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .mode-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .mode-tab-btn.active {
+      background: var(--accent-lime);
+      color: #081a04;
+      font-weight: 700;
+      box-shadow: 0 2px 10px var(--accent-lime-glow);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-action-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      border-radius: 9px;
+      padding: 7px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s;
+    }
+
+    .icon-action-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: var(--glass-border-bright);
+      transform: translateY(-1px);
+    }
+
+    .icon-action-btn.active {
+      background: var(--accent-lime-soft);
+      border-color: var(--accent-lime);
+      color: var(--accent-lime);
+    }
+
+    .icon-action-btn.btn-primary-highlight {
+      background: linear-gradient(135deg, var(--accent-lime), var(--accent-lime-dark));
+      border: 1px solid var(--accent-lime);
+      color: #071903;
+      font-weight: 700;
+      box-shadow: 0 4px 14px var(--accent-lime-glow);
+    }
+
+    .icon-action-btn.btn-primary-highlight:hover {
+      background: linear-gradient(135deg, var(--accent-lime-bright), var(--accent-lime));
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       ÁREA DE TRABAJO (ESCENARIO + SIDEBAR DE MINIATURAS + NOTAS)
+       ========================================================================== */
+    .workspace-area {
+      position: relative;
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr) 0px;
+      min-height: 0;
+      height: 100%;
+      transition: grid-template-columns 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    body.hide-sidebar .workspace-area {
+      --sidebar-width: 0px;
+    }
+
+    body.show-notes .workspace-area {
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--notes-width);
+    }
+
+    body.present-mode .workspace-area {
+      grid-template-columns: 0px 1fr 0px;
+    }
+
+    /* --- SIDEBAR DE MINIATURAS (ESTILO POWERPOINT) --- */
+    .sidebar {
+      background: rgba(10, 13, 17, 0.85);
+      backdrop-filter: blur(16px);
+      border-right: 1px solid var(--glass-border);
+      padding: 16px 12px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.15) transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 30;
+      transition: all 0.3s;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-header h2 {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .sidebar-badge {
+      font-size: 0.66rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .thumbnail-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .thumbnail-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateX(2px);
+    }
+
+    .thumbnail-item.active {
+      background: rgba(139, 224, 52, 0.08);
+      border-color: rgba(139, 224, 52, 0.5);
+      box-shadow: 0 4px 14px rgba(139, 224, 52, 0.15);
+    }
+
+    .thumb-index {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-dim);
+      font-family: var(--font-code);
+      font-size: 0.68rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .thumbnail-item.active .thumb-index {
+      background: var(--accent-lime);
+      color: #071903;
+    }
+
+    .thumb-preview-box {
+      width: 64px;
+      height: 40px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #000;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .thumb-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .thumbnail-item:hover .thumb-preview-box img,
+    .thumbnail-item.active .thumb-preview-box img {
+      opacity: 1;
+    }
+
+    .thumb-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .thumb-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .thumb-sub {
+      font-size: 0.66rem;
+      color: var(--text-dim);
+      margin-top: 1px;
+    }
+
+    /* --- ESCENARIO DE PRESENTACIÓN (STAGE) --- */
+    .stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+      perspective: 1400px;
+    }
+
+    body.present-mode .stage {
+      padding: 0;
+    }
+
+    .presentation-canvas-frame {
+      position: relative;
+      width: 100%;
+      max-width: 1440px;
+      aspect-ratio: 16 / 9;
+      max-height: calc(100vh - var(--topbar-height) - var(--bottombar-height) - 48px);
+      background: rgba(14, 18, 24, 0.82);
+      backdrop-filter: blur(28px) saturate(200%);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 
+        0 30px 80px -20px rgba(0, 0, 0, 0.85),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      transition: all 0.35s ease;
+    }
+
+    body.present-mode .presentation-canvas-frame {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    /* CONTENEDOR DE DIAPOSITIVAS */
+    .slides-deck {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* CADA DIAPOSITIVA */
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96) translateY(20px);
+      transition: 
+        opacity 0.5s var(--transition-smooth),
+        transform 0.6s var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      padding: 44px 56px 40px;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+      z-index: 5;
+    }
+
+    .slide.prev {
+      opacity: 0;
+      transform: scale(0.96) translateY(-20px);
+    }
+
+    /* EN-CABEZADO DE DIAPOSITIVA */
+    .slide-chrome-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    .slide-chrome-left {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .slide-chrome-right {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .slide-chrome-indicator {
+      position: absolute;
+      bottom: -2px;
+      left: 120px;
+      width: 200px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--accent-lime);
+      box-shadow: 0 0 12px var(--accent-lime);
+      animation: indicatorExpand 0.8s var(--transition-smooth) both;
+    }
+
+    @keyframes indicatorExpand {
+      from { width: 0; opacity: 0; }
+      to { width: 220px; opacity: 1; }
+    }
+
+    .slide-body {
+      flex: 1;
+      display: grid;
+      min-height: 0;
+      position: relative;
+    }
+
+    /* ==========================================================================
+       ANIMACIONES DE TEXTO Y ELEMENTOS (TRIGGERED ON .slide.active)
+       ========================================================================== */
+    .anim-fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .slide.active .anim-fade-up {
+      animation: animFadeUp 0.75s var(--transition-smooth) var(--delay, 0s) forwards;
+    }
+
+    .anim-fade-left {
+      opacity: 0;
+      transform: translateX(-36px);
+    }
+    .slide.active .anim-fade-left {
+      animation: animFadeLeft 0.75s var(--transition-smooth) var(--delay, 0s) forwards;
+    }
+
+    .anim-fade-right {
+      opacity: 0;
+      transform: translateX(36px);
+    }
+    .slide.active .anim-fade-right {
+      animation: animFadeRight 0.75s var(--transition-smooth) var(--delay, 0s) forwards;
+    }
+
+    .anim-pop {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    .slide.active .anim-pop {
+      animation: animPop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0s) forwards;
+    }
+
+    @keyframes animFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes animFadeLeft {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes animFadeRight {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes animPop {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ==========================================================================
+       DIAPOSITIVA 1: PORTADA
+       ========================================================================== */
+    .slide-hero-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: center;
+      gap: 40px;
+      height: 100%;
+    }
+
+    .hero-visual-col {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Tarjeta de la Brújula Glassmorphism */
+    .compass-glass-card {
+      width: 220px;
+      height: 220px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border-bright);
+      backdrop-filter: blur(20px);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(139, 224, 52, 0.12),
+        inset 0 1px 1px rgba(255, 255, 255, 0.25);
+      display: grid;
+      place-items: center;
+      position: relative;
+      margin-bottom: -50px;
+      z-index: 4;
+      animation: floatGentle 6s ease-in-out infinite;
+    }
+
+    .compass-img-wrap {
+      width: 140px;
+      height: 140px;
+      position: relative;
+    }
+
+    .compass-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+      animation: rotateCompass 20s linear infinite;
+    }
+
+    .compass-glow-ring {
+      position: absolute;
+      inset: -10px;
+      border-radius: 50%;
+      border: 2px dashed rgba(139, 224, 52, 0.35);
+      animation: spinCounter 30s linear infinite;
+    }
+
+    @keyframes rotateCompass {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spinCounter {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(1.5deg); }
+    }
+
+    /* Mockup iPhone acostado (Perspectiva como en captura 113418.png) */
+    .hero-phone-tilted {
+      width: 320px;
+      height: 240px;
+      border-radius: 36px 36px 0 0;
+      background: #101419;
+      border: 3px solid #2d3540;
+      border-bottom: none;
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.8),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+      transform: perspective(900px) rotateX(24deg) rotateY(-8deg) rotateZ(-4deg);
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-phone-screen {
+      position: absolute;
+      inset: 8px;
+      background: linear-gradient(145deg, #1e252f 0%, #0d1014 100%);
+      border-radius: 28px 28px 0 0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .phone-island-notch {
+      width: 90px;
+      height: 20px;
+      background: #000;
+      border-radius: 20px;
+      margin: 0 auto;
+    }
+
+    .phone-app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 8px 12px;
+    }
+
+    .phone-app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.1);
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .phone-app-icon.pwa-highlight {
+      background: linear-gradient(135deg, #f7df1e, #d49a3d);
+      box-shadow: 0 0 16px rgba(139, 224, 52, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      animation: pulseApp 2.5s ease-in-out infinite;
+    }
+
+    .phone-app-icon img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    @keyframes pulseApp {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    /* Columna de Texto de Portada */
+    .hero-text-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .kicker-pill {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(139, 224, 52, 0.12);
+      border: 1px solid rgba(139, 224, 52, 0.35);
+      border-radius: 999px;
+      color: var(--accent-lime);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(139, 224, 52, 0.15);
+    }
+
+    .kicker-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-lime);
+      box-shadow: 0 0 8px var(--accent-lime);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+
+    .hero-main-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4.4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero-main-title .gradient-word {
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-lime) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 540px;
+    }
+
+    .hero-highlights-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .highlight-glass-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      transition: all 0.2s;
+    }
+
+    .highlight-glass-badge:hover {
+      background: rgba(139, 224, 52, 0.1);
+      border-color: rgba(139, 224, 52, 0.4);
+      color: var(--accent-lime);
+      transform: translateY(-2px);
+    }
+
+    .highlight-icon {
+      font-size: 1rem;
+    }
+
+    /* ==========================================================================
+       DIAPOSITIVA 2: CARACTERÍSTICAS · RESPONSIVE, MODOS & PWA
+       ========================================================================== */
+    .slide-features-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 40px;
+      height: 100%;
+    }
+
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .feature-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 20px 22px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(139, 224, 52, 0.12) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(139, 224, 52, 0.5);
+      transform: translateX(8px);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5), 0 0 20px rgba(139, 224, 52, 0.15);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(139, 224, 52, 0.1);
+      border: 1px solid rgba(139, 224, 52, 0.3);
+      display: grid;
+      place-items: center;
+      color: var(--accent-lime);
+      flex-shrink: 0;
+      transition: all 0.25s;
+    }
+
+    .feature-card:hover .feature-icon-box {
+      background: var(--accent-lime);
+      color: #071903;
+      transform: scale(1.08) rotate(3deg);
+      box-shadow: 0 0 20px var(--accent-lime-glow);
+    }
+
+    .feature-icon-box svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .feature-text h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 5px;
+      letter-spacing: -0.2px;
+    }
+
+    .feature-text p {
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    /* MOCKUP 3D DE TELÉFONOS (CAPTURA 113439.png) */
+    .mockup-dual-phones {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-container {
+      position: absolute;
+      width: 250px;
+      height: 500px;
+      border-radius: 42px;
+      background: #0d1117;
+      border: 3.5px solid #333d4b;
+      box-shadow: 
+        0 30px 70px -10px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(255,255,255,0.1),
+        inset 0 1px 2px rgba(255,255,255,0.4);
+      overflow: hidden;
+      transition: all 0.5s var(--transition-smooth);
+    }
+
+    .phone-screen {
+      position: absolute;
+      inset: 6px;
+      border-radius: 34px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Reflejo de luz que pasa dinámicamente por la pantalla */
+    .screen-sheen {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
+      pointer-events: none;
+      opacity: 0.4;
+      animation: sheenSweep 6s infinite;
+    }
+
+    @keyframes sheenSweep {
+      0%, 100% { opacity: 0.2; transform: translateY(-30%); }
+      50% { opacity: 0.5; transform: translateY(30%); }
+    }
+
+    /* Teléfono 1: Modo Claro (Delante) */
+    .phone-light {
+      z-index: 4;
+      transform: translateX(-45px) rotate(-6deg) scale(0.96);
+      animation: floatPhoneA 7s ease-in-out infinite;
+    }
+
+    /* Teléfono 2: Modo Oscuro (Atrás) */
+    .phone-dark {
+      z-index: 2;
+      transform: translateX(65px) translateY(25px) rotate(8deg) scale(0.92);
+      filter: brightness(0.92);
+      animation: floatPhoneB 8s ease-in-out infinite;
+    }
+
+    .phone-container:hover {
+      z-index: 10;
+      transform: scale(1.02) rotate(0deg) !important;
+      filter: brightness(1) !important;
+      box-shadow: 0 40px 90px -10px rgba(0,0,0,0.95), 0 0 30px var(--accent-lime-glow);
+    }
+
+    @keyframes floatPhoneA {
+      0%, 100% { transform: translateX(-45px) rotate(-6deg) scale(0.96) translateY(0); }
+      50% { transform: translateX(-45px) rotate(-6deg) scale(0.96) translateY(-14px); }
+    }
+
+    @keyframes floatPhoneB {
+      0%, 100% { transform: translateX(65px) translateY(25px) rotate(8deg) scale(0.92); }
+      50% { transform: translateX(65px) translateY(12px) rotate(8deg) scale(0.92); }
+    }
+
+    /* Badges flotantes en los teléfonos */
+    .floating-pill-badge {
+      position: absolute;
+      z-index: 12;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(14, 18, 24, 0.85);
+      border: 1px solid var(--glass-border-bright);
+      backdrop-filter: blur(12px);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-light-tag {
+      top: 15%;
+      left: 10%;
+      color: #e5a443;
+      border-color: rgba(229, 164, 67, 0.4);
+    }
+
+    .badge-dark-tag {
+      bottom: 15%;
+      right: 10%;
+      color: var(--accent-cyan);
+      border-color: rgba(7, 206, 245, 0.4);
+    }
+
+    /* ==========================================================================
+       DIAPOSITIVA 3: SERVICIOS Y DESPLIEGUE
+       ========================================================================== */
+    .slide-services-grid {
+      grid-template-columns: 1fr 1.15fr;
+      align-items: center;
+      gap: 36px;
+      height: 100%;
+    }
+
+    /* MOCKUP MACBOOK PRO + VENTANA FLOTANTE DE BROWSER (113453.png) */
+    .laptop-showcase-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    /* Ventana flotante estilo Safari glass */
+    .floating-browser-card {
+      width: 85%;
+      background: rgba(240, 243, 246, 0.95);
+      color: #1e293b;
+      border-radius: 14px 14px 0 0;
+      padding: 10px 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      margin-bottom: -15px;
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,0.4);
+      animation: floatBrowser 7s ease-in-out infinite;
+    }
+
+    .browser-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mac-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mac-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .mac-dot.red { background: #ff5f56; }
+    .mac-dot.yellow { background: #ffbd2e; }
+    .mac-dot.green { background: #27c93f; }
+
+    .browser-url-pill {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #ffffff;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-family: var(--font-code);
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    .browser-lock-icon {
+      color: var(--accent-lime-dark);
+      font-size: 0.72rem;
+    }
+
+    /* Mockup Laptop MacBook Pro */
+    .macbook-mockup {
+      width: 100%;
+      max-width: 580px;
+      position: relative;
+      z-index: 3;
+      transform: perspective(1200px) rotateX(4deg);
+      transition: transform 0.4s ease;
+    }
+
+    .macbook-mockup:hover {
+      transform: perspective(1200px) rotateX(0deg) scale(1.02);
+    }
+
+    .macbook-screen-lid {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #090b0e;
+      border: 10px solid #1a2026;
+      border-bottom: 12px solid #1a2026;
+      border-radius: 16px 16px 2px 2px;
+      box-shadow: 
+        0 25px 60px -15px rgba(0,0,0,0.9),
+        inset 0 0 0 1px rgba(255,255,255,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .macbook-webcam {
+      position: absolute;
+      top: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #050709;
+      border: 1px solid #232b34;
+      z-index: 10;
+    }
+
+    .macbook-screen-content {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .macbook-screen-content img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .macbook-base {
+      width: 116%;
+      margin-left: -8%;
+      height: 14px;
+      background: linear-gradient(180deg, #b0b8c2 0%, #7d858f 60%, #575e67 100%);
+      border-radius: 0 0 16px 16px;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    }
+
+    .macbook-notch-cutout {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 5px;
+      background: #393e45;
+      border-radius: 0 0 6px 6px;
+    }
+
+    @keyframes floatBrowser {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ==========================================================================
+       DIAPOSITIVA 4: PLAN ACADÉMICO Y EVALUACIÓN (113506.png)
+       ========================================================================== */
+    .slide-quiz-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 40px;
+      height: 100%;
+    }
+
+    /* Escalón de Bloques verdes (diseño de la captura 113506) */
+    .stepped-blocks-col {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      justify-content: center;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.3s;
+    }
+
+    .step-item.step-indent-1 { transform: translateX(0); }
+    .step-item.step-indent-2 { transform: translateX(30px); }
+    .step-item.step-indent-3 { transform: translateX(60px); }
+    .step-item.step-indent-4 { transform: translateX(90px); }
+
+    .step-item:hover {
+      transform: scale(1.03) translateX(calc(var(--base-indent, 0px) + 8px));
+    }
+
+    .step-green-square {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      background: var(--accent-lime);
+      box-shadow: 0 0 16px var(--accent-lime-glow);
+      flex-shrink: 0;
+      animation: pulseSquare 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseSquare {
+      0% { box-shadow: 0 0 10px var(--accent-lime); }
+      100% { box-shadow: 0 0 22px var(--accent-lime-bright); }
+    }
+
+    .step-content-card {
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Mockup Tablet (iPad) con cuestionario interactivo */
+    .mockup-tablet-wrap {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tablet-device {
+      width: 380px;
+      height: 520px;
+      border-radius: 36px;
+      background: #11151a;
+      border: 4px solid #363e4a;
+      box-shadow: 
+        0 35px 80px -15px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(255,255,255,0.1),
+        0 0 50px rgba(139, 224, 52, 0.15);
+      position: relative;
+      overflow: hidden;
+      transform: perspective(1000px) rotateY(-6deg) rotateX(3deg);
+      transition: all 0.4s ease;
+    }
+
+    .tablet-device:hover {
+      transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02);
+    }
+
+    .tablet-screen {
+      position: absolute;
+      inset: 8px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tablet-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    /* Overlay interactivo para que el usuario pueda presionar en la presentación */
+    .tablet-interactive-overlay {
+      position: absolute;
+      bottom: 24px;
+      left: 18px;
+      right: 18px;
+      background: rgba(14, 18, 24, 0.92);
+      border: 1px solid var(--accent-lime);
+      border-radius: 16px;
+      padding: 14px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-overlay-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--accent-lime);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .quiz-options-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .quiz-demo-btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quiz-demo-btn:hover {
+      background: rgba(139, 224, 52, 0.2);
+      border-color: var(--accent-lime);
+      color: var(--accent-lime);
+    }
+
+    .quiz-demo-btn.selected {
+      background: var(--accent-lime);
+      border-color: var(--accent-lime);
+      color: #081a04;
+      font-weight: 700;
+      box-shadow: 0 0 14px var(--accent-lime-glow);
+    }
+
+    /* ==========================================================================
+       DIAPOSITIVA 5: CIERRE COMERCIAL Y LLAMADA A LA ACCIÓN
+       ========================================================================== */
+    .slide-closing-grid {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 28px;
+      height: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .closing-cards-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .closing-milestone-card {
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.3s;
+    }
+
+    .closing-milestone-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(139, 224, 52, 0.5);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+    }
+
+    .milestone-num {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--accent-lime);
+      line-height: 1;
+    }
+
+    .milestone-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .milestone-desc {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .closing-cta-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 36px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(139, 224, 52, 0.16) 0%, rgba(7, 206, 245, 0.08) 100%);
+      border: 1px solid rgba(139, 224, 52, 0.4);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(139, 224, 52, 0.1);
+    }
+
+    .cta-text-wrap h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .cta-text-wrap p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .cta-buttons-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-cta-big {
+      padding: 13px 26px;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .btn-cta-big.primary {
+      background: var(--accent-lime);
+      color: #071903;
+      border: 1px solid var(--accent-lime);
+      box-shadow: 0 4px 18px var(--accent-lime-glow);
+    }
+
+    .btn-cta-big.primary:hover {
+      background: var(--accent-lime-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(139, 224, 52, 0.55);
+    }
+
+    .btn-cta-big.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--glass-border-bright);
+    }
+
+    .btn-cta-big.secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       PANEL DE NOTAS DEL ORADOR (SPEAKER NOTES)
+       ========================================================================== */
+    .notes-panel {
+      background: rgba(12, 16, 21, 0.9);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid var(--glass-border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      z-index: 30;
+      transition: all 0.3s;
+    }
+
+    .notes-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 10px;
+    }
+
+    .notes-header h3 {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-lime);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .notes-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .notes-body {
+      font-size: 0.86rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    .notes-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .notes-bullets li {
+      position: relative;
+      padding-left: 20px;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .notes-bullets li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent-lime);
+      font-size: 1rem;
+    }
+
+    .notes-shortcut-hint {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    /* ==========================================================================
+       BARRA INFERIOR (POWERPOINT PLAYER CONTROLS)
+       ========================================================================== */
+    .bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(12, 15, 20, 0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-top: 1px solid var(--glass-border);
+      z-index: 50;
+      transition: all 0.3s ease;
+    }
+
+    .nav-ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-arrow-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-arrow-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--glass-border-bright);
+      transform: scale(1.05);
+    }
+
+    .nav-arrow-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .slide-counter-badge {
+      font-family: var(--font-code);
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 9px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    .slide-counter-badge span {
+      color: var(--accent-lime);
+    }
+
+    /* Barra de Progreso Interactiva */
+    .timeline-progress-wrap {
+      flex: 1;
+      max-width: 500px;
+      margin: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: linear-gradient(90deg, var(--accent-lime-dark), var(--accent-lime));
+      box-shadow: 0 0 12px var(--accent-lime);
+      width: 20%;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .current-slide-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 240px;
+    }
+
+    /* ==========================================================================
+       VISTA EN REJILLA / SLIDE SORTER (MODO OVERVIEW [G])
+       ========================================================================== */
+    .overview-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 10, 13, 0.94);
+      backdrop-filter: blur(20px);
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    body.overview-open .overview-modal {
+      display: flex;
+    }
+
+    .overview-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto 24px;
+      width: 100%;
+    }
+
+    .overview-top-row h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: #fff;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .overview-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .overview-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--accent-lime);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 25px rgba(139, 224, 52, 0.2);
+    }
+
+    .overview-card.active {
+      border-color: var(--accent-lime);
+      box-shadow: 0 0 0 2px var(--accent-lime), 0 0 30px var(--accent-lime-glow);
+    }
+
+    .overview-card-shot {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      margin-bottom: 10px;
+    }
+
+    .overview-card-shot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .overview-card-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .overview-card-num {
+      font-size: 0.72rem;
+      color: var(--accent-lime);
+      font-family: var(--font-code);
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       MODAL DE AYUDA DE ATAJOS DE TECLADO (?)
+       ========================================================================== */
+    .help-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 8, 10, 0.85);
+      backdrop-filter: blur(14px);
+      z-index: 120;
+      display: none;
+      place-items: center;
+      padding: 20px;
+    }
+
+    body.help-open .help-modal {
+      display: grid;
+    }
+
+    .help-dialog {
+      background: #11151b;
+      border: 1px solid var(--glass-border-bright);
+      border-radius: 20px;
+      padding: 28px 32px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.8);
+    }
+
+    .help-dialog h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .help-dialog p.subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .keys-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 20px;
+      margin-bottom: 24px;
+    }
+
+    .key-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+    }
+
+    .key-row kbd {
+      background: #1c222b;
+      border: 1px solid var(--glass-border);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: var(--font-code);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-lime);
+    }
+
+    /* PANTALLA NEGRA / PAUSA DE POWERPOINT [B] */
+    .blackout-curtain {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 999;
+      display: none;
+      place-items: center;
+      color: #333;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+    }
+
+    body.blackout .blackout-curtain {
+      display: grid;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE DESIGN (TABLETS Y MÓVILES)
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .workspace-area {
+        grid-template-columns: 0px 1fr 0px !important;
+      }
+      .sidebar {
+        display: none;
+      }
+      .slide-hero-grid,
+      .slide-features-grid,
+      .slide-services-grid,
+      .slide-quiz-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .hero-visual-col,
+      .mockup-dual-phones,
+      .laptop-showcase-wrap,
+      .mockup-tablet-wrap {
+        display: none;
+      }
+      .slide {
+        padding: 24px 28px;
+        overflow-y: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       FONDO AMBIENTAL DE GLASSMORFISMO CON RESPLANDORES EN MOVIMIENTO
+       ========================================================================== */
+  <div class="ambient-background" aria-hidden="true">
+    <div class="ambient-orb orb-lime"></div>
+    <div class="ambient-orb orb-amber"></div>
+    <div class="ambient-orb orb-cyan"></div>
+    <div class="ambient-grid"></div>
+  </div>
+
+  <!-- Botón flotante para salir de pantalla completa / presentación -->
+  <button class="present-exit-btn" id="btnExitPresent" title="Salir de pantalla completa (Esc)">
+    ✕ Salir de Modo Presentación <kbd style="margin-left:4px;font-size:0.7em;">Esc</kbd>
+  </button>
+
+  <!-- Telón de pausa / pantalla negra estilo PowerPoint [B] -->
+  <div class="blackout-curtain" id="blackoutCurtain">
+    Presiona <kbd style="color:#8be034;margin:0 6px;">B</kbd> o cualquier tecla para continuar
+  </div>
+
+  <!-- ==========================================================================
+       VIEWPORT PRINCIPAL
+       ========================================================================== -->
+  <div class="app-viewport">
+
+    <!-- ==================== BARRA SUPERIOR ==================== -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand-pill">
+          <div class="brand-logo-icon">
+            <img src="favicon.svg" alt="Brújula Logo">
+          </div>
+          <span class="brand-title">Mapa del Desarrollo Web</span>
+          <span class="brand-tag">Propuesta 2026</span>
+        </div>
+      </div>
+
+      <div class="topbar-center">
+        <button class="mode-tab-btn active" id="tabSlideView" title="Vista de Diapositiva">
+          <span>Diapositiva</span>
+        </button>
+        <button class="mode-tab-btn" id="tabGridView" title="Vista de Rejilla (G)">
+          <span>Rejilla (G)</span>
+        </button>
+      </div>
+
+      <div class="topbar-right">
+        <button class="icon-action-btn" id="btnToggleSidebar" title="Mostrar/ocultar miniaturas (S)">
+          <span>▤</span> <span class="hide-mobile">Miniaturas</span>
+        </button>
+        <button class="icon-action-btn" id="btnToggleNotes" title="Notas del orador (N)">
+          <span>✐</span> <span class="hide-mobile">Notas</span>
+        </button>
+        <button class="icon-action-btn" id="btnHelp" title="Atajos de teclado (?)">
+          <span>?</span>
+        </button>
+        <button class="icon-action-btn btn-primary-highlight" id="btnFullscreen" title="Iniciar Presentación (F)">
+          <span>⛶</span> Iniciar Presentación
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== ÁREAS DE TRABAJO ==================== -->
+    <div class="workspace-area">
+
+      <!-- Miniaturas laterales estilo PowerPoint -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h2>Diapositivas</h2>
+          <span class="sidebar-badge" id="sidebarTotalBadge">5 slides</span>
+        </div>
+        <div id="thumbnailsContainer" class="thumbs-list">
+          <!-- Generado dinámicamente -->
+        </div>
+      </aside>
+
+      <!-- Escenario central -->
+      <main class="stage" id="stage">
+        <div class="presentation-canvas-frame" id="canvasFrame">
+          <div class="slides-deck" id="slidesDeck">
+
+            <!-- ============================================================
+                 DIAPOSITIVA 1: PORTADA · MAPA DEL DESARROLLO WEB
+                 ============================================================ -->
+            <section class="slide active" data-index="0">
+              <div class="slide-chrome-header">
+                <div class="slide-chrome-left">Portfolio 2026 · Propuesta para Cliente</div>
+                <div class="slide-chrome-right">Mapa del Desarrollo Web</div>
+                <div class="slide-chrome-indicator"></div>
+              </div>
+
+              <div class="slide-body slide-hero-grid">
+                <!-- Visual / Mockup con Brújula y iPhone -->
+                <div class="hero-visual-col anim-fade-left" style="--delay: 0.15s;">
+                  <div class="compass-glass-card">
+                    <div class="compass-glow-ring"></div>
+                    <div class="compass-img-wrap">
+                      <img src="favicon.svg" alt="Brújula del Mapa del Tesoro">
+                    </div>
+                  </div>
+                  <div class="hero-phone-tilted">
+                    <div class="hero-phone-screen">
+                      <div class="phone-island-notch"></div>
+                      <div class="phone-app-grid">
+                        <div class="phone-app-icon pwa-highlight" title="Mapa del Tesoro PWA">
+                          <img src="favicon.svg" alt="App PWA">
+                        </div>
+                        <div class="phone-app-icon">
+                          <svg viewBox="0 0 24 24" width="22" height="22" fill="#8be034"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        </div>
+                        <div class="phone-app-icon">
+                          <svg viewBox="0 0 24 24" width="22" height="22" fill="#07cef5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Textos Animados -->
+                <div class="hero-text-col">
+                  <div class="kicker-pill anim-fade-up" style="--delay: 0.25s;">
+                    <span class="kicker-dot"></span>
+                    Aplicación Interactiva de Aprendizaje
+                  </div>
+
+                  <h1 class="hero-main-title anim-fade-up" style="--delay: 0.4s;">
+                    Mapa del<br>
+                    <span class="gradient-word">Desarrollo Web</span>
+                  </h1>
+
+                  <p class="hero-description anim-fade-up" style="--delay: 0.55s;">
+                    Una experiencia gamificada con estética de mapas y pergaminos para enseñar y evaluar los cimientos del desarrollo web frontend: HTML, CSS y JavaScript.
+                  </p>
+
+                  <div class="hero-highlights-row anim-fade-up" style="--delay: 0.7s;">
+                    <div class="highlight-glass-badge">
+                      <span class="highlight-icon">🏝️</span> 3 Islas Temáticas
+                    </div>
+                    <div class="highlight-glass-badge">
+                      <span class="highlight-icon">📖</span> 30 Módulos de Estudio
+                    </div>
+                    <div class="highlight-glass-badge">
+                      <span class="highlight-icon">🏆</span> 3 Exámenes Finales
+                    </div>
+                    <div class="highlight-glass-badge">
+                      <span class="highlight-icon">⚡</span> 100% PWA Instalable
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================================
+                 DIAPOSITIVA 2: CARACTERÍSTICAS · RESPONSIVE, MODOS & PWA
+                 ============================================================ -->
+            <section class="slide" data-index="1">
+              <div class="slide-chrome-header">
+                <div class="slide-chrome-left">01 · Experiencia de Usuario</div>
+                <div class="slide-chrome-right">Características de la Plataforma</div>
+                <div class="slide-chrome-indicator"></div>
+              </div>
+
+              <div class="slide-body slide-features-grid">
+                <!-- Columna Izquierda: Tarjetas de Características -->
+                <div class="features-list">
+                  <div class="feature-card anim-fade-left" style="--delay: 0.2s;">
+                    <div class="feature-icon-box">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                      </svg>
+                    </div>
+                    <div class="feature-text">
+                      <h3>Responsivo: Celular, Escritorio y Tableta</h3>
+                      <p>Diseño inteligente con CSS Grid y Flexbox que recalcula y acomoda las islas, barras de navegación y pergaminos en cualquier dispositivo.</p>
+                    </div>
+                  </div>
+
+                  <div class="feature-card anim-fade-left" style="--delay: 0.4s;">
+                    <div class="feature-icon-box">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                      </svg>
+                    </div>
+                    <div class="feature-text">
+                      <h3>Modo Claro y Oscuro con Acento Adaptado</h3>
+                      <p>Alternancia entre la experiencia diurna de pergamino cálido y el modo "Modo Mar" nocturno de alto contraste para reducir fatiga visual.</p>
+                    </div>
+                  </div>
+
+                  <div class="feature-card anim-fade-left" style="--delay: 0.6s;">
+                    <div class="feature-icon-box">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                      </svg>
+                    </div>
+                    <div class="feature-text">
+                      <h3>Webapp Instalable (PWA) Sin Tiendas</h3>
+                      <p>Tus estudiantes o clientes pueden instalar el icono directamente en su pantalla de inicio desde el navegador, con carga ultrarrápida.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columna Derecha: Mockups 3D de Teléfonos (Captura 113439) -->
+                <div class="mockup-dual-phones anim-fade-right" style="--delay: 0.35s;">
+                  <div class="floating-pill-badge badge-light-tag">
+                    ☀️ Modo Claro
+                  </div>
+
+                  <!-- Teléfono Claro (Delante) -->
+                  <div class="phone-container phone-light" title="Modo Claro: Pergamino">
+                    <div class="phone-screen">
+                      <img src="Capturas de presentacion/capturas de pnatalla de la spaginas/WhatsApp Image 2026-10-15 at 9.04.10 PM.jpeg" alt="Modo Claro App">
+                      <div class="screen-sheen"></div>
+                    </div>
+                  </div>
+
+                  <div class="floating-pill-badge badge-dark-tag">
+                    🌙 Modo Oscuro
+                  </div>
+
+                  <!-- Teléfono Oscuro (Atrás) -->
+                  <div class="phone-container phone-dark" title="Modo Oscuro: Mar Profundo">
+                    <div class="phone-screen">
+                      <img src="Capturas de presentacion/capturas de pnatalla de la spaginas/WhatsApp Image 2026-10-15 at 9.05.36 PM.jpeg" alt="Modo Oscuro App">
+                      <div class="screen-sheen"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================================
+                 DIAPOSITIVA 3: SERVICIOS Y DESPLIEGUE
+                 ============================================================ -->
+            <section class="slide" data-index="2">
+              <div class="slide-chrome-header">
+                <div class="slide-chrome-left">02 · Infraestructura y Autonomía</div>
+                <div class="slide-chrome-right">Servicios Incluidos en la Entrega</div>
+                <div class="slide-chrome-indicator"></div>
+              </div>
+
+              <div class="slide-body slide-services-grid">
+                <!-- Columna Izquierda: Servicios -->
+                <div class="features-list">
+                  <div class="feature-card anim-fade-left" style="--delay: 0.2s;">
+                    <div class="feature-icon-box">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>
+                      </svg>
+                    </div>
+                    <div class="feature-text">
+                      <h3>Hosting por 1 Año Incluido</h3>
+                      <p>Servidor optimizado para frontend estático de alta disponibilidad, certificado SSL (HTTPS) y distribución CDN mundial.</p>
+                    </div>
+                  </div>
+
+                  <div class="feature-card anim-fade-left" style="--delay: 0.4s;">
+                    <div class="feature-icon-box">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                      </svg>
+                    </div>
+                    <div class="feature-text">
+                      <h3>Dominio por 1 Año con GEO y SEO</h3>
+                      <p>Configurado con etiquetas geográficas (GEO tags), metadatos OpenGraph para redes sociales y datos Schema.org listos para Google.</p>
+                    </div>
+                  </div>
+
+                  <div class="feature-card anim-fade-left" style="--delay: 0.6s;">
+                    <div class="feature-icon-box">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                      </svg>
+                    </div>
+                    <div class="feature-text">
+                      <h3>Autoadministrable · 2 Sesiones</h3>
+                      <p>Dos sesiones completas de capacitación directa para que puedas editar lecciones, preguntas, sonidos e imágenes de forma completamente autónoma.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columna Derecha: MacBook Pro + Safari Float (Captura 113453) -->
+                <div class="laptop-showcase-wrap anim-fade-right" style="--delay: 0.35s;">
+                  <div class="floating-browser-card">
+                    <div class="browser-controls-row">
+                      <div class="mac-dots">
+                        <span class="mac-dot red"></span>
+                        <span class="mac-dot yellow"></span>
+                        <span class="mac-dot green"></span>
+                      </div>
+                      <div class="browser-url-pill">
+                        <span class="browser-lock-icon">🔒</span> raulkanob-cmd.github.io/Mapadeltesoro/
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="macbook-mockup">
+                    <div class="macbook-screen-lid">
+                      <div class="macbook-webcam"></div>
+                      <div class="macbook-screen-content">
+                        <img src="Capturas de presentacion/capturas de pnatalla de la spaginas/Captura de pantalla (288).png" alt="Escritorio Vista Completa">
+                      </div>
+                    </div>
+                    <div class="macbook-base">
+                      <div class="macbook-notch-cutout"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================================
+                 DIAPOSITIVA 4: METODOLOGÍA Y EVALUACIÓN
+                 ============================================================ -->
+            <section class="slide" data-index="3">
+              <div class="slide-chrome-header">
+                <div class="slide-chrome-left">03 · Pedagogía Interactiva</div>
+                <div class="slide-chrome-right">Contenido y Métodos de Evaluación</div>
+                <div class="slide-chrome-indicator"></div>
+              </div>
+
+              <div class="slide-body slide-quiz-grid">
+                <!-- Columna Izquierda: Pasos Escalonados Verdes (Captura 113506) -->
+                <div class="stepped-blocks-col">
+                  <div class="step-item step-indent-1 anim-fade-left" style="--delay: 0.2s; --base-indent: 0px;">
+                    <div class="step-green-square"></div>
+                    <div class="step-content-card">
+                      <div class="step-title">HTML, CSS Y JAVASCRIPT</div>
+                      <div class="step-desc">Las 3 tecnologías maestras divididas en islas progresivas.</div>
+                    </div>
+                  </div>
+
+                  <div class="step-item step-indent-2 anim-fade-left" style="--delay: 0.4s; --base-indent: 30px;">
+                    <div class="step-green-square"></div>
+                    <div class="step-content-card">
+                      <div class="step-title">30 LECCIONES, 3 EXÁMENES</div>
+                      <div class="step-desc">10 lecciones conceptuales por isla con un examen integral de desbloqueo.</div>
+                    </div>
+                  </div>
+
+                  <div class="step-item step-indent-3 anim-fade-left" style="--delay: 0.6s; --base-indent: 60px;">
+                    <div class="step-green-square"></div>
+                    <div class="step-content-card">
+                      <div class="step-title">2 MÉTODOS DE EVALUACIÓN</div>
+                      <div class="step-desc">Preguntas de Verdadero o Falso y Opción Múltiple con retroalimentación en vivo.</div>
+                    </div>
+                  </div>
+
+                  <div class="step-item step-indent-4 anim-fade-left" style="--delay: 0.8s; --base-indent: 90px;">
+                    <div class="step-green-square"></div>
+                    <div class="step-content-card">
+                      <div class="step-title">MÁS DE 100 CONCEPTOS CLAVE</div>
+                      <div class="step-desc">Glosario técnico riguroso explicado con metáforas y ejemplos de código.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columna Derecha: Mockup Tablet (iPad) interactiva (Captura 113506) -->
+                <div class="mockup-tablet-wrap anim-fade-right" style="--delay: 0.4s;">
+                  <div class="tablet-device">
+                    <div class="tablet-screen">
+                      <img src="Capturas de presentacion/capturas de pnatalla de la spaginas/WhatsApp Image 2026-10-15 at 11.21.13 PM.jpeg" alt="Cuestionario en Tablet">
+                      
+                      <!-- Demostración interactiva en vivo dentro de la diapositiva -->
+                      <div class="tablet-interactive-overlay">
+                        <div class="quiz-overlay-label">Demo Interactiva de Evaluación</div>
+                        <div style="font-size:0.75rem;color:#cbd5e1;">¿El atributo for de un &lt;label&gt; debe coincidir con el id del &lt;input&gt;?</div>
+                        <div class="quiz-options-demo">
+                          <button class="quiz-demo-btn selected" id="btnQuizTrue" onclick="selectQuizDemo(this, true)">✓ Verdadero</button>
+                          <button class="quiz-demo-btn" id="btnQuizFalse" onclick="selectQuizDemo(this, false)">✗ Falso</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================================
+                 DIAPOSITIVA 5: PRÓXIMOS PASOS Y CIERRE COMERCIAL
+                 ============================================================ -->
+            <section class="slide" data-index="4">
+              <div class="slide-chrome-header">
+                <div class="slide-chrome-left">04 · De la Propuesta a la Realidad</div>
+                <div class="slide-chrome-right">Plan de Trabajo y Próximos Pasos</div>
+                <div class="slide-chrome-indicator"></div>
+              </div>
+
+              <div class="slide-body slide-closing-grid">
+                <!-- 3 Tarjetas de Hitos -->
+                <div class="closing-cards-row">
+                  <div class="closing-milestone-card anim-fade-up" style="--delay: 0.2s;">
+                    <div class="milestone-num">01</div>
+                    <div class="milestone-title">Alcance & Contenido</div>
+                    <div class="milestone-desc">Personalizamos islas, módulos temáticos y dinámicas de exámenes a la medida exacta de tu institución o empresa.</div>
+                  </div>
+
+                  <div class="closing-milestone-card anim-fade-up" style="--delay: 0.35s;">
+                    <div class="milestone-num">02</div>
+                    <div class="milestone-title">Diseño & PWA</div>
+                    <div class="milestone-desc">Optimizamos la experiencia responsiva, paleta de colores, branding propio y configuramos el manifiesto de webapp instalable.</div>
+                  </div>
+
+                  <div class="closing-milestone-card anim-fade-up" style="--delay: 0.5s;">
+                    <div class="milestone-num">03</div>
+                    <div class="milestone-title">Entrega & Capacitación</div>
+                    <div class="milestone-desc">Publicación en hosting y dominio propio por 1 año, con 2 sesiones guiadas para que tengas el control absoluto.</div>
+                  </div>
+                </div>
+
+                <!-- Banner de Llamada a la Acción para el Cliente -->
+                <div class="closing-cta-banner anim-fade-up" style="--delay: 0.7s;">
+                  <div class="cta-text-wrap">
+                    <h3>¿Listo para conquistar el secreto del desarrollo web?</h3>
+                    <p>Agendemos una demo guiada de 30 minutos sin costo para explorar la app en vivo.</p>
+                  </div>
+                  <div class="cta-buttons-wrap">
+                    <a href="index.html" target="_blank" class="btn-cta-big primary">
+                      🚀 Probar la App en Vivo
+                    </a>
+                    <button class="btn-cta-big secondary" onclick="alert('¡Gracias por tu interés! Por favor contáctame para coordinar la demo de 30 minutos.')">
+                      📅 Agendar Demo
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </main>
+
+      <!-- Panel de Notas del Orador (Speaker Notes) -->
+      <aside class="notes-panel" id="notesPanel">
+        <div class="notes-header">
+          <h3><span>✐</span> NOTAS DEL ORADOR</h3>
+          <span class="sidebar-badge" id="notesSlideNumber">01 / 05</span>
+        </div>
+        <h4 class="notes-title" id="noteHeading">Portada del Proyecto</h4>
+        <p class="notes-body" id="noteBody">
+          Inicia la presentación saludando al cliente y transmitiendo el concepto central: una herramienta de aprendizaje frontend diseñada para no aburrir, gamificada con temática pirata y lista para producción.
+        </p>
+        <ul class="notes-bullets" id="noteBullets">
+          <li>Destaca la brújula y la identidad visual diferenciada.</li>
+          <li>Menciona que la aplicación ya está funcional y probada.</li>
+          <li>Objetivo de la sesión: acordar personalizaciones y puesta en marcha.</li>
+        </ul>
+        <div class="notes-shortcut-hint">
+          Atajos rápidos: Flechas ← → o Espacio · F Pantalla completa · G Rejilla · B Pausa negra
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- ==================== BARRA INFERIOR DE CONTROLES ==================== -->
+    <footer class="bottombar">
+      <div class="nav-ctrl-group">
+        <button class="nav-arrow-btn" id="btnPrevSlide" title="Diapositiva anterior (←)">◀</button>
+        <div class="slide-counter-badge">
+          <span id="currentSlideNumber">01</span> / <b id="totalSlidesNumber">05</b>
+        </div>
+        <button class="nav-arrow-btn" id="btnNextSlide" title="Diapositiva siguiente (→ o Espacio)">▶</button>
+      </div>
+
+      <div class="timeline-progress-wrap" id="timelineWrap" title="Haga clic para avanzar a una diapositiva">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFillBar"></div>
+        </div>
+      </div>
+
+      <div class="nav-ctrl-group">
+        <div class="current-slide-label" id="currentSlideLabel">Mapa del Desarrollo Web</div>
+        <button class="icon-action-btn" id="btnAutoplay" title="Reproducción automática (A)">
+          <span id="autoplayIcon">▷</span> <span class="hide-mobile">Auto</span>
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ==========================================================================
+       MODAL DE VISTA EN REJILLA / SLIDE SORTER (TECLA G)
+       ========================================================================== -->
+  <div class="overview-modal" id="overviewModal">
+    <div class="overview-top-row">
+      <h2>Rejilla de Diapositivas (Slide Sorter)</h2>
+      <button class="icon-action-btn" id="btnCloseOverview">✕ Cerrar Rejilla</button>
+    </div>
+    <div class="overview-grid" id="overviewGrid">
+      <!-- Generado dinámicamente -->
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL DE AYUDA DE ATAJOS DE TECLADO (TECLA ?)
+       ========================================================================== -->
+  <div class="help-modal" id="helpModal">
+    <div class="help-dialog">
+      <h3>Atajos de Teclado</h3>
+      <p class="subtitle">Presentación interactiva estilo PowerPoint en HTML5</p>
+      
+      <div class="keys-layout">
+        <div class="key-row"><kbd>→</kbd> <kbd>Espacio</kbd> Siguiente diapositiva</div>
+        <div class="key-row"><kbd>←</kbd> Diapositiva anterior</div>
+        <div class="key-row"><kbd>F</kbd> Pantalla completa / Presentar</div>
+        <div class="key-row"><kbd>G</kbd> Vista de rejilla (Overview)</div>
+        <div class="key-row"><kbd>N</kbd> Notas del orador</div>
+        <div class="key-row"><kbd>S</kbd> Ocultar / Ver miniaturas</div>
+        <div class="key-row"><kbd>A</kbd> Reproducción automática</div>
+        <div class="key-row"><kbd>B</kbd> Pantalla negra (Pausa)</div>
+        <div class="key-row"><kbd>Inicio</kbd> Primera diapositiva</div>
+        <div class="key-row"><kbd>Fin</kbd> Última diapositiva</div>
+        <div class="key-row"><kbd>Esc</kbd> Salir de modal o modo</div>
+        <div class="key-row"><kbd>?</kbd> Esta ayuda</div>
+      </div>
+
+      <button class="icon-action-btn btn-primary-highlight" style="width:100%;justify-content:center;" id="btnCloseHelp">
+        Entendido
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       LÓGICA JAVASCRIPT DE LA PRESENTACIÓN
+       ========================================================================== -->
+  <script>
+    /* Metadatos profesionales de cada diapositiva */
+    const SLIDES_DATA = [
+      {
+        id: "hero",
+        title: "Mapa del Desarrollo Web",
+        kicker: "00 · Portada",
+        thumbnail: "Capturas de presentacion/Captura de pantalla 2026-10-19 113418.png",
+        heading: "Apertura y Promesa de Valor",
+        notes: "Presenta el proyecto con orgullo. Explica que el 'Mapa del Desarrollo Web' convierte el estudio árido de especificaciones frontend en una aventura pirata estructurada, donde cada isla representa un pilar: Estructura (HTML), Estilo (CSS) y Magia (JavaScript).",
+        bullets: [
+          "Destaca la brújula y la identidad visual diferenciada.",
+          "Menciona que la aplicación ya está funcional y probada.",
+          "Objetivo de la sesión: acordar personalizaciones y puesta en marcha."
+        ]
+      },
+      {
+        id: "features",
+        title: "Características de la Plataforma",
+        kicker: "01 · UX & Funcionalidad",
+        thumbnail: "Capturas de presentacion/Captura de pantalla 2026-10-19 113439.png",
+        heading: "Responsividad y PWA Instalable",
+        notes: "Enfatiza que la aplicación corre con fluidez tanto en teléfonos económicos como en computadoras potentes. El modo oscuro 'Modo Mar' no es un simple filtro negro, sino una paleta calibrada que mantiene la calidez temática.",
+        bullets: [
+          "Responsive real: la interfaz reorganiza dinámicamente las tarjetas de las 3 islas.",
+          "La PWA permite instalarse sin pagar tarifas de comisiones a App Store ni Google Play.",
+          "Carga instantánea y almacenamiento de progreso en local."
+        ]
+      },
+      {
+        id: "services",
+        title: "Servicios y Despliegue",
+        kicker: "02 · Infraestructura",
+        thumbnail: "Capturas de presentacion/Captura de pantalla 2026-10-19 113453.png",
+        heading: "Solución Llave en Mano para el Cliente",
+        notes: "El cliente no necesita saber de servidores ni de configuración de DNS. La propuesta incluye el hosting y el dominio por 12 meses completos, con certificado SSL y metadatos SEO/GEO para posicionar en buscadores.",
+        bullets: [
+          "Infraestructura confiable con 99.9% de disponibilidad garantizada.",
+          "2 sesiones de capacitación personalizada para que el cliente sea 100% autónomo.",
+          "El cliente es dueño de su contenido y su código."
+        ]
+      },
+      {
+        id: "quiz",
+        title: "Plan de Estudio y Evaluación",
+        kicker: "03 · Metodología",
+        thumbnail: "Capturas de presentacion/Captura de pantalla 2026-10-19 113506.png",
+        heading: "Rigor Académico con Gamificación",
+        notes: "Detalla el contenido: 30 lecciones dosificadas para evitar saturación y 3 exámenes finales que certifican el dominio del estudiante. La alternancia de preguntas de Verdadero/Falso y Opción Múltiple refuerza la memoria activa.",
+        bullets: [
+          "Más de 100 conceptos clave explicados sin jerga innecesaria.",
+          "Evaluación continua con retroalimentación inmediata.",
+          "Desbloqueo progresivo: los exámenes requieren haber recorrido las lecciones."
+        ]
+      },
+      {
+        id: "closing",
+        title: "Próximos Pasos & Cierre",
+        kicker: "04 · Hoja de Ruta",
+        thumbnail: "Capturas de presentacion/capturas de pnatalla de la spaginas/Captura de pantalla (288).png",
+        heading: "Llamado a la Acción para el Cliente",
+        notes: "Cierra la reunión con claridad: hay tres etapas ordenadas (Personalización, Pruebas y Lanzamiento). El llamado a la acción es simple: coordinar una demo en vivo de 30 minutos o dar luz verde para iniciar la personalización.",
+        bullets: [
+          "Paso 1: Ajuste de textos, logo y preguntas a gusto del cliente.",
+          "Paso 2: Pruebas en dispositivos reales y despliegue del dominio.",
+          "Paso 3: Lanzamiento oficial y las dos sesiones de entrenamiento."
+        ]
+      }
+    ];
+
+    /* Estado de la Aplicación */
+    let currentIndex = 0;
+    const totalSlides = SLIDES_DATA.length;
+    let autoplayInterval = null;
+    const AUTOPLAY_DELAY = 7000;
+
+    /* Elementos DOM */
+    const slides = document.querySelectorAll('.slide');
+    const curNumEl = document.getElementById('currentSlideNumber');
+    const totNumEl = document.getElementById('totalSlidesNumber');
+    const curLabelEl = document.getElementById('currentSlideLabel');
+    const progressFillBar = document.getElementById('progressFillBar');
+    const thumbnailsContainer = document.getElementById('thumbnailsContainer');
+    const overviewGrid = document.getElementById('overviewGrid');
+
+    const noteHeading = document.getElementById('noteHeading');
+    const noteBody = document.getElementById('noteBody');
+    const noteBullets = document.getElementById('noteBullets');
+    const notesSlideNumber = document.getElementById('notesSlideNumber');
+
+    const btnPrev = document.getElementById('btnPrevSlide');
+    const btnNext = document.getElementById('btnNextSlide');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const btnExitPresent = document.getElementById('btnExitPresent');
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    const btnToggleNotes = document.getElementById('btnToggleNotes');
+    const btnHelp = document.getElementById('btnHelp');
+    const btnCloseHelp = document.getElementById('btnCloseHelp');
+    const tabSlideView = document.getElementById('tabSlideView');
+    const tabGridView = document.getElementById('tabGridView');
+    const btnCloseOverview = document.getElementById('btnCloseOverview');
+    const btnAutoplay = document.getElementById('btnAutoplay');
+    const autoplayIcon = document.getElementById('autoplayIcon');
+    const timelineWrap = document.getElementById('timelineWrap');
+    const blackoutCurtain = document.getElementById('blackoutCurtain');
+
+    /* Inicialización de Miniaturas y Rejilla */
+    function buildThumbnailsAndOverview() {
+      thumbnailsContainer.innerHTML = '';
+      overviewGrid.innerHTML = '';
+
+      SLIDES_DATA.forEach((slide, idx) => {
+        const numStr = String(idx + 1).padStart(2, '0');
+
+        // 1. Miniatura Sidebar
+        const thumb = document.createElement('div');
+        thumb.className = `thumbnail-item ${idx === 0 ? 'active' : ''}`;
+        thumb.dataset.index = idx;
+        thumb.innerHTML = `
+          <div class="thumb-index">${numStr}</div>
+          <div class="thumb-preview-box">
+            <img src="${slide.thumbnail}" alt="${slide.title}">
+          </div>
+          <div class="thumb-info">
+            <div class="thumb-title">${slide.title}</div>
+            <div class="thumb-sub">${slide.kicker}</div>
+          </div>
+        `;
+        thumb.addEventListener('click', () => goToSlide(idx));
+        thumbnailsContainer.appendChild(thumb);
+
+        // 2. Tarjeta Rejilla Overview
+        const card = document.createElement('div');
+        card.className = `overview-card ${idx === 0 ? 'active' : ''}`;
+        card.dataset.index = idx;
+        card.innerHTML = `
+          <div class="overview-card-shot">
+            <img src="${slide.thumbnail}" alt="${slide.title}">
+          </div>
+          <div class="overview-card-title">${slide.title}</div>
+          <div class="overview-card-num">Diapositiva ${numStr} · ${slide.kicker}</div>
+        `;
+        card.addEventListener('click', () => {
+          goToSlide(idx);
+          closeOverview();
+        });
+        overviewGrid.appendChild(card);
+      });
+
+      totNumEl.textContent = String(totalSlides).padStart(2, '0');
+    }
+
+    /* Navegación a Diapositiva */
+    function goToSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+
+      currentIndex = index;
+      const numStr = String(currentIndex + 1).padStart(2, '0');
+      const data = SLIDES_DATA[currentIndex];
+
+      // Actualizar Diapositivas
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active', 'prev');
+        if (i === currentIndex) {
+          slide.classList.add('active');
+        } else if (i < currentIndex) {
+          slide.classList.add('prev');
+        }
+      });
+
+      // Actualizar Barra Inferior
+      curNumEl.textContent = numStr;
+      curLabelEl.textContent = data.title;
+      const pct = ((currentIndex + 1) / totalSlides) * 100;
+      progressFillBar.style.width = `${pct}%`;
+
+      btnPrev.disabled = (currentIndex === 0);
+      btnNext.disabled = (currentIndex === totalSlides - 1);
+
+      // Actualizar Miniaturas y Overview
+      document.querySelectorAll('.thumbnail-item').forEach((t, i) => {
+        t.classList.toggle('active', i === currentIndex);
+      });
+      document.querySelectorAll('.overview-card').forEach((c, i) => {
+        c.classList.toggle('active', i === currentIndex);
+      });
+
+      // Asegurar que la miniatura activa sea visible en el scroll del sidebar
+      const activeThumb = thumbnailsContainer.children[currentIndex];
+      if (activeThumb) {
+        activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Actualizar Notas del Orador
+      notesSlideNumber.textContent = `${numStr} / ${String(totalSlides).padStart(2, '0')}`;
+      noteHeading.textContent = data.heading;
+      noteBody.textContent = data.notes;
+      noteBullets.innerHTML = data.bullets.map(b => `<li>${b}</li>`).join('');
+
+      playSlideBeep();
+    }
+
+    function nextSlide() {
+      if (currentIndex < totalSlides - 1) {
+        goToSlide(currentIndex + 1);
+      } else if (autoplayInterval) {
+        goToSlide(0);
+      }
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        goToSlide(currentIndex - 1);
+      }
+    }
+
+    /* Sintetizador de audio sutil Web Audio */
+    function playSlideBeep() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(480, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(720, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+      } catch(e) {}
+    }
+
+    /* Pantalla Completa / Presentación */
+    function togglePresentationMode() {
+      const isPresent = document.body.classList.toggle('present-mode');
+      if (isPresent) {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      } else {
+        if (document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+    }
+
+    function exitPresentationMode() {
+      document.body.classList.remove('present-mode');
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    /* Vistas y Modales */
+    function toggleOverview() {
+      document.body.classList.toggle('overview-open');
+      tabGridView.classList.toggle('active', document.body.classList.contains('overview-open'));
+      tabSlideView.classList.toggle('active', !document.body.classList.contains('overview-open'));
+    }
+
+    function closeOverview() {
+      document.body.classList.remove('overview-open');
+      tabGridView.classList.remove('active');
+      tabSlideView.classList.add('active');
+    }
+
+    function toggleHelp() {
+      document.body.classList.toggle('help-open');
+    }
+
+    function toggleSidebar() {
+      document.body.classList.toggle('hide-sidebar');
+      btnToggleSidebar.classList.toggle('active', !document.body.classList.contains('hide-sidebar'));
+    }
+
+    function toggleNotes() {
+      document.body.classList.toggle('show-notes');
+      btnToggleNotes.classList.toggle('active', document.body.classList.contains('show-notes'));
+    }
+
+    function toggleBlackout() {
+      document.body.classList.toggle('blackout');
+    }
+
+    function toggleAutoplay() {
+      if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
+        btnAutoplay.classList.remove('active');
+        autoplayIcon.textContent = '▷';
+      } else {
+        autoplayInterval = setInterval(nextSlide, AUTOPLAY_DELAY);
+        btnAutoplay.classList.add('active');
+        autoplayIcon.textContent = '❚❚';
+      }
+    }
+
+    /* Demostración interactiva en la diapositiva 4 */
+    window.selectQuizDemo = function(btn, isTrue) {
+      document.querySelectorAll('.quiz-demo-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      if (isTrue) {
+        btn.textContent = '✓ ¡Correcto!';
+        setTimeout(() => { btn.textContent = '✓ Verdadero'; }, 2000);
+      } else {
+        btn.textContent = '✗ Intenta de nuevo';
+        setTimeout(() => { btn.textContent = '✗ Falso'; }, 2000);
+      }
+    };
+
+    /* Click en la barra de tiempo */
+    timelineWrap.addEventListener('click', (e) => {
+      const rect = timelineWrap.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = clickX / rect.width;
+      const target = Math.floor(pct * totalSlides);
+      goToSlide(target);
+    });
+
+    /* Event Listeners de Botones */
+    btnNext.addEventListener('click', nextSlide);
+    btnPrev.addEventListener('click', prevSlide);
+    btnFullscreen.addEventListener('click', togglePresentationMode);
+    btnExitPresent.addEventListener('click', exitPresentationMode);
+    btnToggleSidebar.addEventListener('click', toggleSidebar);
+    btnToggleNotes.addEventListener('click', toggleNotes);
+    btnHelp.addEventListener('click', toggleHelp);
+    btnCloseHelp.addEventListener('click', () => document.body.classList.remove('help-open'));
+    tabGridView.addEventListener('click', toggleOverview);
+    tabSlideView.addEventListener('click', closeOverview);
+    btnCloseOverview.addEventListener('click', closeOverview);
+    btnAutoplay.addEventListener('click', toggleAutoplay);
+    blackoutCurtain.addEventListener('click', toggleBlackout);
+
+    /* Atajos de Teclado Estilo PowerPoint */
+    window.addEventListener('keydown', (e) => {
+      if (document.body.classList.contains('blackout')) {
+        toggleBlackout();
+        e.preventDefault();
+        return;
+      }
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'PageDown':
+        case ' ':
+          nextSlide();
+          e.preventDefault();
+          break;
+        case 'ArrowLeft':
+        case 'PageUp':
+          prevSlide();
+          e.preventDefault();
+          break;
+        case 'Home':
+          goToSlide(0);
+          e.preventDefault();
+          break;
+        case 'End':
+          goToSlide(totalSlides - 1);
+          e.preventDefault();
+          break;
+        case 'f':
+        case 'F':
+          togglePresentationMode();
+          e.preventDefault();
+          break;
+        case 'g':
+        case 'G':
+          toggleOverview();
+          e.preventDefault();
+          break;
+        case 'n':
+        case 'N':
+          toggleNotes();
+          e.preventDefault();
+          break;
+        case 's':
+        case 'S':
+          toggleSidebar();
+          e.preventDefault();
+          break;
+        case 'a':
+        case 'A':
+          toggleAutoplay();
+          e.preventDefault();
+          break;
+        case 'b':
+        case 'B':
+        case '.':
+          toggleBlackout();
+          e.preventDefault();
+          break;
+        case '?':
+          toggleHelp();
+          e.preventDefault();
+          break;
+        case 'Escape':
+          if (document.body.classList.contains('overview-open')) {
+            closeOverview();
+          } else if (document.body.classList.contains('help-open')) {
+            document.body.classList.remove('help-open');
+          } else if (document.body.classList.contains('present-mode')) {
+            exitPresentationMode();
+          }
+          e.preventDefault();
+          break;
+      }
+    });
+
+    /* Soporte Gestual para Móviles y Tablets (Touch Swipes) */
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const stageEl = document.getElementById('stage');
+
+    stageEl.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    stageEl.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+        if (diffX < 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+    }, { passive: true });
+
+    /* Salir de modo presentación si el usuario pulsa Esc nativo */
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        document.body.classList.remove('present-mode');
+      }
+    });
+
+    // Construcción inicial
+    buildThumbnailsAndOverview();
+    goToSlide(0);
+  </script>
+</body>
+</html>

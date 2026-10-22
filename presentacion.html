@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Karate Do Loma Dorada · Presentación para Cliente (versión móvil)</title>
+
+  <!-- SEO & Social -->
+  <meta name="description" content="Presentación interactiva estilo PowerPoint optimizada para celular (scroll vertical): Escuela Karate Do Loma Dorada. Mockups reales en modo claro y oscuro, dinámica del formulario de inscripción y envío por WhatsApp.">
+  <meta name="theme-color" content="#0B0C10">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+
+  <!-- Google Fonts: misma pareja tipográfica del sitio que se presenta -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. VARIABLES Y TEMA (Misma estructura glassmorphism de la presentación
+          base, recoloreada con la identidad de Karate Do Loma Dorada)
+       ========================================================================== */
+    :root {
+      --bg-dark: #0B0C10;
+      --bg-card: rgba(22, 24, 31, 0.62);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-border-bright: rgba(255, 255, 255, 0.26);
+
+      /* Acentos del dojo (tomados de css/styles.css del sitio) */
+      --accent: #E63027;
+      --accent-bright: #FF4D4D;
+      --accent-deep: #C52219;
+      --accent-glow: rgba(230, 48, 39, 0.42);
+      --accent-soft: rgba(230, 48, 39, 0.14);
+      --gold: #E8B341;
+      --gold-glow: rgba(232, 179, 65, 0.35);
+      --green: #10B981;
+
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --text-dim: #6B7280;
+
+      --font-display: 'Syne', 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+
+      --topbar-height: 56px;
+      --bottombar-height: 62px;
+      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      /* Presentación móvil: cada diapositiva ocupa la pantalla y se avanza
+         deslizando el dedo hacia abajo (snap suave, no forzado) */
+      scroll-snap-type: y proximity;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       2. FONDO AMBIENTAL CON ORBES ANIMADOS (idéntico patrón de la base)
+       ========================================================================== */
+    .ambient-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 40%, #12141B 0%, #0B0C10 100%);
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: 0.4;
+      animation: orbFloat 24s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    .ambient-orb.orb-red {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      top: -160px;
+      right: -140px;
+      animation-duration: 26s;
+    }
+
+    .ambient-orb.orb-gold {
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+      bottom: -140px;
+      left: -160px;
+      opacity: 0.28;
+      animation-duration: 30s;
+      animation-delay: -8s;
+    }
+
+    .ambient-orb.orb-deep {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, var(--accent-deep) 0%, transparent 70%);
+      top: 48%;
+      left: 30%;
+      opacity: 0.22;
+      animation-duration: 34s;
+      animation-delay: -16s;
+    }
+
+    .ambient-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity: 0.7;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, 30px) scale(1.1); }
+      100% { transform: translate(-30px, 50px) scale(0.94); }
+    }
+
+    /* ==========================================================================
+       3. BARRA SUPERIOR FIJA (contador de diapositiva + progreso)
+       ========================================================================== */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--topbar-height);
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 14px;
+      padding-top: env(safe-area-inset-top);
+      background: rgba(11, 12, 16, 0.78);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      padding: 4px 11px 4px 4px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+    }
+
+    .brand-logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFFFFF, #E9E7E1);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 14px rgba(255,255,255,0.18);
+      flex-shrink: 0;
+    }
+
+    .brand-logo-icon img { width: 22px; height: 22px; display: block; }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.72rem;
+      letter-spacing: -0.1px;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .slide-counter-badge {
+      font-family: var(--font-code);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 6px 11px;
+      border-radius: 9px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .slide-counter-badge span { color: var(--accent-bright); }
+
+    .top-progress-track {
+      position: fixed;
+      top: var(--topbar-height);
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.07);
+      z-index: 60;
+    }
+
+    .top-progress-fill {
+      height: 100%;
+      width: 16.6%;
+      background: linear-gradient(90deg, var(--accent-deep), var(--accent-bright));
+      box-shadow: 0 0 12px var(--accent-glow);
+      border-radius: 0 3px 3px 0;
+      transition: width 0.45s var(--transition-smooth);
+    }
+
+    /* ==========================================================================
+       4. BARRA INFERIOR FIJA (controles estilo reproductor de PowerPoint)
+       ========================================================================== */
+    .bottombar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: calc(var(--bottombar-height) + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-left: 14px;
+      padding-right: 14px;
+      background: rgba(11, 12, 16, 0.82);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .nav-arrow-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-arrow-btn:hover, .nav-arrow-btn:active {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.06);
+    }
+
+    .nav-arrow-btn:disabled { opacity: 0.28; cursor: not-allowed; transform: none; }
+
+    .current-slide-label {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ==========================================================================
+       5. ESTRUCTURA DE DIAPOSITIVAS EN SCROLL VERTICAL
+          (Cada .slide es una pantalla completa a la que se llega bajando)
+       ========================================================================== */
+    .slides-deck {
+      position: relative;
+      z-index: 10;
+      padding-top: var(--topbar-height);
+      padding-bottom: var(--bottombar-height);
+    }
+
+    .slide {
+      position: relative;
+      /* La diapositiva vive ENTRE la topbar y la bottombar fijas: si mide
+         100svh completo, su parte inferior queda oculta bajo los controles */
+      min-height: calc(100svh - var(--topbar-height) - var(--bottombar-height));
+      display: flex;
+      flex-direction: column;
+      padding: 22px 16px 30px;
+      scroll-snap-align: start;
+      /* El snap y scrollIntoView deben dejar la diapositiva DEBAJO de la
+         topbar fija, nunca encima (si no, su cabecera queda tapada) */
+      scroll-margin-top: var(--topbar-height);
+      /* Si una palabra es más ancha que su columna, se parte en vez de
+         quedar cortada por el overflow:hidden de la diapositiva */
+      overflow-wrap: break-word;
+      overflow: hidden;
+    }
+
+    /* En-cabecera de diapositiva (chrome) — mismo patrón de la presentación base */
+    .slide-chrome-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+
+    .slide-chrome-left,
+    .slide-chrome-right {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .slide-chrome-right { text-align: right; }
+
+    .slide-chrome-indicator {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      height: 3px;
+      width: 0;
+      border-radius: 2px;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .slide.active .slide-chrome-indicator {
+      animation: indicatorExpand 0.9s var(--transition-smooth) 0.1s both;
+    }
+
+    @keyframes indicatorExpand {
+      from { width: 0; opacity: 0; }
+      to { width: 92px; opacity: 1; }
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       6. ANIMACIONES (se disparan cuando la diapositiva entra en pantalla)
+       ========================================================================== */
+    .anim-fade-up   { opacity: 0; transform: translateY(26px); }
+    .anim-fade-left { opacity: 0; transform: translateX(-32px); }
+    .anim-fade-right{ opacity: 0; transform: translateX(32px); }
+    .anim-pop       { opacity: 0; transform: scale(0.72); }
+
+    .slide.active .anim-fade-up    { animation: animFadeUp 0.75s var(--transition-smooth) var(--delay, 0s) forwards; }
+    .slide.active .anim-fade-left  { animation: animFadeLeft 0.75s var(--transition-smooth) var(--delay, 0s) forwards; }
+    .slide.active .anim-fade-right { animation: animFadeRight 0.75s var(--transition-smooth) var(--delay, 0s) forwards; }
+    .slide.active .anim-pop        { animation: animPop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0s) forwards; }
+
+    @keyframes animFadeUp    { to { opacity: 1; transform: translateY(0); } }
+    @keyframes animFadeLeft  { to { opacity: 1; transform: translateX(0); } }
+    @keyframes animFadeRight { to { opacity: 1; transform: translateX(0); } }
+    @keyframes animPop       { to { opacity: 1; transform: scale(1); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .anim-fade-up, .anim-fade-left, .anim-fade-right, .anim-pop { opacity: 1; transform: none; }
+      * { animation-duration: 0.001s !important; }
+    }
+
+    /* ==========================================================================
+       7. COMPONENTES COMPARTIDOS: PILLS, TARJETAS Y MOCKUPS
+       ========================================================================== */
+    .kicker-pill {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 13px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(230, 48, 39, 0.4);
+      border-radius: 999px;
+      color: var(--accent-bright);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(230, 48, 39, 0.16);
+    }
+
+    .kicker-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+      box-shadow: 0 0 8px var(--accent-bright);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 8.5vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .slide-title .gradient-word {
+      background: linear-gradient(120deg, #ffffff 35%, var(--accent-bright) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .slide-description {
+      font-size: 0.94rem;
+      line-height: 1.62;
+      color: var(--text-muted);
+    }
+
+    .highlight-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .highlight-glass-badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 13px;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #E5E7EB;
+      transition: all 0.2s;
+    }
+
+    .highlight-glass-badge:hover {
+      background: var(--accent-soft);
+      border-color: rgba(230, 48, 39, 0.45);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* Tarjeta glass de escudo (equivalente a la brújula de la presentación base) */
+    .crest-glass-card {
+      width: 132px;
+      height: 132px;
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border-bright);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(230, 48, 39, 0.16),
+        inset 0 1px 1px rgba(255, 255, 255, 0.25);
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: 4;
+      animation: floatGentle 6s ease-in-out infinite;
+    }
+
+    .crest-glass-card img {
+      width: 84px;
+      height: 84px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
+    }
+
+    .crest-glow-ring {
+      position: absolute;
+      inset: -9px;
+      border-radius: 30px;
+      border: 2px dashed rgba(230, 48, 39, 0.4);
+      animation: spinCounter 26s linear infinite;
+    }
+
+    @keyframes spinCounter {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1.5deg); }
+    }
+
+    /* Mockup de teléfono acostado en la portada (misma idea que la base) */
+    .hero-phone-tilted {
+      width: 190px;
+      height: 150px;
+      margin-top: -34px;
+      border-radius: 26px 26px 0 0;
+      background: #0D0E11;
+      border: 3px solid #343A46;
+      border-bottom: none;
+      box-shadow:
+        0 22px 50px rgba(0, 0, 0, 0.8),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+      transform: perspective(800px) rotateX(22deg) rotateY(-7deg) rotateZ(-4deg);
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-phone-tilted img {
+      position: absolute;
+      inset: 6px;
+      width: calc(100% - 12px);
+      height: auto;
+      border-radius: 20px 20px 0 0;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    /* --- MOCKUP 3D DE DOS TELÉFONOS (réplica del mockup 1 de la presentación
+           base: uno en modo claro y otro en modo oscuro) --- */
+    .mockup-dual-phones {
+      position: relative;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 6px 0 2px;
+    }
+
+    .phone-container {
+      position: absolute;
+      width: 170px;
+      height: 340px;
+      border-radius: 30px;
+      background: #0D1117;
+      border: 3px solid #333d4b;
+      box-shadow:
+        0 26px 60px -10px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(255,255,255,0.1),
+        inset 0 1px 2px rgba(255,255,255,0.4);
+      overflow: hidden;
+      transition: all 0.5s var(--transition-smooth);
+    }
+
+    .phone-screen {
+      position: absolute;
+      inset: 5px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    /* Reflejo de luz que pasa dinámicamente por la pantalla */
+    .screen-sheen {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
+      pointer-events: none;
+      opacity: 0.4;
+      animation: sheenSweep 6s infinite;
+    }
+
+    @keyframes sheenSweep {
+      0%, 100% { opacity: 0.18; transform: translateY(-30%); }
+      50% { opacity: 0.45; transform: translateY(30%); }
+    }
+
+    /* Teléfono 1: Modo Claro (Delante) */
+    .phone-light {
+      z-index: 4;
+      transform: translateX(-32px) rotate(-6deg) scale(0.96);
+      animation: floatPhoneA 7s ease-in-out infinite;
+    }
+
+    /* Teléfono 2: Modo Oscuro (Atrás) */
+    .phone-dark {
+      z-index: 2;
+      transform: translateX(44px) translateY(22px) rotate(8deg) scale(0.92);
+      filter: brightness(0.92);
+      animation: floatPhoneB 8s ease-in-out infinite;
+    }
+
+    @keyframes floatPhoneA {
+      0%, 100% { transform: translateX(-32px) rotate(-6deg) scale(0.96) translateY(0); }
+      50% { transform: translateX(-32px) rotate(-6deg) scale(0.96) translateY(-12px); }
+    }
+
+    @keyframes floatPhoneB {
+      0%, 100% { transform: translateX(44px) translateY(22px) rotate(8deg) scale(0.92); }
+      50% { transform: translateX(44px) translateY(10px) rotate(8deg) scale(0.92); }
+    }
+
+    /* Badges flotantes en los teléfonos */
+    .floating-pill-badge {
+      position: absolute;
+      z-index: 12;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(11, 12, 16, 0.88);
+      border: 1px solid var(--glass-border-bright);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-light-tag { top: 12%; left: 2%; color: var(--gold); border-color: rgba(232, 179, 65, 0.45); }
+    .badge-dark-tag  { bottom: 12%; right: 2%; color: var(--accent-bright); border-color: rgba(255, 77, 77, 0.45); }
+
+    /* --- TARJETAS DE CARACTERÍSTICAS --- */
+    .features-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .feature-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 15px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all 0.28s var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--accent-soft) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(230, 48, 39, 0.5);
+      transform: translateX(5px);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5), 0 0 20px rgba(230, 48, 39, 0.14);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(230, 48, 39, 0.32);
+      display: grid;
+      place-items: center;
+      color: var(--accent-bright);
+      flex-shrink: 0;
+      transition: all 0.25s;
+    }
+
+    .feature-card:hover .feature-icon-box {
+      background: var(--accent);
+      color: #fff;
+      transform: scale(1.06) rotate(3deg);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .feature-icon-box svg { width: 22px; height: 22px; }
+
+    .feature-text h3 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+    }
+
+    .feature-text p { font-size: 0.8rem; line-height: 1.5; color: var(--text-muted); }
+
+    /* --- MOCKUP MACBOOK + VENTANA FLOTANTE DE NAVEGADOR --- */
+    .laptop-showcase-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .floating-browser-card {
+      width: 92%;
+      background: rgba(240, 243, 246, 0.96);
+      color: #1e293b;
+      border-radius: 12px 12px 0 0;
+      padding: 8px 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      margin-bottom: -14px;
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      border: 1px solid rgba(255,255,255,0.4);
+      animation: floatBrowser 7s ease-in-out infinite;
+    }
+
+    .browser-controls-row { display: flex; align-items: center; gap: 8px; }
+    .mac-dots { display: flex; gap: 5px; }
+    .mac-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .mac-dot.red { background: #ff5f56; }
+    .mac-dot.yellow { background: #ffbd2e; }
+    .mac-dot.green { background: #27c93f; }
+
+    .browser-url-pill {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      background: #ffffff;
+      padding: 3px 9px;
+      border-radius: 7px;
+      font-size: 0.6rem;
+      font-family: var(--font-code);
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .browser-lock-icon { color: #15803d; font-size: 0.6rem; }
+
+    .macbook-mockup {
+      width: 100%;
+      position: relative;
+      z-index: 3;
+      transform: perspective(1100px) rotateX(4deg);
+      transition: transform 0.4s ease;
+    }
+
+    .macbook-screen-lid {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #090b0e;
+      border: 8px solid #1a2026;
+      border-bottom: 10px solid #1a2026;
+      border-radius: 12px 12px 2px 2px;
+      box-shadow:
+        0 22px 55px -15px rgba(0,0,0,0.9),
+        inset 0 0 0 1px rgba(255,255,255,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .macbook-webcam {
+      position: absolute;
+      top: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #050709;
+      border: 1px solid #232b34;
+      z-index: 10;
+    }
+
+    .macbook-screen-content { width: 100%; height: 100%; background: #000; position: relative; overflow: hidden; }
+
+    .macbook-screen-content img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .macbook-base {
+      width: 114%;
+      margin-left: -7%;
+      height: 12px;
+      background: linear-gradient(180deg, #b0b8c2 0%, #7d858f 60%, #575e67 100%);
+      border-radius: 0 0 14px 14px;
+      position: relative;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.7);
+    }
+
+    .macbook-notch-cutout {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 5px;
+      background: #393e45;
+      border-radius: 0 0 6px 6px;
+    }
+
+    @keyframes floatBrowser {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    /* --- ESCALÓN DE BLOQUES (dinámica de los 4 pasos del formulario) --- */
+    .stepped-blocks-col { display: flex; flex-direction: column; gap: 12px; }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s;
+    }
+
+    .step-item.step-indent-1 { transform: translateX(0); }
+    .step-item.step-indent-2 { transform: translateX(10px); }
+    .step-item.step-indent-3 { transform: translateX(20px); }
+    .step-item.step-indent-4 { transform: translateX(30px); }
+
+    .step-green-square {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent-glow);
+      flex-shrink: 0;
+      animation: pulseSquare 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseSquare {
+      0% { box-shadow: 0 0 8px var(--accent); }
+      100% { box-shadow: 0 0 20px var(--accent-bright); }
+    }
+
+    .step-content-card {
+      flex: 1;
+      padding: 11px 14px;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: -0.1px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .step-desc { font-size: 0.72rem; line-height: 1.45; color: var(--text-muted); margin-top: 2px; }
+
+    /* --- MOCKUP TABLET CON DEMO INTERACTIVA --- */
+    .mockup-tablet-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .tablet-device {
+      width: 232px;
+      height: 330px;
+      border-radius: 28px;
+      background: #11151a;
+      border: 4px solid #363e4a;
+      box-shadow:
+        0 30px 70px -15px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(255,255,255,0.1),
+        0 0 50px rgba(230, 48, 39, 0.16);
+      position: relative;
+      overflow: hidden;
+      transform: perspective(1000px) rotateY(-6deg) rotateX(3deg);
+      transition: all 0.4s ease;
+    }
+
+    .tablet-screen {
+      position: absolute;
+      inset: 7px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .tablet-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    /* Overlay interactivo para que el cliente pueda probar la lógica en vivo */
+    .tablet-interactive-overlay {
+      position: absolute;
+      bottom: 14px;
+      left: 12px;
+      right: 12px;
+      background: rgba(11, 12, 16, 0.93);
+      border: 1px solid var(--accent);
+      border-radius: 14px;
+      padding: 12px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .demo-overlay-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--accent-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .demo-question { font-size: 0.7rem; line-height: 1.45; color: #E5E7EB; min-height: 40px; }
+
+    .demo-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; }
+
+    .demo-btn {
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .demo-btn:hover { background: var(--accent-soft); border-color: var(--accent); color: #fff; }
+
+    .demo-btn.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    /* --- MODALIDADES (chips con los iconos SVG reales del sitio) --- */
+    .modality-chips {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+    }
+
+    .modality-chip {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 12px;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid var(--glass-border);
+      border-radius: 13px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.25s;
+    }
+
+    .modality-chip:hover {
+      background: var(--accent-soft);
+      border-color: rgba(230, 48, 39, 0.5);
+      transform: translateY(-3px);
+    }
+
+    .modality-chip svg { width: 22px; height: 22px; color: var(--accent-bright); flex-shrink: 0; }
+    .modality-chip b { font-family: var(--font-display); font-size: 0.74rem; color: #fff; display: block; }
+    .modality-chip small { font-size: 0.62rem; color: var(--text-muted); line-height: 1.3; display: block; }
+
+    .schedule-cards { display: grid; grid-template-columns: 1fr; gap: 9px; }
+
+    .schedule-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(230,48,39,0.14) 0%, rgba(232,179,65,0.07) 100%);
+      border: 1px solid rgba(230, 48, 39, 0.36);
+    }
+
+    .schedule-time {
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .schedule-card p { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* --- MOCKUP TELÉFONO CON EL MODAL DE CONFIRMACIÓN --- */
+    .phone-single-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .phone-single {
+      position: relative;
+      width: 178px;
+      height: 352px;
+      border-radius: 30px;
+      background: #0D1117;
+      border: 3px solid #333d4b;
+      box-shadow:
+        0 26px 60px -10px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(255,255,255,0.1),
+        0 0 40px rgba(16, 185, 129, 0.14);
+      overflow: hidden;
+      transform: perspective(1000px) rotateY(5deg);
+      animation: floatPhoneA 8s ease-in-out infinite;
+    }
+
+    .phone-single .phone-screen img { object-position: center top; }
+
+    .badge-success-tag {
+      top: 8%;
+      right: 0;
+      color: var(--green);
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+
+    /* --- CIERRE: HITOS Y CTA --- */
+    .closing-cards-row { display: grid; grid-template-columns: 1fr; gap: 11px; }
+
+    .closing-milestone-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 15px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: all 0.3s;
+    }
+
+    .closing-milestone-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(230, 48, 39, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+    }
+
+    .milestone-num {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent-bright);
+      line-height: 1;
+    }
+
+    .milestone-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; color: #fff; }
+    .milestone-desc { font-size: 0.76rem; line-height: 1.5; color: var(--text-muted); margin-top: 3px; }
+
+    .closing-cta-banner {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(230, 48, 39, 0.18) 0%, rgba(232, 179, 65, 0.08) 100%);
+      border: 1px solid rgba(230, 48, 39, 0.42);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(230, 48, 39, 0.12);
+    }
+
+    .cta-text-wrap h3 { font-family: var(--font-display); font-size: 1.12rem; font-weight: 800; color: #fff; line-height: 1.2; }
+    .cta-text-wrap p { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; line-height: 1.5; }
+
+    .cta-buttons-wrap { display: flex; flex-direction: column; gap: 9px; }
+
+    .btn-cta-big {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.25s;
+      border: 1px solid transparent;
+    }
+
+    .btn-cta-big.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 18px var(--accent-glow);
+    }
+
+    .btn-cta-big.primary:hover { background: var(--accent-bright); transform: translateY(-2px); }
+
+    .btn-cta-big.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: var(--glass-border-bright);
+    }
+
+    .btn-cta-big.secondary:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
+
+    .contact-mini-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .contact-mini-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .contact-mini-pill:hover { color: #fff; border-color: rgba(230, 48, 39, 0.5); }
+
+    .slide-footer-note {
+      text-align: center;
+      font-size: 0.64rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    /* Pista de scroll en la portada */
+    .scroll-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin-top: 12px;
+      color: var(--text-dim);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .scroll-hint .arrow {
+      font-size: 1.1rem;
+      color: var(--accent-bright);
+      animation: bounceDown 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); opacity: 0.6; }
+      50% { transform: translateY(6px); opacity: 1; }
+    }
+
+    /* ==========================================================================
+       AJUSTE COMPACTO EN CELULAR: cada diapositiva debe caber en pantalla
+       (banda visible = 100svh − topbar − bottombar) sin scroll interno.
+       ========================================================================== */
+    @media (max-width: 759px) {
+      .slide { padding: 13px 14px 18px; }
+      .slide-chrome-header { margin-bottom: 12px; padding-bottom: 8px; }
+      .slide-body { gap: 10px; }
+      .slide-title { font-size: clamp(1.5rem, 7.2vw, 2.1rem); }
+      .slide-description { font-size: 0.85rem; line-height: 1.5; }
+      .highlight-row { gap: 7px; }
+      .highlight-glass-badge { padding: 6px 10px; font-size: 0.7rem; gap: 5px; }
+      .scroll-hint { margin-top: 6px; font-size: 0.62rem; }
+
+      /* Portada: escudo y teléfono lateral */
+      .crest-glass-card { width: 104px; height: 104px; border-radius: 22px; }
+      .crest-glass-card img { width: 66px; height: 66px; }
+      .crest-glow-ring { inset: -7px; border-radius: 26px; }
+      .hero-phone-tilted { width: 158px; height: 120px; margin-top: -26px; }
+      .kicker-pill { padding: 5px 11px; font-size: 0.62rem; gap: 6px; }
+
+      /* Mockup dual phones (claro / oscuro) */
+      .mockup-dual-phones { height: 298px; margin: 2px 0 0; }
+      .phone-container { width: 130px; height: 258px; border-radius: 24px; }
+      .phone-screen { inset: 4px; border-radius: 20px; }
+      .floating-pill-badge { padding: 5px 10px; font-size: 0.6rem; }
+
+      /* Tarjetas de características */
+      .features-list { gap: 8px; }
+      .feature-card { padding: 10px 12px; gap: 10px; border-radius: 14px; }
+      .feature-icon-box { width: 34px; height: 34px; border-radius: 10px; }
+      .feature-icon-box svg { width: 17px; height: 17px; }
+      .feature-text h3 { font-size: 0.85rem; margin-bottom: 3px; }
+      .feature-text p { font-size: 0.73rem; line-height: 1.4; }
+
+      /* Laptop + ventana de navegador */
+      .laptop-showcase-wrap { max-width: 306px; margin-top: 0; }
+      .floating-browser-card { padding: 6px 10px; gap: 5px; }
+      .browser-url-pill { font-size: 0.56rem; padding: 2px 8px; }
+
+      /* Escalón de los 4 pasos del formulario */
+      .stepped-blocks-col { gap: 8px; }
+      .step-item { gap: 9px; }
+      .step-green-square { width: 14px; height: 14px; border-radius: 4px; }
+      .step-content-card { padding: 8px 11px; border-radius: 11px; }
+      .step-title { font-size: 0.75rem; }
+      .step-desc { font-size: 0.65rem; line-height: 1.34; margin-top: 1px; }
+
+      /* Tablet con demo interactiva */
+      .mockup-tablet-wrap { margin-top: 0; }
+      .tablet-device { width: 186px; height: 234px; border-radius: 24px; border-width: 3px; }
+      .tablet-screen { inset: 6px; border-radius: 19px; }
+      .tablet-interactive-overlay { bottom: 9px; left: 8px; right: 8px; padding: 9px; gap: 6px; }
+      .demo-overlay-label { font-size: 0.56rem; }
+      .demo-question { font-size: 0.64rem; min-height: 32px; line-height: 1.4; }
+      .demo-options { gap: 5px; }
+      .demo-btn { padding: 5px 6px; font-size: 0.62rem; border-radius: 7px; }
+
+      /* Modalidades, horarios y teléfono de confirmación */
+      .modality-chips { gap: 7px; }
+      .modality-chip { padding: 8px 9px; gap: 7px; border-radius: 11px; }
+      .modality-chip svg { width: 17px; height: 17px; }
+      .modality-chip b { font-size: 0.69rem; }
+      .modality-chip small { font-size: 0.57rem; line-height: 1.25; }
+      .schedule-cards { gap: 7px; }
+      .schedule-card { padding: 9px 11px; gap: 10px; border-radius: 12px; }
+      .schedule-time { font-size: 0.84rem; }
+      .schedule-card p { font-size: 0.67rem; }
+      .phone-single-wrap { margin-top: 0; }
+      .phone-single { width: 142px; height: 274px; border-radius: 24px; }
+
+      /* Cierre: hitos, CTA y contacto */
+      .closing-cards-row { gap: 8px; }
+      .closing-milestone-card { padding: 10px 12px; gap: 10px; border-radius: 14px; }
+      .milestone-num { font-size: 1.15rem; }
+      .milestone-title { font-size: 0.85rem; }
+      .milestone-desc { font-size: 0.7rem; line-height: 1.4; margin-top: 2px; }
+      .closing-cta-banner { padding: 13px; gap: 10px; border-radius: 16px; }
+      .cta-text-wrap h3 { font-size: 0.98rem; }
+      .cta-text-wrap p { font-size: 0.74rem; margin-top: 3px; }
+      .cta-buttons-wrap { gap: 7px; }
+      .btn-cta-big { padding: 10px 14px; font-size: 0.8rem; border-radius: 11px; }
+      .contact-mini-row { gap: 6px; }
+      .contact-mini-pill { padding: 6px 10px; font-size: 0.65rem; gap: 5px; }
+      .slide-footer-note { font-size: 0.6rem; margin-top: 2px; }
+    }
+
+    /* Escritorio / tablets: se centra la "pantalla del celular" para revisar
+       la presentación también desde la computadora */
+    @media (min-width: 760px) {
+      .slide { max-width: 560px; margin: 0 auto; width: 100%; padding: 30px 26px 40px; }
+      /* minmax(0,…) evita que el contenido mínimo ensanche las columnas y
+         se desborde el ancho de la diapositiva */
+      .modality-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      /* 2 columnas: en 3, palabras como "acompañamiento" no caben en la
+         columna estrecha y quedarían cortadas */
+      .closing-cards-row { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+      .closing-cards-row > * { min-width: 0; }
+      .closing-milestone-card { flex-direction: column; gap: 8px; }
+      /* Títulos más estrechos para que palabras largas ("acompañamiento")
+         quepan en cada columna sin cortarse */
+      .milestone-title { font-size: 0.82rem; }
+      .milestone-num { font-size: 1.3rem; }
+      .cta-buttons-wrap { flex-direction: row; }
+      .btn-cta-big { width: auto; flex: 1; font-size: 0.82rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Fondo ambiental con resplandores en movimiento -->
+  <div class="ambient-background" aria-hidden="true">
+    <div class="ambient-orb orb-red"></div>
+    <div class="ambient-orb orb-gold"></div>
+    <div class="ambient-orb orb-deep"></div>
+    <div class="ambient-grid"></div>
+  </div>
+
+  <!-- Sprite de iconos SVG: los mismos del sitio (definidos en index.html) -->
+  <svg class="svg-sprite" aria-hidden="true" focusable="false" style="display:none">
+    <symbol id="ico-kata" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10.6" cy="4.7" r="2.1" /><path d="M10.6 6.9v5.6" /><path d="M8.3 12.5h4.6" />
+        <path d="M10.8 8.5h5" /><circle cx="17.3" cy="8.5" r="1.5" /><path d="M10.6 9.6 8 11.7" />
+        <path d="M10.6 12.6 6.7 19.5" /><path d="M10.6 12.6l4.7 6.9" />
+      </g>
+    </symbol>
+    <symbol id="ico-kumite" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3.2 10.4a2.3 2.3 0 0 1 2.3-2.3h3a2.3 2.3 0 0 1 2.3 2.3v3.2a2.3 2.3 0 0 1-2.3 2.3h-3a2.3 2.3 0 0 1-2.3-2.3z" />
+        <path d="M6.4 8.6v2.4M8.6 8.6v2.4" />
+        <path d="M20.8 10.4a2.3 2.3 0 0 0-2.3-2.3h-3a2.3 2.3 0 0 0-2.3 2.3v3.2a2.3 2.3 0 0 0 2.3 2.3h3a2.3 2.3 0 0 0 2.3-2.3z" />
+        <path d="M17.6 8.6v2.4M15.4 8.6v2.4" />
+        <path d="M12 9.6 10.9 7.7M12 9.6l1.1-1.9M12 14.4l-1.1 1.9M12 14.4l1.1 1.9" />
+      </g>
+    </symbol>
+    <symbol id="ico-kobudo" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4.5 19.5 19.5 4.5" />
+        <rect x="7.3" y="13.3" width="3.4" height="3.4" rx="1.2" />
+        <rect x="13.3" y="7.3" width="3.4" height="3.4" rx="1.2" />
+      </g>
+    </symbol>
+    <symbol id="ico-infantil" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="5" r="2.6" /><path d="M12 7.6v4.4" /><path d="M11.2 8.6 8.9 5.9" />
+        <path d="M12.8 8.6l2.3-2.7" /><path d="M9.9 12h4.2" /><path d="M12 12l-1.8 6.4" /><path d="M12 12l1.8 6.4" />
+      </g>
+    </symbol>
+    <symbol id="ico-rendimiento" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8.4 3.2 11.3 9" /><path d="M15.6 3.2 12.7 9" /><circle cx="12" cy="14.5" r="5.1" />
+        <path fill="currentColor" stroke="none" d="M12 11.8l.74 1.69 1.83.18-1.38.44.4 2.57-1.59-.93L12 15.75l-1.59.93.4-2.57-1.38-.44 1.83-.18z" />
+      </g>
+    </symbol>
+    <symbol id="ico-defensa" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2.8l7 2.4v5.6c0 4.3-2.9 7.4-7 9.4-4.1-2-7-5.1-7-9.4V5.2z" />
+        <path d="M12 15c-2.4-1.7-3.8-3.1-3.8-4.9A2.3 2.3 0 0 1 12 8.7a2.3 2.3 0 0 1 3.8 1.4c0 1.8-1.4 3.2-3.8 4.9z" />
+      </g>
+    </symbol>
+  </svg>
+
+  <!-- ==================== BARRA SUPERIOR ==================== -->
+  <header class="topbar">
+    <div class="brand-pill">
+      <div class="brand-logo-icon">
+        <img src="assets/images/escudo-minimalista.svg" alt="Escudo Karate Do Loma Dorada">
+      </div>
+      <span class="brand-title">Karate Do Loma Dorada</span>
+    </div>
+    <div class="slide-counter-badge"><span id="currentSlideNumber">01</span> / <b id="totalSlidesNumber">06</b></div>
+  </header>
+  <div class="top-progress-track"><div class="top-progress-fill" id="topProgressFill"></div></div>
+
+  <!-- ==================== DIAPOSITIVAS (SCROLL HACIA ABAJO) ==================== -->
+  <main class="slides-deck" id="slidesDeck">
+
+    <!-- ============================================================
+         DIAPOSITIVA 00: PORTADA
+         ============================================================ -->
+    <section class="slide" id="portada" data-index="0" data-title="Karate Do Loma Dorada">
+      <div class="slide-chrome-header">
+        <div class="slide-chrome-left">Propuesta 2026 · Sitio de Inscripciones</div>
+        <div class="slide-chrome-right">Karate Do Loma Dorada</div>
+        <div class="slide-chrome-indicator"></div>
+      </div>
+
+      <div class="slide-body">
+        <div class="anim-pop" style="--delay: 0.1s; align-self:center;">
+          <div class="crest-glass-card">
+            <div class="crest-glow-ring"></div>
+            <img src="assets/images/escudo-minimalista.svg" alt="Escudo oficial de la Escuela Karate Do">
+          </div>
+          <div class="hero-phone-tilted">
+            <img src="capturas-presentacion/celular-claro.png" alt="Página de inscripción en modo claro">
+          </div>
+        </div>
+
+        <div class="kicker-pill anim-fade-up" style="--delay: 0.25s;">
+          <span class="kicker-dot"></span>
+          Edición 2026 · Inscripciones Abiertas
+        </div>
+
+        <h1 class="slide-title anim-fade-up" style="--delay: 0.4s;">
+          Fórmate en<br><span class="gradient-word">Karate Do Loma Dorada</span>
+        </h1>
+
+        <p class="slide-description anim-fade-up" style="--delay: 0.55s;">
+          Escuela de karate-deporte en <strong>Loma Dorada, León, Guanajuato</strong>. Un sitio móvil
+          que forma en disciplina, fuerza mental, concentración y espíritu deportivo, y que convierte
+          las inscripciones en un formulario de <strong>4 pasos</strong> que llega al dojo por WhatsApp.
+        </p>
+
+        <div class="highlight-row anim-fade-up" style="--delay: 0.7s;">
+          <div class="highlight-glass-badge">🥋 6 Modalidades</div>
+          <div class="highlight-glass-badge">📋 Formulario en 4 Pasos</div>
+          <div class="highlight-glass-badge">🕐 2 Horarios de Clase</div>
+          <div class="highlight-glass-badge">📲 Envío por WhatsApp</div>
+        </div>
+
+        <div class="scroll-hint anim-fade-up" style="--delay: 0.9s;">
+          <span>Desliza hacia abajo</span>
+          <span class="arrow">↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         DIAPOSITIVA 01: EXPERIENCIA DE USUARIO · RESPONSIVE, MODOS Y PWA
+         (Se conserva al pie el mockup 1: dos teléfonos, claro y oscuro)
+         ============================================================ -->
+    <section class="slide" id="caracteristicas" data-index="1" data-title="Responsivo, Modo Claro y Oscuro">
+      <div class="slide-chrome-header">
+        <div class="slide-chrome-left">01 · Experiencia de Usuario</div>
+        <div class="slide-chrome-right">Características de la Plataforma</div>
+        <div class="slide-chrome-indicator"></div>
+      </div>
+
+      <div class="slide-body">
+        <div class="features-list">
+          <div class="feature-card anim-fade-left" style="--delay: 0.2s;">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>Responsivo: de 320 px a escritorio</h3>
+              <p>CSS Grid y Flexbox reorganizan el hero, el stepper y las tarjetas de modalidad. Inputs a 16 px (sin zoom en iOS) y cero scroll horizontal.</p>
+            </div>
+          </div>
+
+          <div class="feature-card anim-fade-left" style="--delay: 0.35s;">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>Modo claro y oscuro persistente</h3>
+              <p>Un solo ícono en el header alterna el tema, se guarda en el dispositivo (localStorage) y respeta la preferencia del sistema.</p>
+            </div>
+          </div>
+
+          <div class="feature-card anim-fade-left" style="--delay: 0.5s;">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>Carga instantánea y accesible</h3>
+              <p>HTML, CSS y JavaScript puros (sin frameworks), hero optimizado a WebP y accesibilidad WCAG 2.1 AA validada con 73 pruebas automáticas.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== MOCKUP 1 (al pie de la propuesta base): dos celulares ===== -->
+        <div class="mockup-dual-phones anim-fade-right" style="--delay: 0.35s;">
+          <div class="floating-pill-badge badge-light-tag">☀️ Modo Claro</div>
+
+          <!-- Teléfono Claro (Delante) -->
+          <div class="phone-container phone-light" title="Modo Claro: página de inscripción">
+            <div class="phone-screen">
+              <img src="capturas-presentacion/celular-claro.png" alt="Karate Do Loma Dorada en modo claro">
+              <div class="screen-sheen"></div>
+            </div>
+          </div>
+
+          <div class="floating-pill-badge badge-dark-tag">🌙 Modo Oscuro</div>
+
+          <!-- Teléfono Oscuro (Atrás) -->
+          <div class="phone-container phone-dark" title="Modo Oscuro: página de inscripción">
+            <div class="phone-screen">
+              <img src="capturas-presentacion/celular-oscuro.png" alt="Karate Do Loma Dorada en modo oscuro">
+              <div class="screen-sheen"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         DIAPOSITIVA 02: DESPLIEGUE Y SERVICIOS
+         ============================================================ -->
+    <section class="slide" id="despliegue" data-index="2" data-title="Despliegue y Servicios">
+      <div class="slide-chrome-header">
+        <div class="slide-chrome-left">02 · Infraestructura y Autonomía</div>
+        <div class="slide-chrome-right">Qué Incluye la Entrega</div>
+        <div class="slide-chrome-indicator"></div>
+      </div>
+
+      <div class="slide-body">
+        <div class="laptop-showcase-wrap anim-fade-up" style="--delay: 0.15s;">
+          <div class="floating-browser-card">
+            <div class="browser-controls-row">
+              <div class="mac-dots">
+                <span class="mac-dot red"></span>
+                <span class="mac-dot yellow"></span>
+                <span class="mac-dot green"></span>
+              </div>
+              <div class="browser-url-pill">
+                <span class="browser-lock-icon">🔒</span> raulkanob-cmd.github.io/Karate-do/
+              </div>
+            </div>
+          </div>
+
+          <div class="macbook-mockup">
+            <div class="macbook-screen-lid">
+              <div class="macbook-webcam"></div>
+              <div class="macbook-screen-content">
+                <img src="capturas-presentacion/escritorio.png" alt="Vista de escritorio del sitio de inscripción">
+              </div>
+            </div>
+            <div class="macbook-base"><div class="macbook-notch-cutout"></div></div>
+          </div>
+        </div>
+
+        <div class="features-list">
+          <div class="feature-card anim-fade-up" style="--delay: 0.25s;">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>Publicación llave en mano</h3>
+              <p>Sitio estático con HTTPS en GitHub Pages: sin hosting de pago, sin mensualidades y sin mantenimiento de servidores.</p>
+            </div>
+          </div>
+
+          <div class="feature-card anim-fade-up" style="--delay: 0.4s;">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>SEO local y contenido compartible</h3>
+              <p>Schema.org del dojo con coordenadas, portada Open Graph para que el enlace se vea bien en WhatsApp y Facebook, más robots, sitemap y llms.txt.</p>
+            </div>
+          </div>
+
+          <div class="feature-card anim-fade-up" style="--delay: 0.55s;">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>Sin base de datos y sin cookies</h3>
+              <p>El formulario no almacena nada en servidores: compone el resumen y abre WhatsApp hacia el dojo. Privacidad por diseño y cero costos recurrentes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         DIAPOSITIVA 03: DINÁMICA DE LA PÁGINA Y DEL FORMULARIO
+         (Reemplaza el bloque de "lecciones" de la presentación base)
+         ============================================================ -->
+    <section class="slide" id="formulario" data-index="3" data-title="Dinámica del Formulario de Inscripción">
+      <div class="slide-chrome-header">
+        <div class="slide-chrome-left">03 · Dinámica del Sitio</div>
+        <div class="slide-chrome-right">Cómo Agenda tu Inscripción</div>
+        <div class="slide-chrome-indicator"></div>
+      </div>
+
+      <div class="slide-body">
+        <p class="slide-description anim-fade-up" style="--delay: 0.15s;">
+          El formulario es un asistente (<em>wizard</em>) que <strong>agenda la inscripción</strong>:
+          valida cada dato antes de avanzar y al final entrega el resumen listo para el dojo.
+        </p>
+
+        <div class="stepped-blocks-col">
+          <div class="step-item step-indent-1 anim-fade-left" style="--delay: 0.25s;">
+            <div class="step-green-square"></div>
+            <div class="step-content-card">
+              <div class="step-title">Paso 1 · Datos personales</div>
+              <div class="step-desc">Nombre, edad (4–99), fecha de nacimiento y género. El sistema comprueba que la edad y la fecha coincidan.</div>
+            </div>
+          </div>
+
+          <div class="step-item step-indent-2 anim-fade-left" style="--delay: 0.4s;">
+            <div class="step-green-square"></div>
+            <div class="step-content-card">
+              <div class="step-title">Paso 2 · Contacto y tutor</div>
+              <div class="step-desc">Si el alumno es menor de 18 años el campo del tutor se vuelve obligatorio; si es mayor, queda opcional.</div>
+            </div>
+          </div>
+
+          <div class="step-item step-indent-3 anim-fade-left" style="--delay: 0.55s;">
+            <div class="step-green-square"></div>
+            <div class="step-content-card">
+              <div class="step-title">Paso 3 · Modalidad y horario</div>
+              <div class="step-desc">Modalidades, horario y glosario para principiantes.</div>
+            </div>
+          </div>
+
+          <div class="step-item step-indent-4 anim-fade-left" style="--delay: 0.7s;">
+            <div class="step-green-square"></div>
+            <div class="step-content-card">
+              <div class="step-title">Paso 4 · Historial y envío</div>
+              <div class="step-desc">Experiencia previa, condición médica y aceptación del reglamento; luego el resumen y el envío por WhatsApp.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mockup de tablet con demostración interactiva en vivo -->
+        <div class="mockup-tablet-wrap anim-fade-right" style="--delay: 0.4s;">
+          <div class="tablet-device">
+            <div class="tablet-screen">
+              <img src="capturas-presentacion/formulario-paso3.png" alt="Paso 3 del formulario: modalidad y horario">
+
+              <div class="tablet-interactive-overlay">
+                <div class="demo-overlay-label">Demo Interactiva · Toca un paso</div>
+                <div class="demo-question" id="demoQuestion">Paso 1: pide nombre, edad, fecha de nacimiento y género del alumno.</div>
+                <div class="demo-options" id="demoOptions">
+                  <button class="demo-btn selected" data-step="1">1 · Datos</button>
+                  <button class="demo-btn" data-step="2">2 · Contacto</button>
+                  <button class="demo-btn" data-step="3">3 · Modalidad</button>
+                  <button class="demo-btn" data-step="4">4 · Envío</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-row anim-fade-up" style="--delay: 0.6s;">
+          <div class="highlight-glass-badge">✅ Validación en vivo</div>
+          <div class="highlight-glass-badge">↩️ Volver a cualquier paso</div>
+          <div class="highlight-glass-badge">🔒 Privacidad por diseño</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         DIAPOSITIVA 04: MODALIDADES, HORARIOS Y CONFIRMACIÓN
+         ============================================================ -->
+    <section class="slide" id="modalidades" data-index="4" data-title="Modalidades, Horarios y Confirmación">
+      <div class="slide-chrome-header">
+        <div class="slide-chrome-left">04 · Contenido de la Escuela</div>
+        <div class="slide-chrome-right">Modalidades y Horarios</div>
+        <div class="slide-chrome-indicator"></div>
+      </div>
+
+      <div class="slide-body">
+        <div class="modality-chips">
+          <div class="modality-chip anim-pop" style="--delay: 0.2s;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-kata"></use></svg>
+            <span><b>Kata</b><small>Formas y secuencias técnicas.</small></span>
+          </div>
+          <div class="modality-chip anim-pop" style="--delay: 0.28s;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-kumite"></use></svg>
+            <span><b>Kumite</b><small>Combate con protecciones.</small></span>
+          </div>
+          <div class="modality-chip anim-pop" style="--delay: 0.36s;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-kobudo"></use></svg>
+            <span><b>Kobudo</b><small>Bo, Sai y Nunchaku.</small></span>
+          </div>
+          <div class="modality-chip anim-pop" style="--delay: 0.44s;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-infantil"></use></svg>
+            <span><b>Infantil</b><small>Psicomotriz, 4 a 11 años.</small></span>
+          </div>
+          <div class="modality-chip anim-pop" style="--delay: 0.52s;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-rendimiento"></use></svg>
+            <span><b>Alto Rendimiento</b><small>Equipo de torneos.</small></span>
+          </div>
+          <div class="modality-chip anim-pop" style="--delay: 0.6s;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-defensa"></use></svg>
+            <span><b>Recreativo</b><small>Salud y defensa personal.</small></span>
+          </div>
+        </div>
+
+        <div class="schedule-cards">
+          <div class="schedule-card anim-fade-up" style="--delay: 0.65s;">
+            <div class="schedule-time">2:00 – 3:00 PM</div>
+            <p>Grupo principiantes · niños de 6 a 11 años</p>
+          </div>
+          <div class="schedule-card anim-fade-up" style="--delay: 0.75s;">
+            <div class="schedule-time">3:00 – 4:00 PM</div>
+            <p>Grupo avanzado · niños de 12 años en adelante</p>
+          </div>
+        </div>
+
+        <div class="phone-single-wrap anim-fade-right" style="--delay: 0.5s;">
+          <div class="floating-pill-badge badge-success-tag">✅ Resumen + WhatsApp</div>
+          <div class="phone-single" title="Confirmación de la inscripción">
+            <div class="phone-screen">
+              <img src="capturas-presentacion/modal-confirmacion.png" alt="Modal de confirmación con el resumen de la inscripción">
+              <div class="screen-sheen"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="slide-description anim-fade-up" style="--delay: 0.8s; text-align:center;">
+          Al enviar aparece el resumen completo y una lluvia de kanjis; el botón final abre WhatsApp con el mensaje ya redactado hacia el <strong>477 673 7908</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         DIAPOSITIVA 05: PRÓXIMOS PASOS Y CIERRE COMERCIAL
+         ============================================================ -->
+    <section class="slide" id="cierre" data-index="5" data-title="Próximos Pasos y Contacto">
+      <div class="slide-chrome-header">
+        <div class="slide-chrome-left">05 · De la Propuesta a la Realidad</div>
+        <div class="slide-chrome-right">Plan de Trabajo y Contacto</div>
+        <div class="slide-chrome-indicator"></div>
+      </div>
+
+      <div class="slide-body">
+        <div class="closing-cards-row">
+          <div class="closing-milestone-card anim-fade-up" style="--delay: 0.2s;">
+            <div class="milestone-num">01</div>
+            <div>
+              <div class="milestone-title">Personalización</div>
+              <div class="milestone-desc">Textos, escudo, colores del dojo, modalidades y preguntas del formulario ajustadas a la escuela.</div>
+            </div>
+          </div>
+
+          <div class="closing-milestone-card anim-fade-up" style="--delay: 0.35s;">
+            <div class="milestone-num">02</div>
+            <div>
+              <div class="milestone-title">Pruebas y publicación</div>
+              <div class="milestone-desc">Verificación en celulares y computadoras, revisión del mensaje de WhatsApp y despliegue con HTTPS.</div>
+            </div>
+          </div>
+
+          <div class="closing-milestone-card anim-fade-up" style="--delay: 0.5s;">
+            <div class="milestone-num">03</div>
+            <div>
+              <div class="milestone-title">Entrega y acompañamiento</div>
+              <div class="milestone-desc">Capacitación para editar horarios, modalidades y textos sin depender de programadores.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="closing-cta-banner anim-fade-up" style="--delay: 0.65s;">
+          <div class="cta-text-wrap">
+            <h3>¿Listo para abrir las inscripciones 2026?</h3>
+            <p>Recorre la página real desde tu celular y agenda la primera inscripción de prueba en menos de 2 minutos.</p>
+          </div>
+          <div class="cta-buttons-wrap">
+            <a href="index.html" target="_blank" class="btn-cta-big primary">🚀 Probar la Página en Vivo</a>
+            <a href="index.html#registro" target="_blank" class="btn-cta-big secondary">🥋 Agendar mi Inscripción</a>
+          </div>
+        </div>
+
+        <div class="contact-mini-row anim-fade-up" style="--delay: 0.8s;">
+          <a class="contact-mini-pill" href="https://wa.me/5214776737908" target="_blank" rel="noopener noreferrer">📱 WhatsApp 477 673 7908</a>
+          <a class="contact-mini-pill" href="https://www.facebook.com/profile.php?id=61581570449597" target="_blank" rel="noopener noreferrer">👍 Facebook</a>
+          <a class="contact-mini-pill" href="https://maps.app.goo.gl/w9wsZBPoF5JBn1ok6" target="_blank" rel="noopener noreferrer">📍 Loma Dorada, León, Gto.</a>
+        </div>
+
+        <p class="slide-footer-note">
+          © 2026 Escuela Karate Do Loma Dorada · Sitio estático HTML, CSS y JavaScript<br>
+          Desliza hacia arriba para volver a la portada ↑
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== BARRA INFERIOR DE CONTROLES ==================== -->
+  <footer class="bottombar">
+    <button class="nav-arrow-btn" id="btnPrevSlide" title="Diapositiva anterior" aria-label="Diapositiva anterior">◀</button>
+    <div class="current-slide-label" id="currentSlideLabel">Karate Do Loma Dorada</div>
+    <button class="nav-arrow-btn" id="btnNextSlide" title="Diapositiva siguiente" aria-label="Diapositiva siguiente">▶</button>
+  </footer>
+
+  <!-- ==================== LÓGICA DE LA PRESENTACIÓN ==================== -->
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const totalSlides = slides.length;
+    const curNumEl = document.getElementById('currentSlideNumber');
+    const totNumEl = document.getElementById('totalSlidesNumber');
+    const curLabelEl = document.getElementById('currentSlideLabel');
+    const topProgressFill = document.getElementById('topProgressFill');
+    const btnPrev = document.getElementById('btnPrevSlide');
+    const btnNext = document.getElementById('btnNextSlide');
+
+    let currentIndex = 0;
+
+    totNumEl.textContent = String(totalSlides).padStart(2, '0');
+
+    /* Marca la diapositiva visible y actualiza los controles */
+    function setActive(index) {
+      currentIndex = index;
+      const numStr = String(index + 1).padStart(2, '0');
+
+      slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+
+      curNumEl.textContent = numStr;
+      curLabelEl.textContent = slides[index].dataset.title || '';
+      topProgressFill.style.width = (((index + 1) / totalSlides) * 100) + '%';
+
+      btnPrev.disabled = (index === 0);
+      btnNext.disabled = (index === totalSlides - 1);
+    }
+
+    /* La diapositiva cuyo centro está más cerca del centro de la pantalla
+       es la "activa" (funciona aunque una diapositiva sea más alta que el
+       viewport, que es el caso en celular) */
+    function updateActiveFromScroll() {
+      const viewportCenter = window.innerHeight / 2;
+      let bestIndex = 0;
+      let bestDistance = Infinity;
+
+      slides.forEach((slide, i) => {
+        const rect = slide.getBoundingClientRect();
+        const slideCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(slideCenter - viewportCenter);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestIndex = i;
+        }
+      });
+
+      if (bestIndex !== currentIndex) setActive(bestIndex);
+    }
+
+    let scrollTicking = false;
+    window.addEventListener('scroll', () => {
+      if (scrollTicking) return;
+      scrollTicking = true;
+      requestAnimationFrame(() => {
+        updateActiveFromScroll();
+        scrollTicking = false;
+      });
+    }, { passive: true });
+
+    /* Navegación con los botones de la barra inferior */
+    function goToSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    btnNext.addEventListener('click', () => goToSlide(currentIndex + 1));
+    btnPrev.addEventListener('click', () => goToSlide(currentIndex - 1));
+
+    /* Flechas del teclado (útil al revisar desde la computadora) */
+    window.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowDown':
+        case 'PageDown':
+        case ' ':
+          goToSlide(currentIndex + 1);
+          e.preventDefault();
+          break;
+        case 'ArrowUp':
+        case 'PageUp':
+          goToSlide(currentIndex - 1);
+          e.preventDefault();
+          break;
+        case 'Home':
+          goToSlide(0);
+          e.preventDefault();
+          break;
+        case 'End':
+          goToSlide(totalSlides - 1);
+          e.preventDefault();
+          break;
+      }
+    });
+
+    /* Demo interactiva de la diapositiva 03: explica cada paso del wizard */
+    const DEMO_STEPS = {
+      1: 'Paso 1: pide nombre, edad, fecha de nacimiento y género del alumno.',
+      2: 'Paso 2: tutor (obligatorio si es menor de edad), teléfono y correo con validación en vivo.',
+      3: 'Paso 3: modalidad deportiva y horario preferido; todos comienzan desde cero.',
+      4: 'Paso 4: experiencia previa, salud y reglamento; genera el resumen y abre WhatsApp.'
+    };
+
+    const demoOptions = document.getElementById('demoOptions');
+    const demoQuestion = document.getElementById('demoQuestion');
+
+    if (demoOptions) {
+      demoOptions.addEventListener('click', (e) => {
+        const btn = e.target.closest('.demo-btn');
+        if (!btn) return;
+        demoOptions.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        demoQuestion.textContent = DEMO_STEPS[btn.dataset.step];
+      });
+    }
+
+    /* Inicio: activa la diapositiva visible y vuelve a comprobarlo cuando
+       la página termina de cargar (por si el navegador restaura el scroll
+       o la URL trae un ancla, por ejemplo #formulario) */
+    setActive(0);
+    updateActiveFromScroll();
+    window.addEventListener('load', () => setTimeout(updateActiveFromScroll, 80));
+    window.addEventListener('hashchange', () => setTimeout(updateActiveFromScroll, 80));
+  </script>
+</body>
+</html>

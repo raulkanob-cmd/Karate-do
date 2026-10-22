@@ -153,7 +153,10 @@ construidos con **capturas reales** del sitio (modo claro y modo oscuro).
 - **Fuente:** `presentacion/index.html` + `presentacion/capturas/`
 - **Plantilla base:** `extras/estructurabaseparapresentacion.html` (material de trabajo, no se enlaza)
 - **Acceso:** enlace discreto en el footer del sitio (“Ver presentación del proyecto”) o directo por URL
-- Navegación: deslizar, botones ◀▶ o flechas del teclado
+- Navegación: deslizar, botones ◀▶ o flechas del teclado (← → / ↑ ↓ / espacio)
+- **Escritorio / proyección:** cada diapositiva pasa a dos columnas (texto + mockup) que
+  aprovechan la pantalla ancha; escala desde tablet (760 px) hasta proyectores (1920 px) y
+  se comprime automáticamente en pantallas bajas para que siempre quepa una diapositiva completa
 
 ## ✅ Accesibilidad (WCAG 2.1 AA)
 

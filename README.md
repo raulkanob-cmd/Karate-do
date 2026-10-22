@@ -40,6 +40,15 @@ Karate-do/
 ├── js/app.js               ← wizard, validación, kanji, WhatsApp, modo oscuro
 ├── assets/images/          ← fotos, favicon e iconos (ver tabla de imágenes)
 │
+│  ── Presentación comercial (mini-sitio aparte) ──
+├── presentacion/
+│   ├── index.html          ← presentación tipo PowerPoint, scroll vertical en celular
+│   └── capturas/           ← capturas reales del sitio usadas en los mockups
+│
+│  ── Material de trabajo (no forma parte del sitio) ──
+├── extras/
+│   └── estructurabaseparapresentacion.html  ← plantilla base de la presentación
+│
 │  ── Archivos para GitHub Pages / SEO ──
 ├── manifest.webmanifest    ← [PWA] manifest del sitio (iconos, colores, modo standalone)
 ├── robots.txt              ← [ROBOTS] instrucciones para rastreadores + sitemap
@@ -52,6 +61,8 @@ Karate-do/
 ├── tests/test.js           ← 73 pruebas con jsdom
 └── README.md               ← este archivo
 ```
+
+> **URLs en el despliegue:** sitio → `…/Karate-do/` · presentación → `…/Karate-do/presentacion/`
 
 ### 🔍 ¿Dónde está cada cosa? (comentarios para reconocerla)
 
@@ -127,6 +138,22 @@ SEO/OG/robots en HTML y ausencia de elementos obsoletos.
    JSON-LD se lean correctamente.
 
 > El archivo `.nojekyll` evita que GitHub Pages procese el sitio con Jekyll.
+>
+> **Si haces un push y la página no se actualiza**, entra a **Actions → `pages build and deployment` → Re-run**,
+> o a **Settings → Pages → Save** para forzar la compilación.
+
+## 📱 Presentación comercial
+
+Mini-sitio tipo PowerPoint con **scroll vertical hacia abajo** (una diapositiva por pantalla,
+mobile-first y también cómodo en escritorio). Resume la propuesta: características, despliegue,
+dinámica del formulario de 4 pasos, modalidades, horarios y CTA de contacto, con mockups
+construidos con **capturas reales** del sitio (modo claro y modo oscuro).
+
+- **URL en línea:** `https://raulkanob-cmd.github.io/Karate-do/presentacion/`
+- **Fuente:** `presentacion/index.html` + `presentacion/capturas/`
+- **Plantilla base:** `extras/estructurabaseparapresentacion.html` (material de trabajo, no se enlaza)
+- **Acceso:** enlace discreto en el footer del sitio (“Ver presentación del proyecto”) o directo por URL
+- Navegación: deslizar, botones ◀▶ o flechas del teclado
 
 ## ✅ Accesibilidad (WCAG 2.1 AA)
 
